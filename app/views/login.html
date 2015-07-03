@@ -1,6 +1,10 @@
-<form class="input-group">
-  <input type="text" placeholder="Full name">
-  <input type="email" placeholder="Email">
-  <input type="text" placeholder="Username">
-</form>
+{{ include header }}
+<div class="content">
+    <form class="input-group" name="loginForm">
+      <input type="text" name="name" placeholder="Username">
+      <input type="password" name="pwd" placeholder="Password">
+      <button type="button" class="btn btn-primary btn-block btn-outlined btn-next">Next</button>
+    </form>
+</div>
+{{ include footer }}
 

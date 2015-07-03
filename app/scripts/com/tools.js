@@ -1,6 +1,8 @@
 define(function() {
     'use strict';
-
+    _.templateSettings = {
+      interpolate: /\{\{(.+?)\}\}/g
+    };
     var tools = {
         getCookie: getCookie,
         setCookie: setCookie,
