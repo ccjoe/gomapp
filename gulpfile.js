@@ -6,29 +6,38 @@ var $ = require('gulp-load-plugins')();
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
 
+var sass = require('gulp-ruby-sass');
 gulp.task('styles', function () {
-  return gulp.src('app/styles/main.scss')
-    .pipe($.sourcemaps.init())
-    .pipe($.sass({
-      outputStyle: 'nested', // libsass doesn't support expanded yet
-      precision: 10,
-      includePaths: ['.'],
-      onError: console.error.bind(console, 'Sass error:')
-    }))
-    .pipe($.postcss([
-      require('autoprefixer-core')({browsers: ['last 1 version']})
-    ]))
-    .pipe($.sourcemaps.write())
-    .pipe(gulp.dest('.tmp/styles'))
-    .pipe(reload({stream: true}));
+  return sass('./app/styles/')
+    .pipe(gulp.dest('./app/css/'))
+    // .pipe(livereload());
 });
+
+//node-sass can't run on window
+// gulp.task('styles', function () {
+//   return gulp.src('app/styles/main.scss')
+//     .pipe($.sourcemaps.init())
+//     .pipe($.sass({
+//       outputStyle: 'nested', // libsass doesn't support expanded yet
+//       precision: 10,
+//       includePaths: ['.'],
+//       onError: console.error.bind(console, 'Sass error:')
+//     }))
+//     .pipe($.postcss([
+//       require('autoprefixer-core')({browsers: ['last 1 version']})
+//     ]))
+//     .pipe($.sourcemaps.write())
+//     .pipe(gulp.dest('.tmp/styles'))
+//     .pipe(reload({stream: true}));
+// });
+
 
 gulp.task('jshint', function () {
   return gulp.src('app/scripts/**/*.js')
     .pipe(reload({stream: true, once: true}))
     .pipe($.jshint())
     .pipe($.jshint.reporter('jshint-stylish'))
-    .pipe($.if(!browserSync.active, $.jshint.reporter('fail')));
+    // .pipe($.if(!browserSync.active, $.jshint.reporter('fail')));
 });
 
 gulp.task('html', ['styles'], function () {
@@ -74,7 +83,6 @@ gulp.task('extras', function () {
 });
 
 gulp.task('clean', require('del').bind(null, ['.tmp', 'dist']));
-
 gulp.task('serve', ['styles', 'fonts'], function () {
   browserSync({
     notify: false,
@@ -84,7 +92,8 @@ gulp.task('serve', ['styles', 'fonts'], function () {
       routes: {
         '/bower_components': 'bower_components'
       }
-    }
+    },
+    browser: ['chrome']
   });
 
   // watch for changes

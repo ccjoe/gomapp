@@ -1,8 +1,11 @@
 define(function(require) {
-    var Config = require('com/config'), 
-        Route = require('com/route');
 
-        _.templateSettings = {  
+    // 将依赖外置
+    // var Config = require('com/config'), 
+    //     Route = require('com/route');
+
+      //模板引擎 dot => underscore, doT拥有此功能且性能高
+        _.templateSettings = {
             evaluate    : /\{\{(.+?)\}\}/g,  
             interpolate : /\{\{\=(.+?)\}\}/g, 
             escape      : /\{\{\-(.+?)\}\}/g   
@@ -26,24 +29,56 @@ define(function(require) {
         }
 
     var helper = {
+        /*  
+          animate: 是否开启动画
+          iscroll: 是否开启iscroll
+        */
+        config: {
+            animate: false,
+            iscroll: false,
+            html5history: true
+        },
+        //相关路由表对象，详细定义参考route.js
+        route: {},
         //App初始化
         init: function(){
-            $(window).on('hashchange', helper.routeTo).trigger('hashchange');
+            //html4方法监听url hash变化
+            // $(window).on('hashchange', helper.routeTo).trigger('hashchange');
+            //以html5的方式处理状态变化
+            // Note: We are using statechange instead of popstate
+            var isHistoryApi = !!(window.history && history.pushState);
+            if(!isHistoryApi)
+                return;
+            
+            History.Adapter.bind(window, 'statechange', function(e){ 
+                // Note: We are using History.getState() instead of event.state
+                var state = History.getState(); 
+                console.log(state, history, 'History');
+                helper.routeTo(state);
+            });
+            History.Adapter.trigger(window, 'statechange');
+
+            // 对所有链接进行html5处理
+            // $("body").on("click", 'a', function(){
+            //     var _$t = $(this);
+            //     console.log( _$t.attr('title'), _$t.attr('href'), 'asdfasdfasdfs');
+            //     History.pushState({hash: History.getState().hash}, _$t.attr('title'), _$t.attr('href'));
+            // });
         },
         //判断是前进还是后退
         hashParse: function(hash){
-            var hash1, hash2, hashArr = [];
-                hashName = hash.substring(2);
-                if(!hashName){
+            var hashArr = [];
+                if(!hash){
                     hash1 = null;
                 }else{
-                    hashArr = hashName.split('/');
+                    hashArr = hash.split('/');
                 }
             var hashObj =  {
                 hashArr : hashArr,
-                hash1: hashArr[0] || '',
-                hash2: hashArr[1] || '',
-            }
+                hash1: hashArr[1] || '',
+                hash2: hashArr[2] || '',
+            };
+            console.log(hashObj, 'hashObj');
             return hashObj;
         },
 
@@ -52,12 +87,11 @@ define(function(require) {
         //根据hash(层级)返回相应tmpl和ctrl对象
         //页面级跳转url   /#/example1; 
         //页面内跳转hash  /#example2
-        hashRouteParse: function(){
-            var hashObj = helper.hashParse(location.hash),
-                router  = Route.router,
+        hashRouteParse: function(hash){
+            var hashObj = helper.hashParse(hash),
+                router  = helper.route.router,
                 cr      = router['/'+hashObj.hash1], //currentRoute level1 hash
                 hash2Name = hashObj.hash2;
-
             if(!hash2Name){ 
                 if(cr && cr.hasOwnProperty('/')){
                     cr = cr['/'];
@@ -75,10 +109,9 @@ define(function(require) {
             return cr;
         },
         // 路由到相应页并根据情况初始化页面
-        routeTo: function(e){
-            
-            var router = Route.router,
-                cr = helper.hashRouteParse();
+        routeTo: function(state){
+            var router = helper.route.router,
+                cr = helper.hashRouteParse(state.data.hash);
                 
                 console.log(cr, "----- CURRENT ROUTE! -----");
                 if(!cr){
@@ -90,8 +123,7 @@ define(function(require) {
                     location.hash = '/404';
                     return;
                 }
-
-                cr.go = helper.goOrBack(e.oldURL, e.newURL);
+                // cr.go = helper.goOrBack(e.oldURL, e.newURL);
             var crCtrl = cr.ctrl;
                 //存在ctrl则初始化页面，否则则直接render页面
                 if(crCtrl){
@@ -108,7 +140,8 @@ define(function(require) {
             if(!cr.tmpl){
                 return;
             }
-            $.get('views/'+cr.tmpl+'.html', function(tmpl){
+            console.log('/views/'+cr.tmpl+'.html', 'tmpl route');
+            $.get('/views/'+cr.tmpl+'.html', function(tmpl){
                 dom = cr.data ? template(tmpl)(cr) : template(tmpl); 
                 renderToDom = cr.rendeTo;
                 renderToDom = renderToDom ? renderToDom : '#body';
@@ -149,7 +182,7 @@ define(function(require) {
         },
         //页面初始化(如果是404页，退二步，因为退到找不到的页面还是会跳转到404)
         reset: function(is404){
-            $(Config.returnClass).off().click(function(){
+            $(helper.config.returnClass).off().click(function(){
                 history.go(!is404 ? -1 : -2);
             });
         },
@@ -222,7 +255,7 @@ define(function(require) {
             }
         }
 
-    }
+    };
 
     // var opt = {
     //     domContainer : ''
@@ -231,7 +264,6 @@ define(function(require) {
     //     effect  : 'slide-in',
     //     complete: function(){}
     // };
-
     var PUSH = function(opt){
         var $dc = opt.domContainer || $('#body'),
             $de = opt.domEmpty,
@@ -276,9 +308,8 @@ define(function(require) {
                     }, 200, 'ease-out');
             }
         }
-    }
+    };
 
-    helper.init();
     window.PUSH = PUSH;
 
     return helper;
