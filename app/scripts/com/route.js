@@ -6,7 +6,7 @@ define(['require',
         'module/view_ctrl',
         'module/add_ctrl'
         ], function(require) {
-    
+    'use strict';
     var r = require;
 
     //tmpl html FileName; ctrl js FileName
@@ -61,7 +61,7 @@ define(['require',
         '/500': {
             tmpl: '500',
         }
-    }
+    };
 
     var ui = {
         header: {},
@@ -69,9 +69,9 @@ define(['require',
         nav: {},
         modal:{},
         flash:{}
-    }
+    };
     return {
         router: router,
         ui: ui
-    }
+    };
 });

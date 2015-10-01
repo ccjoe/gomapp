@@ -3,44 +3,28 @@ define(function() {
     _.templateSettings = {
       interpolate: /\{\{(.+?)\}\}/g
     };
-    var tools = {
-        getCookie: getCookie,
-        setCookie: setCookie,
-        delCookie: delCookie,
-        getUrl: getUrl, //获取URL上各部件信息
-        setUrl: setUrl, //设置URL
-        parseUrl: parseUrl, //解析URL参数为对象
-        getCodeTime: getCodeTime,
-        objRemoveKV: objRemoveKV, //过滤除去key为value的对象，返回原coll
-        objFindKV: objFindKV,     //过滤找出key为value的对象
-        mapArrToMap: mapArrToMap, //将Map数组转换为Map类型
-        arrToMap: arrToMap,       //将数组转换为Map类型
-        arrToStr: arrToStr,       // Array TO String
-        objToStr: objToStr,       // Object TO String
-        decodeHtml: decodeHtml
-    };
 
     function getCookie(key) {
-        var aCookie = window.document.cookie.split(";");
+        var aCookie = window.document.cookie.split(';');
         for (var i = 0; i < aCookie.length; i++) {
-            var aCrumb = aCookie[i].split("=");
-            if (key === aCrumb[0].replace(/^\s*|\s*$/, "")) {
+            var aCrumb = aCookie[i].split('=');
+            if (key === aCrumb[0].replace(/^\s*|\s*$/, '')) {
                 return unescape(aCrumb[1]);
             }
         }
     }
 
-    function setCookie(c_name, value, expire) {
+    function setCookie(cname, value, expire) {
         var date = new Date(),
             endTime = date.getTime() + expire;
         var expire = expire ? ';expires=' + new Date(endTime) : '';
-        document.cookie = c_name + "=" + escape(value) + expire;
+        document.cookie = cname + '=' + escape(value) + expire;
     }
 
     function delCookie(name) {
             var date = new Date();
             date.setTime(date.getTime() - 10000);
-            document.cookie = name + "=v; expires=" + date.toGMTString();
+            document.cookie = name + '=v; expires=' + date.toGMTString();
         }
         //1=>URL,
         //2=>传入key,返回value,
@@ -56,7 +40,7 @@ define(function() {
         url = decodeURIComponent(url);
         var hashsearch = url.substr(url.indexOf('#') + 2);
 
-        var pos = hashsearch.indexOf('?');
+        var pos = hashsearch.indexOf('?'), kvArr;
 
         if (!!~pos) {
             var hash = hashsearch.substr(0, pos),
@@ -222,7 +206,7 @@ define(function() {
     }
 
     function dom2str(dom) {
-        var el = document.createElement("div");
+        var el = document.createElement('div');
         el.appendChild(dom);
         return el.innerHTML;
     }
@@ -230,23 +214,23 @@ define(function() {
     function decodeHtml(s) {
         var REGX_HTML_DECODE = /&\w+;|&#(\d+);/g,
             HTML_DECODE = {
-                "&lt;": "<",
-                "&gt;": ">",
-                "&amp;": "&",
-                "&nbsp;": " ",
-                "&quot;": "\"",
-                "&copy;": "©"
+                '&lt;': '<',
+                '&gt;': '>',
+                '&amp;': '&',
+                '&nbsp;': ' ',
+                '&quot;': '\'',
+                '&copy;': '©'
 
                 // Add more
             };
-        return (typeof s != "string") ? s :
+        return (typeof s != 'string') ? s :
             s.replace(REGX_HTML_DECODE,
                 function($0, $1) {
                     var c = HTML_DECODE[$0]; // 尝试查表
                     if (c === undefined) {
                         // Maybe is Entity Number
                         if (!isNaN($1)) {
-                            c = String.fromCharCode(($1 == 160) ? 32 : $1);
+                            c = String.fromCharCode(($1 === 160) ? 32 : $1);
                         } else {
                             // Not Entity Number
                             c = $0;
@@ -254,7 +238,24 @@ define(function() {
                     }
                     return c;
                 });
-    }
+    };
+
+    var tools = {
+        getCookie: getCookie,
+        setCookie: setCookie,
+        delCookie: delCookie,
+        getUrl: getUrl, //获取URL上各部件信息
+        setUrl: setUrl, //设置URL
+        parseUrl: parseUrl, //解析URL参数为对象
+        getCodeTime: getCodeTime,
+        objRemoveKV: objRemoveKV, //过滤除去key为value的对象，返回原coll
+        objFindKV: objFindKV,     //过滤找出key为value的对象
+        mapArrToMap: mapArrToMap, //将Map数组转换为Map类型
+        arrToMap: arrToMap,       //将数组转换为Map类型
+        arrToStr: arrToStr,       // Array TO String
+        objToStr: objToStr,       // Object TO String
+        decodeHtml: decodeHtml
+    };
 
     return tools;
 });

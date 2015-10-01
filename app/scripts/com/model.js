@@ -10,12 +10,12 @@ define(['com/config'], function(Config) {
     $.ajaxSettings.xhrFields = {
         withCredentials: true   //带上认证信息(如 cookie)
     };
-    $.ajaxSettings.error = function(xhr, errorType, error) {
-        if (errorType == "timeout") {
-            Dailog.error("信号偏弱，访问超时");
-        } else if (errorType == "error") {
+    $.ajaxSettings.error = function(xhr, errorType) {
+        if (errorType === 'timeout') {
+            Dailog.error('信号偏弱，访问超时');
+        } else if (errorType === 'error') {
             var statusCode = xhr.status;
-            console.log(statusCode, "statusCode");
+            console.log(statusCode, 'statusCode');
             if (statusCode === 404 || statusCode === 500) {   //处理状态码错误
                 window.location.href = '#/' + statusCode;
             }
@@ -46,8 +46,8 @@ define(['com/config'], function(Config) {
                 },
                 error: handlerErr ? handlerErr : function(){}
             });
-        }
+        };
     });
 
-    return SVC
+    return SVC;
 });

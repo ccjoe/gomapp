@@ -32,7 +32,7 @@ define(function(require) {
 
     return {
         init: function(helper, cr) {
-            cr.data = indexData
+            cr.data = indexData;
             helper.render(cr);
         },
 
