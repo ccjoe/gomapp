@@ -8,4 +8,3 @@ requirejs.config({
 });
 
 requirejs(['com/helper']);
-
