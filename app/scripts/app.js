@@ -2,13 +2,13 @@
 requirejs.config({
     baseUrl: '../scripts',
     paths: {
-        // app: '/app/scripts/'
+        'core': '../lib'
     }
 });
 
-requirejs(['com/helper', 'com/config', 'com/route'], function(helper, config, route){
-	helper.config = config;
-	helper.route = route;
-	helper.init();
+requirejs(['core/core', 'com/config', 'com/route'], function(core, config, route){
+    core.config = config;
+    core.route = route;
+    core.init();
 });
 

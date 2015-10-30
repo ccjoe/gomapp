@@ -1,4 +1,6 @@
 一个H5的项目框架
+将实现webapp hybridapp spa mpa多种方式的开发模式
+
 __bower build__
 `bower install jch5`
 

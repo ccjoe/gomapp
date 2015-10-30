@@ -1,12 +1,14 @@
-define(['require', 
-        'com/ctrl', 
-        'main/ctrl', 
-        'auth/ctrl', 
+'use strict';
+
+define(['require',
+        'com/ctrl',
+        'main/ctrl',
+        'auth/ctrl',
         'module/list_ctrl',
         'module/view_ctrl',
         'module/add_ctrl'
         ], function(require) {
-    'use strict';
+
     var r = require;
 
     //tmpl html FileName; ctrl js FileName
@@ -21,14 +23,14 @@ define(['require',
         '/' : {
             tmpl: 'app',
             ctrl: r('main/ctrl'),
-            title: 'H5-MVC By JOE'
+            title: 'test'
         },
-        '/login': {
+        'login': {
             tmpl: 'login',
             ctrl: r('auth/ctrl'),
             title: '登录'
         },
-        '/module':{
+        'module':{
             '/' : {
                 tmpl: 'module/list',
                 ctrl: r('module/list_ctrl')
@@ -45,20 +47,20 @@ define(['require',
 
             }
         },
-        '/modal': {
+        'modal': {
             tmpl: '/pages/modal'
         },
-        '/slide': {
+        'slide': {
             tmpl: '/pages/slide'
         },
         //HTTP 状态
-        '/404': {
+        '404': {
             tmpl: '404',
             data: {
                 url: ''     //引起404的地址，默认为空;
             }
-        },        
-        '/500': {
+        },
+        '500': {
             tmpl: '500',
         }
     };
