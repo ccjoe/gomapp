@@ -35,9 +35,9 @@ define(function(require) {
             }*/];
 
     return {
-        init: function(helper, cr) {
-            cr.data = indexData;
-            helper.render(cr);
+        init: function(view) {
+            view.setData(indexData);
+            view.render();
         },
 
         login: function() {

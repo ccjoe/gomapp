@@ -7,8 +7,9 @@ requirejs.config({
 });
 
 requirejs(['core/core', 'com/config', 'com/route'], function(core, config, route){
-    core.config = config;
-    core.route = route;
-    core.init();
+    //core.config = config;
+    //core.route = route;
+    //core.init();
+    new core.App(config, route).init();
 });
 

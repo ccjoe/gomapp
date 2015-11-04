@@ -18,7 +18,12 @@ define(['require',
         //     ctrl : r('sample') //optional 页面对应的ctrl的路径 ctrl
         //     title: 'SAMPLE'    //optional 页面标题
         //     data : {}          //optional 页面需要的数据（一般不会直接写入，由ajax动态写入）
-        //     rendeTo: '#sample' //optional 页面需要插入的DOM位置
+        //     wrapper: '#sample' //optional 页面需要插入的DOM位置
+        //     seo: {
+        //          title:        //上面title是显示在页面上的，这个设置是<title>标签里的值
+        //          keyword:,
+        //          descption:
+        //     }
         // },
         '/' : {
             tmpl: 'app',

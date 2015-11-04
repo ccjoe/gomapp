@@ -1,8 +1,8 @@
 define(function() {
     'use strict';
     return {
-        init: function(helper, cr){
-            helper.render(cr);
+        init: function(view){
+            view.render();
         }
     };
 });

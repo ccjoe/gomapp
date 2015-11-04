@@ -3,13 +3,13 @@ define(['auth/model'], function(authModel) {
     var authSvc = require('auth/model');
     var comCtrl = require('com/ctrl');
 
-    return {  
-        init: function(helper, cr){
+    return {
+        init: function(app, cr){
             var self = this;
-            helper.render(cr, function(){
+            app.render(cr, function(){
                 self.login();
             });
-        },  
+        },
 
         login: function(){
             $('.btn-next').on('click', function(){
