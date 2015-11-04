@@ -25,12 +25,12 @@ define(['require',
             ctrl: r('main/ctrl'),
             title: 'test'
         },
-        'login': {
+        '/login': {
             tmpl: 'login',
             ctrl: r('auth/ctrl'),
             title: '登录'
         },
-        'module':{
+        '/module':{
             '/' : {
                 tmpl: 'module/list',
                 ctrl: r('module/list_ctrl')
@@ -47,20 +47,20 @@ define(['require',
 
             }
         },
-        'modal': {
+        '/modal': {
             tmpl: '/pages/modal'
         },
-        'slide': {
+        '/slide': {
             tmpl: '/pages/slide'
         },
         //HTTP 状态
-        '404': {
+        '/404': {
             tmpl: '404',
             data: {
                 url: ''     //引起404的地址，默认为空;
             }
         },
-        '500': {
+        '/500': {
             tmpl: '500',
         }
     };

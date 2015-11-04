@@ -1,7 +1,7 @@
 /**
  * Created by sfliu on 2015/10/28.
  */
-define(function() {
+define(['core/core/url'], function(url) {
     if ('addEventListener' in document) {
         document.addEventListener('DOMContentLoaded', function() {
             FastClick.attach(document.body);
@@ -50,7 +50,7 @@ define(function() {
 
             function routeState(){
                 var state = History.getState();
-                state.hashName = core.getHashByState(state);
+                state.hashName = url.getHashPath(History.getHash()) || '/';
                 console.log(state,  'state');
                 core.routeTo(state.hashName);
             }
@@ -65,27 +65,6 @@ define(function() {
                  return false;
              });
         },
-        getHashByState: function (state) {
-            var pos = state.hash.indexOf('?');
-            return (pos!==-1) ? state.hash.substring(0, pos) : pos;
-        },
-        //将带 /  a/b 或 a/b/3 的hash解析成route可识别的对象
-        hashParse: function(hash){
-            console.log(hash, '传入的');
-            var hashObj = {};
-            if(!hashObj){
-                hashObj.hash1 = void 0;
-            }else{
-                if(hash  === '/'){
-                    hashObj.hash1 = '/'
-                }else{
-                    hashArr = hash.split('/');
-                    hashObj.hash1 = hashArr[0];
-                    hashObj.hash2 = hashArr[1];
-                }
-            }
-            return  hashObj;
-        },
 
         //解析路由
         //cr CURRENT ROUTE,即对应路由表里面的对象
@@ -93,10 +72,17 @@ define(function() {
         //页面级跳转url   /#/example1;
         //页面内跳转hash  /#example2
         hashRouteParse: function(hash){
-            var hashRoute = core.hashParse(hash),
-                router  = core.route.router,
-                cr      = router[hashRoute.hash1], //currentRoute level1 hash
-                hash2 = hashRoute.hash2;
+
+            var hashRoute = url.getHashPath(hash, true),
+                router  = core.route.router;
+
+            if(hash === '/'){
+                return router[hash];
+            }
+
+            var hash1 = hashRoute[0],
+                hash2 = hashRoute[1];
+
             console.log(hashRoute, "----- CURRENT HASH! -----");
             if(!hash2){
                 if(cr && cr.hasOwnProperty('/')){
@@ -119,11 +105,11 @@ define(function() {
             var router = core.route.router,
                 cr = core.hashRouteParse(hash);
             console.log(cr, "----- CURRENT ROUTE! -----");
-            if(!cr){
-                router['404']['data'] = {url: location.href};
-                location.hash = '/404';
-                return;
-            }
+            //if(!cr){
+            //    router['404']['data'] = {url: location.href};
+            //    location.hash = '/404';
+            //    return;
+            //}
             var crCtrl = cr.ctrl;
             //存在ctrl则初始化页面，否则则直接render页面
             if(crCtrl){
