@@ -276,8 +276,26 @@ define(['core/core/url'], function(url) {
                 //core.reset(CRO.tmpl==='404'? 1 : 0);
             });
         },
-        getHeader: function(type, opts){
-            var title = '<h1 class="title">'+title+'</h1>';
+
+        getHeader: function(data, opts){
+            var headerTmpl,
+                tit = '<h1 class="title">{{title}}</h1>',
+                btn = '<button class="btn btn-{{postion}}"></button>',
+                arrow = '<a class="icon icon-{{postion}}-nav pull-{{postion}}"></a>';
+
+            if(opts.subTitle){
+
+            }
+
+            if(opts.left){
+                headerTmpl = tit;
+            }
+
+            if(opts.right){
+                headerTmpl = tit+arrow;
+            }
+
+            var header = new View(titleTmpl, data, '#header');
         },
         /**
          * 设置heaer
