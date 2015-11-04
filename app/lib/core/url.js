@@ -6,7 +6,8 @@ define(function (authModel) {
         url: /((http|https):\/\/)?((\w+\.)+\w+)?((\/\w+)+)?\/?\??((\w+=\w+&?)+)?#?(.+)?/g,
         kv: /(\w+)=([^&#]+)/g,
         search: /([^\?]+)?\??((\w+=\w+&?)+)?/,     //[^\?]+ 除?外所有
-        path: /.+((\/\w+)+)?/
+        path: /.+((\/\w+)+)?/,
+        history: /([^\?]+)?\??((\/\w+)+)?/          //获取html history url风格的search path
     };
 
     /**
