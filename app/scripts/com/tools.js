@@ -30,10 +30,12 @@ define(function() {
         //2=>传入key,返回value,
         // 传入 'hash' 返回hash名，
         // 传入 'search' 返回kv字符串,
+        // 传入 'origin' 返回http://www.test.com:12
         // 传入 'domain' 返回.com|.net ~~~,
         // 否则返回key:value obj;
 
     function getUrl(url, keyOrObj) {
+        var originUrl = url;
         //对url进行decodeURIComponen解码
         url = decodeURIComponent(url);
         var hashsearch = url.substr(url.indexOf('#') + 2);
@@ -59,15 +61,21 @@ define(function() {
         if (typeof keyOrObj === 'string') {
             if (keyOrObj === 'hash') {
                 return hash;
-            }
+            };
             if (keyOrObj === 'search') {
                 return search;
-            }
+            };
+            
+            var durl = /http:\/\/([^\/]+)\//i,
+                domain = originUrl.match(durl);
+
+            if(keyOrObj === 'origin'){
+                return domain[0];
+            };
+
             if (keyOrObj === 'domain') {
-                var durl = /http:\/\/([^\/]+)\//i,
-                    domain = str.match(durl);
                 return domain[1].substr(domain[1].lastIndexOf('.') + 1);
-            }
+            };
             return kvObj[keyOrObj];
         }
 
