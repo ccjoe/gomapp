@@ -299,21 +299,22 @@ define(['base/utils/url'], function(url) {
         },
 
         getHeader: function(data, opts){
-            var headerTmpl,
-                tit = '<h1 class="title">{{title}}</h1>',
+            var headerTmpl = '',
+                title = '<h1 class="title">{{title}}</h1>',
+                subtitle = '<h2 class="sub-title">{{subtitle}}</h2>'
                 btn = '<button class="btn btn-{{postion}}"></button>',
                 arrow = '<a class="icon icon-{{postion}}-nav pull-{{postion}}"></a>';
 
             if(opts.subTitle){
-
+                headerTmpl = title+subtitle;
             }
 
             if(opts.left){
-                headerTmpl = tit;
+                headerTmpl += arrow;
             }
 
             if(opts.right){
-                headerTmpl = tit+arrow;
+                headerTmpl = title+arrow;
             }
 
             var header = new View(titleTmpl, data, '#header');

@@ -17,29 +17,35 @@ define(function(){
      * }
      */
     var View = function(tmpl, data, wrapper){
-        this.tmpl   = tmpl  || '';
+        this.tmpl   = tmpl  || '';  //模板名称, view的话在route里面配置，partial的话
         this.data   = data || {};
         this.event = void 0;
         this.wrapper = wrapper;
+        this.construct();
     };
 
     View.prototype = {
-        init: function(){
+        construct:function(){
             this.render();
         },
-        //render前update this.date即可刷新视图
+        init: function(){
+        },
+        //创建实图，尚未插入
+        create: function(){
+
+        },
+        //插入渲染 ＝》render前update this.date即可刷新视图
         render: function (next){
             var dom = this.data ? this.template(this.tmpl)(this) : this.template(this.tmpl),
                 $wrapperDom = this.wrapper ? $(this.wrapper) : $('#body');
             $wrapperDom.html(dom);
         },
-        create: function(){
-
-        },
+        //更新视图
         update: function(data, next){
             this.setData(data);
             this.render(next);
         },
+        //释放
         destory: function(){
 
         },

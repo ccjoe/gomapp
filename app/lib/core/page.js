@@ -1,6 +1,5 @@
 define(['base/core/view'], function(View){
     var Page = function (opts) {
-        console.log(opts, 'opts');
         View.call(this, opts.tmpl, opts.data, opts.wrapper || opts.config.wrapper);
         this.title  = opts.title || '';
         this.dom = {
@@ -18,7 +17,8 @@ define(['base/core/view'], function(View){
 
     Page.prototype = new View();
     Page.prototype = $.extend(Page.prototype, {
-        render: function (next) {
+        construct:function(){},
+        render: function (cb) {
             var that = this;
             if (!this.tmpl) {
                 return;
@@ -28,8 +28,9 @@ define(['base/core/view'], function(View){
                 if (that.title) {
                     that.setHeader();
                 }
-                next ? next(dom) : null;
+                cb ? cb(dom) : null;
             });
+            return;
         },
         /**
          * 设置heaer
