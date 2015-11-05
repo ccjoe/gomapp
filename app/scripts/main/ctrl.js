@@ -1,6 +1,20 @@
 define(function(require) {
     'use strict';
     var indexData = [
+        {
+            name: 'viewdoc(UI)',
+            hash: 'viewdoc'
+        },{
+            name: 'pagedoc',
+            hash: 'pagedoc'
+        },{
+            name: 'modeldoc',
+            hash: 'modeldoc'
+        },{
+            name: 'list （列表页示例）',
+            hash: 'module',
+            icon: 'pages'
+        }
         /*{
                 item: '404',
                 hash: '404',
@@ -10,11 +24,7 @@ define(function(require) {
                 hash: '500',
                 icon: 'gear'
             },*/
-        {
-                item: 'list （列表页示例）',
-                hash: 'module',
-                icon: 'pages'
-            }
+
       /*  ,{
                 item: '分步表单',
                 hash: 'module/add',
@@ -35,9 +45,9 @@ define(function(require) {
             }*/];
 
     return {
-        init: function(view) {
-            view.setData(indexData);
-            view.render();
+        init: function(page) {
+            page.setData(indexData);
+            page.render();
         },
 
         login: function() {

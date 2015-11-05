@@ -6,6 +6,11 @@ define(function() {
         returnClass: '.icon-left-nav',
         successCode: '00000',
         wrapper: '#body',
+        selector: {
+            header: '#header',
+            footer: '#footer',
+            content: '#content'
+        }
     };
 
     return config;

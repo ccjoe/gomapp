@@ -1,7 +1,14 @@
 /**
  * Created by sfliu on 2015/10/28.
+ * dependencies history [history.js]
+ * dependencies template [underscore.js] -> dot.js
+ * dependencies touch [fastclick.js]
+ * dependencies amd [require.js]
+ * dependencies ui [ratchet]
+ * @todo 1.template localstorage    2. tempate use dot  3.remove history.js
  */
-define(['core/core/url'], function(url) {
+
+define(['base/utils/url'], function(url) {
     if ('addEventListener' in document) {
         document.addEventListener('DOMContentLoaded', function() {
             FastClick.attach(document.body);
@@ -11,60 +18,12 @@ define(['core/core/url'], function(url) {
     //模板引擎 dot => underscore, doT拥有此功能且性能高
     _.templateSettings = {
         evaluate    : /\{\{(.+?)\}\}/g,
-        interpolate : /\{\{\=(.+?)\}\}/g,
+        interpolate : /\{\{=(.+?)\}\}/g,
         escape      : /\{\{\-(.+?)\}\}/g
     };
-    var PUSH = function(opt){
-        var $dc = opt.domContainer || $('#body'),
-            $de = opt.domEmpty,
-            $dp = opt.domPush;
-
-        var eff = opt.effect;
-        //如果没有效果直接放进去
-        if(!eff){
-            $dc.html($dp);
-        }else{
-            var transformStr = '';
-
-            switch (eff){
-                case 'swipe-left'  :
-                    transformStr = 'translateX(100%)';
-                    break;
-                case 'swipe-right' :
-                    transformStr = 'translateX(-100%)';
-                    break;
-                case 'swipe-top'   :
-                    transformStr = 'translateY(100%)';
-                    break;
-                case 'swipe-bottom':
-                    transformStr = 'translateY(-100%)';
-                    break;
-            }
-
-
-            var $ct = $dc.html($dp).find('.content');
-            if(/swipe-/.test(eff)){
-                $ct.css({'-webkit-transform': transformStr})
-                    .animate({
-                        translateX: '0',
-                        translate3d: '0,0,0'
-                    }, 200, 'ease-out');
-                return;
-            }
-            if(eff.test('fade')){
-                $ct.css({'-webkit-transform': transformStr})
-                    .animate({
-                        opacity: 1
-                    }, 200, 'ease-out');
-            }
-        }
-    };
-    window.PUSH = PUSH;
 
     //重、写_.underscore方式，去支持include语法
     function template(str, data) {
-
-
         // match "<% include template-id %>"
         return _.template(
             str.replace(
@@ -90,9 +49,8 @@ define(['core/core/url'], function(url) {
     var App = function (config, route) {
         this.config = config || {};
         this.route = route || {};
-        this.views = '';
-        this.ctrl = {};
         this.model = {};
+        this.history = [];
     };
 
     /**
@@ -134,23 +92,25 @@ define(['core/core/url'], function(url) {
 
 
     var Page = function (opts) {
+        console.log(opts, 'opts');
         View.call(this, opts.tmpl, opts.data, opts.wrapper || opts.config.wrapper);
         this.title  = opts.title || '';
         this.dom = {
             root   : opts.root || '',
             header : opts.header || '',
-            footer : opts.footer || '',
-
+            footer : opts.footer || ''
         };
         this.seo = opts.seo || {
             title: '',
             keywords: '',
             description: ''
         };
+        this.isback = opts.isback;
     };
 
 
     var Model = function(){
+        this.url = '';
         this.data = data;
     };
 
@@ -164,46 +124,47 @@ define(['core/core/url'], function(url) {
                 return;
             }
 
-            History.Adapter.bind(window, 'statechange', routeState);
-            History.Adapter.trigger(window, 'statechange');
-
-            function routeState(){
+            History.Adapter.bind(window, 'statechange', function(e){
                 var state = History.getState();
                 state.data.hash = state.data.hash || '/';
-                console.log(state, 'state');
-                that.routeTo(state.data.hash);
-            }
+                //state.data.prevHash = that.getPrevHash();
+                console.log(document.referrer, state, 'state');
+                that._routeByHash(state.data.hash);
+            });
+            History.Adapter.trigger(window, 'statechange');
 
             //对所有链接进行html5处理
+            //@todo 需要处理为智能判断url与绝对、相应地址
             $("body").off().on("click", 'a', function(){
-                var $t = $(this), hash =  $t.attr('href').substring(1);
-                History.pushState({hash: hash}, $t.attr('title'), '?'+hash);
-                alert(hash);
+                var $t = $(this),
+                    hash =  $t.attr('href').substring(1);
+                History.pushState({hash: hash, prevHash: that.getPrevHash()}, $t.attr('title'), '?'+hash);
                 return false;
             });
-
-            $("")
+        },
+        getPrevHash: function(){
+            return location.search.substring(1);
         },
         setPage: function(opts){
+            if(!opts){
+                return;
+            }
             opts.config = this.config;
+            opts.isback = this.isBack();
             return new Page(opts);
         },
         /**
-         * 根据hash获取页面对象(即具体路由指向的路由表对象)
+         * 根据完整hash获取页面对象(即具体路由指向的路由表对象)
          * @method App#getPageSets
          * @return {object} CRO (Current Router Object)返回具体路由指向的路由表对象
+         * @example ?module/list  ?module/123
          */
-        getPageSets: function (hash) {
+        getPageSets: function (hashPath) {
+            var hashRoute = url.getHashPath(hashPath, true),
+                router = this.route;
 
-            //CRO CURRENT ROUTE,即对应路由表里面的对象
-            //根据hash(层级)返回相应tmpl和ctrl对象
-            //页面级跳转url   /#/example1;
-            //页面内跳转hash  /#example2
-            var hashRoute = url.getHashPath(hash, true),
-                router = this.route.router;
-
-            if (hash === '/') {
-                return router[hash];
+            if (hashPath === '/') {
+                return router[hashPath];
             }
 
             var hash1 = hashRoute[0],
@@ -211,7 +172,7 @@ define(['core/core/url'], function(url) {
 
             var CRO = router['/' + hash1];
 
-            console.log(hash, hashRoute, CRO, 'hashinfo');
+            console.log(hashPath, hashRoute, CRO, 'hashinfo');
             if (!hash2) {
                 if (CRO && CRO.hasOwnProperty('/')) {
                     CRO = CRO['/'];
@@ -222,59 +183,119 @@ define(['core/core/url'], function(url) {
                     CRO = CRO['/:var'];
                     CRO.routeParams = hash2;
                 } else {
-                    CRO = CRO[hash2];
+                    CRO = CRO['/' + hash2];
                 }
             }
             return CRO;
         },
+        /**
+         * 根据完整hash路由或CRO对象到页面，封装了_routeByHash 与 _routeByCRO实现
+         * @method App#goto
+         * @example module/list  module/123
+         */
+        goto: function(where){
+            var isstr = typeof where === 'string';
+            this[isstr ? '_routeByHash' : '_routeByCRO'](where);
+        },
+        /**
+         * 根据完整hash路由到页面
+         * @method App#_routeByHash
+         * @example module/list  module/123
+         */
+        _routeByHash: function (hashPath) {
+            this._manageHistory(hashPath);
+            var CRO = this.getPageSets(hashPath);
+            this._routeByCRO(CRO);
+        },
 
-        routeTo: function (hash) {
-            var router = this.route.router,
-                CRO = this.getPageSets(hash),
-                view = this.setPage(CRO);
-            console.log(CRO, view, "----- CURRENT ROUTE! -----");
-            if (!CRO) {
-                router['/404']['data'] = {url: location.href};
-                location.hash = '/404';
+        _routeByCRO: function(CRO){
+            if(this.isRouteNotFound(CRO)){
                 return;
             }
-            var CROCtrl = CRO.ctrl;
-            //存在ctrl则初始化页面，否则则直接render页面
-            if (CROCtrl) {
-                CROCtrl.init(view);
-            } else {
+            var view = this.setPage(CRO),
+                ctrl = CRO.ctrl;
+            if(ctrl){
+                ctrl.init(view);
+            }else{
                 view.render();
             }
+            console.log( CRO, view, "----- CURRENT ROUTE! -----");
+        },
+        _manageHistory: function(hashPath){
+            if(this.getLastHashByLastIndex(1) === hashPath){
+                return;
+            }
+            var history = this.history;
+            history.push(hashPath);
+            if(history.length > 10){
+                history.shift();
+            }
+            console.log(history, 'THIS HISTORY');
+        },
+        //从倒数位置index取历史hash
+        getLastHashByLastIndex: function(index){
+            var history = this.history;
+            return history[history.length-index];
+        },
+        isBack: function(){
+            var oldHashArr = url.getHashPath(this.getLastHashByLastIndex(2), true),
+                newHashArr = url.getHashPath(this.getLastHashByLastIndex(1), true);
+            console.log(_.compact(oldHashArr), _.compact(newHashArr),   'IS GO OR BACK');
+            return _.compact(newHashArr).length < _.compact(oldHashArr).length;
+        },
+        //判断是否存在CRO而404
+        isRouteNotFound: function(CRO){
+            if (!CRO) {
+                this.route['/404']['data'] = {url: location.href};
+                this.goto('404');
+                return true;
+            }
+            return false;
         }
+
     };
 
     Page.prototype = new View();
     Page.prototype = $.extend(Page.prototype, {
         render: function (next) {
-            var t = this;
+            var that = this;
             if (!this.tmpl) {
                 return;
             }
             $.get('/views/' + this.tmpl + '.html', function (tmpl) {
-                var dom = t.data ? template(tmpl)(t) : template(tmpl),
-                    wrapperDom = t.wrapper ? t.wrapper : '#body',
-                    $wrapperDom = $(wrapperDom);
-                PUSH({
-                    domContainer: $wrapperDom,
-                    domEmpty: $("#body"),
-                    domPush: dom,
-                    effect: (t.go ? 'swipe-left' : 'swipe-right'),
-                    complete: function () {
-                    }
-                });
-                if (t.title) {
-                    t.setHeader(t);
+                var dom = that.data ? template(tmpl)(that) : template(tmpl);
+                that.push(dom, !that.isback ? 'swipe-left':'swipe-right');
+                if (that.title) {
+                    that.setHeader();
                 }
-
                 next ? next(dom) : null;
-
-                //core.reset(CRO.tmpl==='404'? 1 : 0);
             });
+        },
+        /**
+         * 设置heaer
+         * @method Page#PUSH
+         * @param {dom} dom 推入的html
+         * @param {effect} swipe-left, swipe-rigth, swipe-top, swipe-bottom 推入的html
+         **/
+        push: function(dom, effect){
+            var $dc = $(this.wrapper ? this.wrapper : '#body');
+            if(!effect){    //如果没有效果直接放进去
+                $dc.html(dom);
+            }else{
+                var xy = /left|right/.test(effect) ? 'X' : 'Y',
+                    val = /left|top/.test(effect) ? '100%' : '-100%',
+                    effcss = 'translate'+xy+'('+val+')';
+
+                var $ct = $dc.html(dom).find('.content');
+                if(/swipe-/.test(effect)){
+                    $ct.css({'transform': effcss})
+                        .animate({
+                            translateX: '0',
+                            translate3d: '0,0,0'
+                        }, 200, 'ease-out');
+                    return;
+                }
+            }
         },
 
         getHeader: function(data, opts){
@@ -309,8 +330,8 @@ define(['core/core/url'], function(url) {
          * @props opts.html  header右侧 文字或html
          * @return {object} CRO (Current Router Object)返回具体路由指向的路由表对象
          */
-        setHeader: function (opts) {
-            $('header.bar .title').text(opts.title);
+        setHeader: function () {
+            $('header.bar .title').text(this.title);
         },
         setSeo: function(seoInfo){
 
@@ -326,217 +347,4 @@ define(['core/core/url'], function(url) {
         App: App,
         View: View
     };
-    //
-    //var core = {
-    //    config: {
-    //        animate: false,     // animate: 是否开启动画
-    //        iscroll: false,     //iscroll: 是否开启iscroll
-    //        html5history: true
-    //    },
-    //    route: {},              //相关路由表对象，详细定义参考route.js
-    //    init: function(){       //App初始化
-    //        var isHistoryApi = !!(window.history && history.pushState);
-    //        if(!isHistoryApi){
-    //            return;
-    //        }
-    //
-    //        History.Adapter.bind(window, 'statechange', routeState);
-    //        History.Adapter.trigger(window, 'statechange');
-    //
-    //        function routeState(){
-    //            var state = History.getState();
-    //            state.hashName = url.getHashPath(History.getHash()) || '/';
-    //            console.log(state,  'state');
-    //            core.routeTo(state.hashName);
-    //        }
-    //
-    //
-    //        //对所有链接进行html5处理
-    //        this.bindClick();
-    //    },
-    //    bindClick: function(){
-    //        $("body").off().on("click", 'a', function(){
-    //            var $t = $(this), hash =  $t.attr('href').substring(1);
-    //            alert(hash);
-    //            History.pushState({hash: hash}, $t.attr('title'), '?'+hash);
-    //            core.routeTo(hash);
-    //            return false;
-    //        });
-    //    },
-    //    //解析路由
-    //    //cr CURRENT ROUTE,即对应路由表里面的对象
-    //    //根据hash(层级)返回相应tmpl和ctrl对象
-    //    //页面级跳转url   /#/example1;
-    //    //页面内跳转hash  /#example2
-    //    hashRouteParse: function(hash){
-    //
-    //        var hashRoute = url.getHashPath(hash, true),
-    //            router  = core.route.router;
-    //
-    //        if(hash === '/'){
-    //            return router[hash];
-    //        }
-    //
-    //        var hash1 = hashRoute[0],
-    //            hash2 = hashRoute[1];
-    //
-    //        var cr = router['/'+hash1];
-    //
-    //        console.log(hash, hash1, hash2, cr, 'hashinfo');
-    //        if(!hash2){
-    //            if(cr && cr.hasOwnProperty('/')){
-    //                cr = cr['/'];
-    //            }
-    //        }else{
-    //            //level2 hash没有匹配到路由表时, 看是否路由的为变量||ID
-    //            if(!cr['/'+hash2] && cr.hasOwnProperty('/:var')){
-    //                cr = cr['/:var'];
-    //                cr.routeParams = hash2;
-    //            }else{
-    //                cr = cr[hash2];
-    //            }
-    //        }
-    //        return cr;
-    //    },
-    //    // 路由到相应页并根据情况初始化页面
-    //    routeTo: function(hash){
-    //        var router = core.route.router,
-    //            cr = core.hashRouteParse(hash);
-    //        console.log(cr, "----- CURRENT ROUTE! -----");
-    //        //if(!cr){
-    //        //    router['404']['data'] = {url: location.href};
-    //        //    location.hash = '/404';
-    //        //    return;
-    //        //}
-    //        var crCtrl = cr.ctrl;
-    //        //存在ctrl则初始化页面，否则则直接render页面
-    //        if(crCtrl){
-    //            crCtrl.init(core, cr);
-    //        }else{
-    //            core.render(cr);
-    //        }
-    //    },
-    //    //页面渲染
-    //    //render 的 cr 即 route配置里的路由指向的对象
-    //    //cr {tmpl, data, title, ...}
-    //    render: function(cr, next){
-    //        var dom, wrapperDom;
-    //        if(!cr.tmpl){
-    //            return;
-    //        }
-    //        console.log('/views/'+cr.tmpl+'.html', 'tmpl route');
-    //        $.get('/views/'+cr.tmpl+'.html', function(tmpl){
-    //            var dom = cr.data ? template(tmpl)(cr) : template(tmpl),
-    //                wrapperDom = cr.rendeTo ? cr.rendeTo : '#body',
-    //                $wrapperDom = $(wrapperDom);
-    //            PUSH({
-    //                domContainer: $wrapperDom,
-    //                domEmpty: $("#body"),
-    //                domPush: dom,
-    //                effect: (cr.go ? 'swipe-left' : 'swipe-right'),
-    //                complete: function(){}
-    //            });
-    //
-    //            if(cr.title){
-    //                $('header.bar .title').text(cr.title);
-    //            }
-    //
-    //            next ? next(dom) : null;
-    //
-    //            //core.reset(cr.tmpl==='404'? 1 : 0);
-    //        });
-    //    },
-    //
-    //    goOrBack: function(oldURL, newURL){
-    //        if(!oldURL){
-    //            return 1
-    //        }
-    //
-    //        var oldHASH = '#/' + core.getUrl(oldURL, 'hash'),
-    //            newHASH = '#/' + core.getUrl(newURL, 'hash'),
-    //            hashArr = core.hashParse(oldHASH).hashArr,
-    //            hashToArr = core.hashParse(newHASH).hashArr;
-    //        // console.log(oldHASH, newHASH, hashArr,  hashToArr, "TTTTTTTTT");
-    //        if(hashToArr.length > hashArr.length){
-    //            return 1;
-    //        }else{
-    //            return 0;
-    //        }
-    //    },
-    //    //页面初始化(如果是404页，退二步，因为退到找不到的页面还是会跳转到404)
-    //    reset: function(is404){
-    //        $(core.config.returnClass).off().click(function(){
-    //            history.go(!is404 ? -1 : -2);
-    //        });
-    //    },
-    //    //1=>URL,
-    //    //2=>传入key,返回value,
-    //    // 传入 'hash' 返回hash名，
-    //    // 传入 'search' 返回kv字符串,
-    //    // 传入 'domain' 返回.com|.net ~~~,
-    //    // 否则返回key:value obj;
-    //
-    //    getUrl: function (url, keyOrObj) {
-    //        //对url进行decodeURIComponen解码
-    //        url = decodeURIComponent(url);
-    //        var hashsearch = !~url.indexOf('#') ? '' : url.substr(url.indexOf('#') + 2);
-    //        var pos = hashsearch.indexOf('?');
-    //
-    //        var hash,search,kvArr;
-    //        if (!!~pos) {
-    //                hash = hashsearch.substr(0, pos);
-    //                search = hashsearch.substr(pos + 1);
-    //                kvArr = search.split('&');
-    //        } else {
-    //                hash = hashsearch;
-    //                search = '';
-    //                kvArr = [];
-    //        }
-    //
-    //        var kvObj = {};
-    //        for (var i = 0; i < kvArr.length; i++) {
-    //            var kvi = kvArr[i];
-    //            kvObj[kvi.substr(0, kvi.indexOf('='))] = kvi.substr(kvi.indexOf('=') + 1);
-    //        }
-    //        if (typeof keyOrObj === 'string') {
-    //            if (keyOrObj === 'hash') {
-    //                return hash;
-    //            }
-    //            if (keyOrObj === 'search') {
-    //                return search;
-    //            }
-    //            if (keyOrObj === 'domain') {
-    //                var durl = /http:\/\/([^\/]+)\//i,
-    //                    domain = str.match(durl);
-    //                return domain[1].substr(domain[1].lastIndexOf('.') + 1);
-    //            }
-    //            return kvObj[keyOrObj];
-    //        }
-    //        return kvObj;
-    //    },
-    //
-    //    //传入key,value 或 obj,均自动解析
-    //    // serialize| single=Single&multiple=Multiple&multiple=Multiple3&check=check2&radio=radio1
-    //    setUrl: function (url, keyValueOrObj, value) {
-    //        var kvpair;
-    //        if (typeof keyValueOrObj === 'string') {
-    //            kvpair = keyValueOrObj + '=' + value;
-    //            if (!~url.indexOf('?')) {
-    //                return url + '?' + kvpair;
-    //            } else {
-    //                return url + '&' + kvpair;
-    //            }
-    //        } else if (typeof keyValueOrObj === 'object') {
-    //            kvpair = $.param(keyValueOrObj);
-    //            if (!~url.indexOf('?')) {
-    //                return url + '?' + kvpair;
-    //            } else {
-    //                return url + '&' + kvpair;
-    //            }
-    //        }
-    //    }
-    //};
-    //
-    //
-    //return core;
 });

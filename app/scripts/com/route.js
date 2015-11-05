@@ -1,13 +1,15 @@
 'use strict';
 
 define(['require',
-        'com/ctrl',
-        'main/ctrl',
-        'auth/ctrl',
-        'module/list_ctrl',
-        'module/view_ctrl',
-        'module/add_ctrl'
-        ], function(require) {
+    'com/ctrl',
+    'main/ctrl',
+    'auth/ctrl',
+    'module/list_ctrl',
+    'module/view_ctrl',
+    'module/add_ctrl',
+    'viewdoc/list_ctrl',
+    'viewdoc/header_ctrl'
+], function (require) {
 
     var r = require;
 
@@ -25,7 +27,7 @@ define(['require',
         //          descption:
         //     }
         // },
-        '/' : {
+        '/': {
             tmpl: 'app',
             ctrl: r('main/ctrl'),
             title: 'test'
@@ -35,22 +37,32 @@ define(['require',
             ctrl: r('auth/ctrl'),
             title: '登录'
         },
-        '/module':{
-            '/' : {
+        '/viewdoc': {
+            '/': {
+                tmpl: 'viewdoc/list',
+                ctrl: r('viewdoc/list_ctrl'),
+                title: '用户组件'
+            },
+            '/header': {
+                tmpl: 'viewdoc/header',
+                ctrl: r('viewdoc/header_ctrl'),
+                title: '头部设置文档'
+            }
+        },
+        '/module': {
+            '/': {
                 tmpl: 'module/list',
                 ctrl: r('module/list_ctrl')
             },
-            '/:var' : {
+            '/:var': {
                 tmpl: 'module/view',
                 ctrl: r('module/view_ctrl')
             },
-            '/add' : {
+            '/add': {
                 tmpl: 'module/add',
                 ctrl: r('module/add_ctrl')
             },
-            '/edit': {
-
-            }
+            '/edit': {}
         },
         '/modal': {
             tmpl: '/pages/modal'
@@ -70,15 +82,6 @@ define(['require',
         }
     };
 
-    var ui = {
-        header: {},
-        footer: {},
-        nav: {},
-        modal:{},
-        flash:{}
-    };
-    return {
-        router: router,
-        ui: ui
-    };
+
+    return router;
 });

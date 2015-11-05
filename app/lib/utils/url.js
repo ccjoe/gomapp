@@ -7,9 +7,17 @@ define(function (authModel) {
         kv: /(\w+)=([^&#]+)/g,
         search: /([^\?]+)?\??((\w+=\w+&?)+)?/,     //[^\?]+ 除?外所有
         path: /.+((\/\w+)+)?/,
-        history: /([^\?]+)?\??((\/\w+)+)?/          //获取html history url风格的search path
+        history: /[^\?]*\?((\w+\/)+\w+)/          //获取html history url风格的search path
     };
-
+    /**
+     * 处理键值对字符串为对象,获取url里所有键值对返回
+     * @method Cora.url.getHTML5Hash
+     * @param {string} url  html5 history url 类似 tets.com?hash/path/to
+     * @return {string} 返回like=>  hash/path/to
+     */
+    var getHTML5Hash = function(url){
+        return re.history.exec(url)[1];
+    };
     /**
      * 处理键值对字符串为对象,获取url里所有键值对返回
      * @method Cora.url.getParams
@@ -127,6 +135,7 @@ define(function (authModel) {
         getParams: getParams,
         setParams: setParams,
         getHashSearch: getHashSearch,
-        getHashPath: getHashPath
+        getHashPath: getHashPath,
+        getHTML5Hash: getHTML5Hash
     };
 });
