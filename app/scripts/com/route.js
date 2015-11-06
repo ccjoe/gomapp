@@ -28,57 +28,57 @@ define(['require',
         //     }
         // },
         '/': {
-            tmpl: 'app',
+            tmplname: 'app',
             ctrl: r('main/ctrl'),
             title: 'test'
         },
         '/login': {
-            tmpl: 'login',
+            tmplname: 'login',
             ctrl: r('auth/ctrl'),
             title: '登录'
         },
         '/viewdoc': {
             '/': {
-                tmpl: 'viewdoc/list',
+                tmplname: 'viewdoc/list',
                 ctrl: r('viewdoc/list_ctrl'),
                 title: '用户组件'
             },
             '/header': {
-                tmpl: 'viewdoc/header',
+                tmplname: 'viewdoc/header',
                 ctrl: r('viewdoc/header_ctrl'),
                 title: '头部设置文档'
             }
         },
         '/module': {
             '/': {
-                tmpl: 'module/list',
+                tmplname: 'module/list',
                 ctrl: r('module/list_ctrl')
             },
             '/:var': {
-                tmpl: 'module/view',
+                tmplname: 'module/view',
                 ctrl: r('module/view_ctrl')
             },
             '/add': {
-                tmpl: 'module/add',
+                tmplname: 'module/add',
                 ctrl: r('module/add_ctrl')
             },
             '/edit': {}
         },
         '/modal': {
-            tmpl: '/pages/modal'
+            tmplname: '/pages/modal'
         },
         '/slide': {
-            tmpl: '/pages/slide'
+            tmplname: '/pages/slide'
         },
         //HTTP 状态
         '/404': {
-            tmpl: '404',
+            tmplname: '404',
             data: {
                 url: ''     //引起404的地址，默认为空;
             }
         },
         '/500': {
-            tmpl: '500',
+            tmplname: '500',
         }
     };
 

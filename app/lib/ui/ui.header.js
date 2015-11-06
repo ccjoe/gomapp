@@ -13,7 +13,7 @@ define(['base/core/view'], function(View) {
     };
     var Header = function (opts) {
         opts.data = _.extend({}, defaultHeader, opts.data);
-        opts.tmpl = 'ui.header';
+        opts.tmplname = 'ui.header';
         View.call(this, opts.tmpl, opts.data, opts.wrapper || opts.config.selector.header);
         this.title = opts.title;
     };

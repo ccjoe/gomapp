@@ -1,7 +1,9 @@
+/******************************** publisher-subscriber ***********************************/
 /**
- * Created by sfliu on 2015/11/3.
+ * 简单的发布订阅模式(publisher-subscriber)
+ * @author Joe Liu
  */
-define(function (authModel) {
+define(function () {
     var re = {
         url: /((http|https):\/\/)?((\w+\.)+\w+)?((\/\w+)+)?\/?\??((\w+=\w+&?)+)?#?(.+)?/g,
         kv: /(\w+)=([^&#]+)/g,

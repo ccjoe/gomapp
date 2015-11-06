@@ -1,4 +1,4 @@
-define(function(){
+define(['base/utils/ps'], function(ps){
     //模板引擎 dot => underscore, doT拥有此功能且性能高
     _.templateSettings = {
         evaluate    : /\{\{(.+?)\}\}/g,
@@ -16,36 +16,42 @@ define(function(){
      *   'click,touch selector1,selector2', 'function'
      * }
      */
-    var View = function(tmpl, data, wrapper){
-        this.tmpl   = tmpl  || '';  //模板名称, view的话在route里面配置，partial的话
+    var View = function(tmplname, data, wrapper){
+        this.tmplname   = tmplname  || '';  //模板名称, view的话在route里面配置，partial的话
+        this.tmplate = '';
         this.data   = data || {};
         this.event = void 0;
-        this.wrapper = wrapper;
+        this.wrapper = $(wrapper);
         this.construct();
     };
 
     View.prototype = {
         construct:function(){
-            this.render();
-        },
-        init: function(){
+            if(this.tempname){
+                ps.add(this.tmplname);  //新增发布者
+                this.render.sub(this.tmplname);
+            }
         },
         //创建实图，尚未插入
         create: function(){
-
+            var that = this;
+            this.getViewFragment('partial', function(vdom){
+                this.template = vdom;
+                ps.send(that.tmplname, true);
+            });
         },
         //插入渲染 ＝》render前update this.date即可刷新视图
-        render: function (next){
-            var dom = this.data ? this.template(this.tmpl)(this) : this.template(this.tmpl),
-                $wrapperDom = this.wrapper ? $(this.wrapper) : $('#body');
-            $wrapperDom.html(dom);
+        render: function (){
+            var vdom = this.data ? this.template(this.tmplate)(this) : this.template(this.tmplate),
+            wrapper = this.wrapper ? this.wrapper : $('#body');
+            wrapper.html(vdom);
         },
         //更新视图
         update: function(data, next){
             this.setData(data);
             this.render(next);
         },
-        //释放
+        //销毁视图
         destory: function(){
 
         },
@@ -58,7 +64,7 @@ define(function(){
          * @param {string} type|next 获取的html为'partial || view'的模板, type为function时为回调
          * @options {function} callback
          **/
-        getDomFrag: function(type){
+        getViewFragment: function(type){
             if(typeof type === 'function'){
                next = type;
             }else{
@@ -67,9 +73,9 @@ define(function(){
             }
             var that = this,
                 baseUrl = (type === 'partial' ? '../ui/' : '/views/');
-            $.get(baseUrl + this.tmpl + '.html', function (tmpl) {
-                var dom = that.data ? that.template(tmpl)(that) : that.template(tmpl);
-                next ? next(dom) : null;
+            $.get(baseUrl + this.tmplname + '.html', function (tmpl) {
+                var vdom = that.data ? that.template(tmpl)(that) : that.template(tmpl);
+                next ? next(vdom) : null;
             });
         },
         //重、写_.underscore方式，去支持include语法
@@ -93,7 +99,7 @@ define(function(){
          *   'touch .selecor': 'function2'
          * }
          **/
-        _passeEvent: function(){
+        _parseEvent: function(){
             if(!this.events) return;
             for(var event in events){
                 var eventType = deal(event),

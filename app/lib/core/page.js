@@ -1,6 +1,6 @@
 define(['base/core/view'], function(View){
     var Page = function (opts) {
-        View.call(this, opts.tmpl, opts.data, opts.wrapper || opts.config.wrapper);
+        View.call(this, opts.tmplname, opts.data, opts.wrapper || opts.config.wrapper);
         this.title  = opts.title || '';
         this.dom = {
             root   : opts.root || '',
@@ -13,17 +13,21 @@ define(['base/core/view'], function(View){
                 description: ''
             };
         this.isback = opts.isback;
+        this.construct();
     };
 
     Page.prototype = new View();
     Page.prototype = $.extend(Page.prototype, {
-        construct:function(){},
+
+        construct:function(){
+            console.log('Page Construct Run');
+        },
         render: function (cb) {
             var that = this;
-            if (!this.tmpl) {
+            if (!this.tmplname) {
                 return;
             }
-            this.getDomFrag(function(dom){
+            this.getViewFragment(function(dom){
                 that.push(dom, !that.isback ? 'swipe-left':'swipe-right');
                 if (that.title) {
                     that.setHeader();

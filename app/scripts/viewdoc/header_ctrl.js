@@ -20,7 +20,6 @@ define(['base/ui/ui.header'], function(Header) {
                 },
                 wrapper: '#header'
             });
-            console.log(header, 'header');
         }
 
     };
