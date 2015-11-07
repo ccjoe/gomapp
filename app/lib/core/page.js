@@ -27,7 +27,7 @@ define(['base/core/view'], function(View){
 
         },
         show: function(){
-            this.push(this.getTmplData(), !this.isback ? 'swipe-left':'swipe-right');
+            this.push(this.getHTMLFragment(), !this.isback ? 'swipe-left':'swipe-right');
             if (this.title) {
                 this.setHeader();
             }

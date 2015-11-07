@@ -24,10 +24,6 @@ define(['base/utils/store'], function(store){
         //new View()时即新增发布对象，render订阅此对象
         construct:function(){
             console.log('VIEW CONSTRUCT RUN WHEN EXTEND VIEW‘S OBJECT HASN’T CONSTRUCT');
-            //if(this.tmplname){
-            //    ps.add(this.tmplname);  //新增发布者
-            //    this.isrender.sub(this.tmplname);
-            //}
         },
 
         //根据STORE与AJAX条件渲染视图,供View.extend的Page UI内部调用
@@ -39,15 +35,7 @@ define(['base/utils/store'], function(store){
             });
         },
 
-        ////根据PS条件渲染视图
-        //isrender: function(name, that){
-        //    if(that.tmplname = name){
-        //        that.show();
-        //        //ps.del(that.tmplname); //  删除发布者
-        //        console.log(ps, 'ps');
-        //    }
-        //},
-        //根据数据与模板渲染视图 ＝》render前update this.date,或update this.tmpl即可刷新视图
+        //显示视图
         show: function (){
             this.wrapper.html(this.getHTMLFragment());
         },
@@ -85,12 +73,6 @@ define(['base/utils/store'], function(store){
             }
             return false;
         },
-        /**
-         * 获取代码片断或页面视图
-         * @method Page#PUSH
-         * @param {string} type 仅一个参数时为string为'partial或view'(那就没定义回调)或function回调(此时next即type,默认type为'view'), 仅二个参数时为type与next回调
-         * @options {function} callback
-         **/
         getAjaxTmpl: function(type){
             if(typeof type === 'function'){
                next = type;
