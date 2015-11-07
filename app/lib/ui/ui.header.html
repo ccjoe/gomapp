@@ -1,20 +1,9 @@
-<header class="bar bar-nav">
-    {{ if(data.left.type = 'button'){ }}<button class="btn pull-left">{{data.left.text}}</button>{{ } }}
-    {{ if(data.left.type = 'icon'){  }}
-        <a class="icon {{=data.left.icon ? data.left.icon : 'icon-left-nav'}} pull-left">{{data.left.text}}</a>
-    {{ } }}
-    {{ if(data.left.type = 'link'){  }}
-        <button class="btn btn-link btn-nav pull-left">{{data.left.text}}</button>
-    {{ } }}
+{{ _.each(['left', 'right'], function(posi){ }}
+{{ var type= data[posi].type, text = data[posi].text, icon=data[posi].icon || 'icon-'+posi+'-nav'; }}
+    {{ if(type === 'button'){ }}<button class="btn pull-{{=posi}}">{{= text }}</button>{{ } }}
+    {{ if(type === 'icon'){  }}<a class="icon {{= icon }} pull-{{=posi}}">{{= text }}</a>{{ } }}
+    {{ if(type === 'link'){  }}<button class="btn btn-link btn-nav pull-{{=posi}}">{{= text }}</button>{{ } }}
+{{ }); }}
 
-    {{ if(data.right.type = 'button'){ }}<button class="btn pull-right">{{data.right.text}}</button>{{ } }}
-    {{ if(data.right.type = 'icon'){  }}
-    <a class="icon {{=data.left.icon ? data.right.icon : 'icon-left-nav'}} pull-right">{{data.right.text}}</a>
-    {{ } }}
-    {{ if(data.right.type = 'link'){  }}
-    <button class="btn btn-link btn-nav pull-right">{{data.right.text}}</button>
-    {{ } }}
-
-    <h1 class="title">{{data.title}}</h1>
-    {{ if(data.subtitle){ }}<h2 class="subtitle">{{data.subtitle}}</h2>{{ } }}
-</header>
+<h1 class="title">{{=data.title}}</h1>
+{{ if(data.subtitle){ }}<h2 class="subtitle">{{=data.subtitle}}</h2>{{ } }}

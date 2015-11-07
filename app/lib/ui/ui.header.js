@@ -11,13 +11,19 @@ define(['base/core/view'], function(View) {
         title: '设置header',
         subtitle: '2015.11.05起'
     };
-    var Header = function (opts) {
-        opts.data = _.extend({}, defaultHeader, opts.data);
-        opts.tmplname = 'ui.header';
-        View.call(this, opts.tmpl, opts.data, opts.wrapper || opts.config.selector.header);
-        this.title = opts.title;
-    };
+    var Header = View.extend({
+        init: function (opts) {
+            opts.data = _.extend({}, defaultHeader, opts.data);
+            opts.tmplname = 'ui.header';
+            opts.wrapper = opts.wrapper || opts.config.selector.header
+            this.title = opts.title;
+            this._super(opts);
+        },
+        setTitle: function(text){
+            this.data.title = text;
+            this.update();
+        }
+    });
 
-    Header.prototype = new View();
     return Header;
 });

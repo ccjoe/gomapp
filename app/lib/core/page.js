@@ -1,27 +1,23 @@
 define(['base/core/view'], function(View){
-    var Page = function (opts) {
-        View.call(this, opts.tmplname, opts.data, opts.wrapper || opts.config.wrapper);
-        this.title  = opts.title || '';
-        this.dom = {
-            root   : opts.root || '',
-            header : opts.header || '',
-            footer : opts.footer || ''
-        };
-        this.seo = opts.seo || {
-                title: '',
-                keywords: '',
-                description: ''
+
+    var Page = View.extend({
+        init:function (opts) {
+            opts.wrapper = opts.wrapper || opts.config.selector.wrapper || '#viewport';
+            this.title  = opts.title || '';
+            this.dom = {
+                root   : opts.root || '',
+                header : opts.header || '',
+                footer : opts.footer || ''
             };
-        this.isback = opts.isback;
-        this.construct();
-    };
-
-    Page.prototype = new View();
-    Page.prototype = $.extend(Page.prototype, {
-
-        construct:function(){
-            console.log('Page Construct Run');
+            this.seo = opts.seo || {
+                    title: '',
+                    keywords: '',
+                    description: ''
+                };
+            this.isback = opts.isback;
+            this._super(opts);
         },
+        construct:function(){},
         render: function (cb) {
             var that = this;
             if (!this.tmplname) {
@@ -108,6 +104,5 @@ define(['base/core/view'], function(View){
 
         }
     });
-
     return Page;
 });

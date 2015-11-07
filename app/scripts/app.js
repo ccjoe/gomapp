@@ -7,5 +7,5 @@ require.config({
 });
 
 require(['base/app', 'com/config', 'com/route'], function(App, config, route){
-    new App(config, route).init();
+    new App(config, route).run();
 });

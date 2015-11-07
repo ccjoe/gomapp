@@ -38,7 +38,9 @@ define(function() {
     PubSub.prototype.set = function(name, subArr){
         return this.pubs[name] = subArr;
     };
-
+    PubSub.prototype.del = function(name){
+        delete  this.pubs[name];
+    }
     /**
      * 创建新增发布者，并且有订阅者时绑定传入的订阅者
      * 如果发布者已存在，则为设置发布者
@@ -65,9 +67,10 @@ define(function() {
      * @return {object} Cora.PS 对象即发布者
      */
     PubSub.prototype.send = function(name, data){
+        console.log(this.pubs, 'this.pubs');
         // 有deliver时订阅者即执行
         this.pubs[name].forEach(function(sub){
-            sub(data, name);
+            sub(name, data);
         });
         return this;
     };

@@ -20,6 +20,12 @@ define(['base/ui/ui.header'], function(Header) {
                 },
                 wrapper: '#header'
             });
+            header.render();
+            $('.header-settitle').click(function(){
+                console.log(123);
+                header.setTitle('setTitle设置的标题');
+            });
+
         }
 
     };

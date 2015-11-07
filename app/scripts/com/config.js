@@ -5,8 +5,8 @@ define(function() {
         url: 'http://h5.jc.me:3000/api/',
         returnClass: '.icon-left-nav',
         successCode: '00000',
-        wrapper: '#body',
         selector: {
+            wrapper: '#viewport',
             header: '#header',
             footer: '#footer',
             content: '#content'
