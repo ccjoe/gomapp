@@ -49,7 +49,7 @@ define(['base/utils/store'], function(store){
         //},
         //根据数据与模板渲染视图 ＝》render前update this.date,或update this.tmpl即可刷新视图
         show: function (){
-            this.wrapper.html(this.getTmplData());
+            this.wrapper.html(this.getHTMLFragment());
         },
         //更新视图
         update: function(data){
@@ -63,7 +63,7 @@ define(['base/utils/store'], function(store){
 
         },
         //获取带模板数据的virtual dom
-        getTmplData: function(){
+        getHTMLFragment: function(){
             if(!this.tmpl) return;
             return this.data ? this.template(this.tmpl)(this) : this.template(this.tmpl);
         },
