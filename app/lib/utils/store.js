@@ -44,17 +44,16 @@ define(function () {
          */
         noexpire: function(key){
             if(key===void 0){
-                return false;
+                return null;
             }
-            var that = this,
-                now = new Date().getTime(),
+            var now = new Date().getTime(),
                 data = parseval(storage.getItem(key));
-            if(data.expire===void 0 || data.expire>now){
-                return data.value;
-            }else{
-                that.del(key);
-                return false;
+            if(!data) return null;
+            if(data.expire !== void 0 || data.expire <= now){
+                this.del(key);
+                return null;
             }
+            return data.value;
         },
         get: function(key){
             if(key){

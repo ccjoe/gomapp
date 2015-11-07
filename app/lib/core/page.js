@@ -20,17 +20,17 @@ define(['base/core/view'], function(View){
         construct:function(){},
         render: function (cb) {
             var that = this;
-            if (!this.tmplname) {
-                return;
-            }
-            this.getViewFragment(function(dom){
-                that.push(dom, !that.isback ? 'swipe-left':'swipe-right');
-                if (that.title) {
-                    that.setHeader();
-                }
-                cb ? cb(dom) : null;
+            this.getTmpl('view', function(){
+                that.show();
+                cb ? cb() : null;
             });
-            return;
+
+        },
+        show: function(){
+            this.push(this.getTmplData(), !this.isback ? 'swipe-left':'swipe-right');
+            if (this.title) {
+                this.setHeader();
+            }
         },
         /**
          * 设置heaer

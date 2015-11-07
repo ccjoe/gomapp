@@ -49,7 +49,7 @@ define(function() {
                     }
             };
 
-            page.setData(viewList);
+            page.data = viewList;
             page.render();
         }
     };

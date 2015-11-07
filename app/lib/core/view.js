@@ -1,4 +1,4 @@
-define(['base/utils/ps'], function(ps){
+define(['base/utils/store'], function(store){
     //模板引擎 dot => underscore, doT拥有此功能且性能高
     _.templateSettings = {
         evaluate    : /\{\{(.+?)\}\}/g,
@@ -23,33 +23,33 @@ define(['base/utils/ps'], function(ps){
         },
         //new View()时即新增发布对象，render订阅此对象
         construct:function(){
-            if(this.tmplname){
-                ps.add(this.tmplname);  //新增发布者
-                this.isrender.sub(this.tmplname);
-            }
-            //this.render();
+            console.log('VIEW CONSTRUCT RUN WHEN EXTEND VIEW‘S OBJECT HASN’T CONSTRUCT');
+            //if(this.tmplname){
+            //    ps.add(this.tmplname);  //新增发布者
+            //    this.isrender.sub(this.tmplname);
+            //}
         },
-        //创建实图，尚未插入, 发布一个状态。 ui.create
+
+        //根据STORE与AJAX条件渲染视图,供View.extend的Page UI内部调用
         render: function(){
             var that = this;
-            this.getViewFragment('partial', function(vdom){
-                that.tmpl = vdom;
-                ps.send(that.tmplname, that);
+            this.getTmpl('partial', function(){
+                that.show();
+                //ps.send(that.tmplname, that);
             });
         },
 
-        isrender: function(name, that){
-            if(that.tmplname = name){
-                that.show();
-                //ps.del(that.tmplname); //  删除发布者
-                console.log(ps, 'ps');
-            }
-        },
-        //显示视图 ＝》render前update this.date,或update this.tmpl即可刷新视图
+        ////根据PS条件渲染视图
+        //isrender: function(name, that){
+        //    if(that.tmplname = name){
+        //        that.show();
+        //        //ps.del(that.tmplname); //  删除发布者
+        //        console.log(ps, 'ps');
+        //    }
+        //},
+        //根据数据与模板渲染视图 ＝》render前update this.date,或update this.tmpl即可刷新视图
         show: function (){
-            if(!this.tmpl) return;
-            var vdom = this.data ? this.template(this.tmpl)(this) : this.template(this.tmpl);
-            this.wrapper.html(vdom);
+            this.wrapper.html(this.getTmplData());
         },
         //更新视图
         update: function(data){
@@ -62,13 +62,36 @@ define(['base/utils/ps'], function(ps){
         destory: function(){
 
         },
+        //获取带模板数据的virtual dom
+        getTmplData: function(){
+            if(!this.tmpl) return;
+            return this.data ? this.template(this.tmpl)(this) : this.template(this.tmpl);
+        },
+
+        //获取STORE与AJAX条件获取模板
+        getTmpl: function(type, callback){
+            var hasStoreView = this.getStoreTmpl();
+            if(hasStoreView){
+                callback();
+                return;
+            }
+            this.getAjaxTmpl(type, callback);
+        },
+        getStoreTmpl: function(){
+            var tmpl = store.get(this.tmplname);
+            if(tmpl){
+                this.tmpl = tmpl;
+                return true;
+            }
+            return false;
+        },
         /**
-         * 获取代码片断或页面视图并绑定数据后的DOM Fragment
+         * 获取代码片断或页面视图
          * @method Page#PUSH
-         * @param {string} type|next 获取的html为'partial || view'的模板, type为function时为回调
+         * @param {string} type 仅一个参数时为string为'partial或view'(那就没定义回调)或function回调(此时next即type,默认type为'view'), 仅二个参数时为type与next回调
          * @options {function} callback
          **/
-        getViewFragment: function(type){
+        getAjaxTmpl: function(type){
             if(typeof type === 'function'){
                next = type;
             }else{
@@ -77,9 +100,11 @@ define(['base/utils/ps'], function(ps){
             }
             var that = this,
                 baseUrl = (type === 'partial' ? '/lib/ui/' : '/views/');
+
             $.get(baseUrl + this.tmplname + '.html', function (tmpl) {
-                var vdom = that.data ? that.template(tmpl)(that) : that.template(tmpl);
-                next ? next(vdom) : null;
+                store.set(that.tmplname, tmpl);
+                that.tmpl = tmpl;
+                next ? next() : null;
             });
         },
         //重、写_.underscore方式，去支持include语法

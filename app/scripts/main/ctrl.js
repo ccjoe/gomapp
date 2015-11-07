@@ -46,7 +46,7 @@ define(function(require) {
 
     return {
         init: function(page) {
-            page.setData(indexData);
+            page.data = indexData;
             page.render();
         },
 
