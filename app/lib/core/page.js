@@ -17,17 +17,17 @@ define(['base/core/view'], function(View){
             this.isback = opts.isback;
             this._super(opts);
         },
-        construct:function(){},
+
         render: function (cb) {
             var that = this;
             this.getTmpl('view', function(){
                 that.show();
                 cb ? cb() : null;
             });
-
         },
         show: function(){
             this.push(this.getHTMLFragment(), !this.isback ? 'swipe-left':'swipe-right');
+            //this._parseEvent();
             if (this.title) {
                 this.setHeader();
             }

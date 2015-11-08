@@ -1,57 +1,69 @@
-define(function() {
+define(['base/ui/ui.list'], function(List) {
     'use strict';
     return {
         init: function(page){
+            page.render(this.createList);
+        },
+        events: {
+          'click .create-list':'createList2'
+        },
+        createList: function(){
             var viewList = {
-                    header: {
-                        name: 'header头部设置',
-                        hash: 'viewdoc/header'
-                    },
-                    loading:{
-                        name: 'loading',
-                        hash: 'viewdoc/loading'
-                    },
-                    tips:{
-                        name: 'tips',
-                        hash: 'viewdoc/tips'
-                    },
-                    dialog:{
-                        name: 'dialog',
-                        hash: 'viewdoc/dialog'
-                    },
-                    scroll:{
-                        name: 'scroll',
-                        hash: 'viewdoc/scroll'
-                    },
-                    switch:{
-                        name: 'switch',
-                        hash: 'viewdoc/switch'
-                    },
-                    tab:{
-                        name: 'tab',
-                        hash: 'viewdoc/tab'
-                    },
-                    slide:{
-                        name: 'slide',
-                        hash: 'viewdoc/slide'
-                    },
-                    radio:{
-                        name: 'radio',
-                        hash: 'viewdoc/radio'
-                    },
-                    select:{
-                        name: 'select',
-                        hash: 'viewdoc/select'
-                    },
-                    footer:{
-                        name: 'footer设置',
-                        hash: 'viewdoc/footer'
-                    }
+                media: 'img', // 'icon'
+                list: [{
+                    img: 'http://placehold.it/42x42',
+                    title: '列表1',
+                    desc: '列表1列表1列表1列表1列表1列表1列表1列表1列表1列表1列表1列表1列表1',
+                    badge: '12'
+                },{
+                    img: '',
+                    title: '列表2',
+                    desc: '列表2列表2列表2列表2列表2列表2列表2列表2列表2列表2列表2列表2列表2',
+                    badge: '11',
+                    isDivider: true
+                },{
+                    img: '',
+                    title: '列表3',
+                    desc: '列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——',
+                    badge: '10',
+                }],
             };
 
-            page.data = viewList;
-            page.render();
+            var ListSet = new List({
+                data: viewList,
+                wrapper: '#list'
+            });
+            ListSet.render();
+        },
+        createList2: function(){
+            var viewList = {
+                media: 'icon', // 'icon'
+                list: [{
+                    icon: 'icon-trash',
+                    title: '列表1',
+                    desc: '列表1列表1列表1列表1列表1列表1列表1列表1列表1列表1列表1列表1列表1',
+                    badge: '12'
+                },{
+                    img: 'icon-gear',
+                    title: '列表2',
+                    desc: '列表2列表2列表2列表2列表2列表2列表2列表2列表2列表2列表2列表2列表2',
+                    badge: '11',
+                    isDivider: true
+                },{
+                    icon: 'icon-pages',
+                    title: '列表3',
+                    desc: '列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——',
+                    badge: '10',
+                }],
+            };
+
+            var ListSet = new List({
+                data: viewList,
+                wrapper: '#list2'
+            });
+            ListSet.render();
         }
+
     };
 });
 

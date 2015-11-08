@@ -17,13 +17,16 @@ define(['base/utils/store'], function(store){
             this.tmplname   = opts.tmplname  || '';  //模板名称, view的话在route里面配置，partial的话
             this.tmpl = '';                          //模板html,有模板名称则从通过名称取到tmpl;
             this.data   = opts.data || {};
-            this.event = void 0;
+            this.events = opts.events || {};
             this.wrapper = $(opts.wrapper);
-            this.construct();
+            this.construct(opts);
         },
-        //new View()时即新增发布对象，render订阅此对象
-        construct:function(){
-            console.log('VIEW CONSTRUCT RUN WHEN EXTEND VIEW‘S OBJECT HASN’T CONSTRUCT');
+        //new View()时即执行的对象
+        construct:function(opts){
+            console.log('[VIEW CONSTRUCT RUN WHEN EXTEND VIEW‘S OBJECT HASN’T CONSTRUCT]');
+            if(this.events){
+                this._parseEvent(opts.ctrl || opts);
+            }
         },
 
         //根据STORE与AJAX条件渲染视图,供View.extend的Page UI内部调用
@@ -31,13 +34,13 @@ define(['base/utils/store'], function(store){
             var that = this;
             this.getTmpl('partial', function(){
                 that.show();
-                //ps.send(that.tmplname, that);
             });
         },
 
         //显示视图
         show: function (){
             this.wrapper.html(this.getHTMLFragment());
+            //this._parseEvent(this);
         },
         //更新视图
         update: function(data){
@@ -84,7 +87,7 @@ define(['base/utils/store'], function(store){
                 baseUrl = (type === 'partial' ? '/lib/ui/' : '/views/');
 
             $.get(baseUrl + this.tmplname + '.html', function (tmpl) {
-                store.set(that.tmplname, tmpl);
+                //store.set(that.tmplname, tmpl);
                 that.tmpl = tmpl;
                 next ? next() : null;
             });
@@ -104,23 +107,38 @@ define(['base/utils/store'], function(store){
                 data
             );
         },
+        //给组件或页面绑定事件，采用了事件代理的方式
+        onview: function(eventType, selector, listener){
+            this.wrapper.on(eventType, selector, listener);
+            return this;
+        },
+        offview: function(eventType, selector, listener){
+            this.wrapper.off(eventType, selector, listener);
+            return this;
+        },
         /**
          * events: {
          *   'click,touch selector1,selector2': 'function',
          *   'touch .selecor': 'function2'
          * }
          **/
-        _parseEvent: function(){
+         //obj为事件绑定时的listener所有的执行环境，是view对象还是ctrl对象
+        _parseEvent: function(obj){
             if(!this.events) return;
-            for(var event in events){
-                var eventType = deal(event),
-                    eventFn = events[event];
+            var events = this.events;
+            for(var eve in events){
+                var eventSrc = getEventSrc(eve),
+                    eventListener = events[eve];
+                this.onview(eventSrc.event, eventSrc.selector, obj[eventListener]);
             }
 
-            function getEventASelector(){
-                ///\s/
+            function getEventSrc(eve){
+                var ret = /(\w+)+\s+(.+)/.exec(eve);
+                return {
+                    event: ret[1],  //event type 1
+                    selector: ret[2],  //event selector all
+                };
             }
-
         }
     });
 

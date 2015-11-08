@@ -2,7 +2,7 @@ define(['base/core/view'], function(View) {
     var defaultHeader = {
         left:{
             type: 'icon',   //options button,link
-            text: '返回',
+            //text: '返回',
         },
         right:{
             type: 'button', // icon link
@@ -22,6 +22,9 @@ define(['base/core/view'], function(View) {
         setTitle: function(text){
             this.data.title = text;
             this.update();
+        },
+        event: {
+
         }
     });
 

@@ -60,3 +60,26 @@ body {
   color: #fff;
   background-color: rgba(0,0,0,.8);
 }
+
+
+//UI
+.title-wrapper{
+  display: block;
+  width: 100%;
+  > * {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    margin: 0 -10px;
+  }
+  .title{
+    height: 24px;
+    line-height: 30px;
+  }
+  .subtitle{
+    top:25px;
+    height: 20px;
+    line-height: 14px;
+    font-size: 12px;
+  }
+}

@@ -138,6 +138,9 @@ define(['base/core/page', 'base/utils/url'], function(Page, url){
             var isstr = typeof where === 'string';
             this[isstr ? '_routeByHash' : '_routeByCRO'](where);
         },
+        _setEventByCtrl: function(){
+
+        },
         /**
          * 根据完整hash路由到页面
          * @method App#_routeByHash
@@ -153,14 +156,18 @@ define(['base/core/page', 'base/utils/url'], function(Page, url){
             if(this.isRouteNotFound(CRO)){
                 return;
             }
-            var view = this.setPage(CRO),
-                ctrl = CRO.ctrl;
+
+            var ctrl = CRO.ctrl;
             if(ctrl){
-                ctrl.init(view);
-            }else{
-                view.render();
+                CRO.events = ctrl.events;   //将ctrl的事件设置到当前路由对象
             }
-            console.log( CRO, view, "----- CURRENT ROUTE! -----");
+            var page = this.setPage(CRO);   //初始页面并绑定事件
+            if(ctrl){
+                ctrl.init(page);
+            }else{
+                page.render();
+            }
+            console.log( CRO, page, "----- CURRENT ROUTE! -----");
         },
         _manageHistory: function(hashPath){
             if(this.getLastHashByLastIndex(1) === hashPath){

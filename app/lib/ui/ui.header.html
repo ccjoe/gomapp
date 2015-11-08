@@ -5,5 +5,7 @@
     {{ if(type === 'link'){  }}<button class="btn btn-link btn-nav pull-{{=posi}}">{{= text }}</button>{{ } }}
 {{ }); }}
 
-<h1 class="title">{{=data.title}}</h1>
-{{ if(data.subtitle){ }}<h2 class="subtitle">{{=data.subtitle}}</h2>{{ } }}
+<div class="title-wrapper">
+    <h1 class="title">{{=data.title}}</h1>
+    {{ if(data.subtitle){ }}<h2 class="subtitle">{{=data.subtitle}}</h2>{{ } }}
+</div>

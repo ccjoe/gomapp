@@ -1,0 +1,25 @@
+<ul class="table-view">
+    {{ _.each(data.list, function(item){ }}
+        {{ if(item.isDivider){ }}
+        <li class="table-view-divider">{{=item.title}}</li>
+        {{ }else{ }}
+        <li class="table-view-cell">
+            <a class="navigate-right">
+                {{ if(data.media){ }}
+                    {{ if(data.media === 'img'){ }}
+                        <img class="media-object pull-left" src="{{= item.img }}">
+                    {{ }else{ }}
+                        <span class="media-object pull-left icon {{= item.icon }}"></span>
+                    {{ } }}
+                {{ } }}
+                <div class="media-body">
+                    {{ if(item.badge === void 0){ }}
+                    <span class="badge">{{=item.badge}}</span> }}
+                    {{ } }}
+                    {{=item.title}}
+                    <p>{{=item.desc}}</p>
+                </div>
+            </a>
+        </li>
+    {{ } }); }}
+</ul>

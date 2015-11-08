@@ -8,7 +8,8 @@ define(['require',
     'module/view_ctrl',
     'module/add_ctrl',
     'viewdoc/list_ctrl',
-    'viewdoc/header_ctrl'
+    'viewdoc/header_ctrl',
+    'viewdoc/component_list_ctrl'
 ], function (require) {
 
     var r = require;
@@ -39,13 +40,18 @@ define(['require',
         },
         '/viewdoc': {
             '/': {
-                tmplname: 'viewdoc/list',
-                ctrl: r('viewdoc/list_ctrl'),
+                tmplname: 'viewdoc/component_list',
+                ctrl: r('viewdoc/component_list_ctrl'),
                 title: '用户组件'
             },
             '/header': {
                 tmplname: 'viewdoc/header',
                 ctrl: r('viewdoc/header_ctrl'),
+                title: '头部设置文档'
+            },
+            '/list': {
+                tmplname: 'viewdoc/list',
+                ctrl: r('viewdoc/list_ctrl'),
                 title: '头部设置文档'
             }
         },
