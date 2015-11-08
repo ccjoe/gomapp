@@ -1,6 +1,7 @@
 define(['base/core/view'], function(View) {
     var defaultView = {
         media: 'img', // 'icon'
+        card: false, //false
         list: [{
             img: '',
             title: '',

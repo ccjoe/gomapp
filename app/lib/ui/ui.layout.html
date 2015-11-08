@@ -1,0 +1,23 @@
+<div class="layout layout-{{=data.type}}">
+    <div class="layout-content">
+        {{ if(data.type === 'loading'){ }}
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+        {{ } }}
+        {{=data.description}}
+    </div>
+    <div class="layout-btns">
+        <a href="">{{= data.yes}}</a>
+        <a href="">{{= data.no}}</a>
+        <a href="">{{= data.cancel}}</a>
+    </div>
+</div>
+
+<div id="toast" class="toast">
+    <span class="icon icon-info">info</span>
+    <span class="icon icon-check">success</span>
+    <span class="icon icon-close">error</span>
+    <span class="icon top">default</span>
+</div>

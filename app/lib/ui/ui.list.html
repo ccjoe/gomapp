@@ -1,10 +1,15 @@
+{{= data.card ? '<div class="card">' : '' }}
 <ul class="table-view">
     {{ _.each(data.list, function(item){ }}
-        {{ if(item.isDivider){ }}
-        <li class="table-view-divider">{{=item.title}}</li>
-        {{ }else{ }}
-        <li class="table-view-cell">
+
+        <li class="{{= item.isDivider?'table-view-divider':'table-view-cell' }}">
+            {{ if(item.isDivider){ }}
+                {{=item.title}}
+            {{ return; } }}
             <a class="navigate-right">
+                {{ if(item.badge !== void 0){ }}
+                    <span class="badge">{{=item.badge}}</span>
+                {{ } }}
                 {{ if(data.media){ }}
                     {{ if(data.media === 'img'){ }}
                         <img class="media-object pull-left" src="{{= item.img }}">
@@ -13,13 +18,12 @@
                     {{ } }}
                 {{ } }}
                 <div class="media-body">
-                    {{ if(item.badge === void 0){ }}
-                    <span class="badge">{{=item.badge}}</span> }}
-                    {{ } }}
                     {{=item.title}}
                     <p>{{=item.desc}}</p>
                 </div>
             </a>
         </li>
-    {{ } }); }}
+    {{  }); }}
 </ul>
+{{= data.card ? '</div>' : '' }}
+

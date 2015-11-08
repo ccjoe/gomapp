@@ -16,10 +16,7 @@ define(['base/ui/ui.list'], function(List) {
                     desc: '列表1列表1列表1列表1列表1列表1列表1列表1列表1列表1列表1列表1列表1',
                     badge: '12'
                 },{
-                    img: '',
-                    title: '列表2',
-                    desc: '列表2列表2列表2列表2列表2列表2列表2列表2列表2列表2列表2列表2列表2',
-                    badge: '11',
+                    title: '组2',
                     isDivider: true
                 },{
                     img: '',
@@ -38,6 +35,7 @@ define(['base/ui/ui.list'], function(List) {
         createList2: function(){
             var viewList = {
                 media: 'icon', // 'icon'
+                card: true,
                 list: [{
                     icon: 'icon-trash',
                     title: '列表1',
@@ -45,14 +43,12 @@ define(['base/ui/ui.list'], function(List) {
                     badge: '12'
                 },{
                     img: 'icon-gear',
-                    title: '列表2',
-                    desc: '列表2列表2列表2列表2列表2列表2列表2列表2列表2列表2列表2列表2列表2',
-                    badge: '11',
+                    title: '组2',
                     isDivider: true
                 },{
                     icon: 'icon-pages',
                     title: '列表3',
-                    desc: '列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——',
+                    desc: '列表1列表1列表1列表1列表1列表1列表1列表1列表1列表1列表1列表1列表1',
                     badge: '10',
                 }],
             };

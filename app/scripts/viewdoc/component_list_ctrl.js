@@ -11,9 +11,9 @@ define(function() {
                         name: '列表设置',
                         hash: 'viewdoc/list'
                     },
-                    loading:{
-                        name: 'loading',
-                        hash: 'viewdoc/loading'
+                    layout:{
+                        name: 'layout',
+                        hash: 'viewdoc/layout'
                     },
                     tips:{
                         name: 'tips',

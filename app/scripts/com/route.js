@@ -9,7 +9,8 @@ define(['require',
     'module/add_ctrl',
     'viewdoc/list_ctrl',
     'viewdoc/header_ctrl',
-    'viewdoc/component_list_ctrl'
+    'viewdoc/component_list_ctrl',
+    'viewdoc/layout_ctrl'
 ], function (require) {
 
     var r = require;
@@ -52,6 +53,11 @@ define(['require',
             '/list': {
                 tmplname: 'viewdoc/list',
                 ctrl: r('viewdoc/list_ctrl'),
+                title: '头部设置文档'
+            },
+            '/layout': {
+                tmplname: 'viewdoc/layout',
+                ctrl: r('viewdoc/layout_ctrl'),
                 title: '头部设置文档'
             }
         },
