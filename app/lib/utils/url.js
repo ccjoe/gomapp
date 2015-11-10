@@ -1,6 +1,6 @@
 /******************************** publisher-subscriber ***********************************/
 /**
- * 简单的发布订阅模式(publisher-subscriber)
+ * Url处理
  * @author Joe Liu
  */
 define(function () {
