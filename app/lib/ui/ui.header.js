@@ -16,8 +16,9 @@ define(['base/core/view'], function(View) {
             opts.data = _.extend({}, defaultHeader, opts.data);
             opts.tmplname = 'ui.header';
             opts.wrapper = opts.wrapper || opts.config.selector.header
-            this.title = opts.title;
             this._super(opts);
+
+            this.title = opts.title;
         },
         setTitle: function(text){
             this.data.title = text;

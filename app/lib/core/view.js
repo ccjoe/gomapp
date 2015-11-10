@@ -122,7 +122,7 @@ define(['base/utils/store'], function(store){
          *   'touch .selecor': 'function2'
          * }
          **/
-         //obj为事件绑定时的listener所有的执行环境，是view对象还是ctrl对象
+         //obj为事件绑定时的listener所在的执行环境
         _parseEvent: function(obj){
             if(!this.events) return;
             var events = this.events;

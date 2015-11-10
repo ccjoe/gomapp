@@ -13,7 +13,6 @@ define(['base/core/view'], function(View) {
         init: function (opts) {
             opts.data = $.extend({}, data, opts.data);
             opts.tmplname = 'ui.layout';
-            opts.wrapper = opts.wrapper;
             this._super(opts);
         },
         hide: function(){

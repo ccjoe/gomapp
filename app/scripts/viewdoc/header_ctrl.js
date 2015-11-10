@@ -26,7 +26,6 @@ define(['base/ui/ui.header'], function(Header) {
             console.log('执行多少次');
             page.header.setTitle('setTitle设置的标题');
         }
-
     };
 });
 

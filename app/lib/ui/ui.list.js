@@ -18,14 +18,17 @@ define(['base/core/view'], function(View) {
 
     var List = View.extend({
         init: function (opts) {
-            opts.data = opts.data;
+            $.extend(opts, this);   //将List实例混合到opts上， 去父对象上执行
             opts.tmplname = 'ui.list';
-            opts.wrapper = opts.wrapper;
             this._super(opts);
         },
 
-        event: {
+        events: {
+            'click .table-view-divider': 'collapseListGroup'
+        },
 
+        collapseListGroup: function(e){
+            console.log(e, this);
         }
     });
 
