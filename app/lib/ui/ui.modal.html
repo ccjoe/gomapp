@@ -1,0 +1,26 @@
+<div class="modal-overlay modal-overlay-visible"></div>
+
+<div class="modal  modal-in modal-{{=data.type}}">
+    <div class="modal-inner">
+        {{ if(data.type === 'loading'){ }}
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+        {{ } }}
+        <div class="modal-title">{{=data.title}}</div>
+        <div class="modal-text">{{=data.content}}</div>
+    </div>
+    <div class="modal-buttons ">
+        <span class="modal-button modal-button-bold">{{= data.yes}}</span>
+        <span class="modal-button modal-button-bold">{{= data.no}}</span>
+        <span class="modal-button modal-button-bold">{{= data.cancel}}</span>
+    </div>
+</div>
+
+<div id="toast" class="toast">
+    <span class="icon icon-info">info</span>
+    <span class="icon icon-check">success</span>
+    <span class="icon icon-close">error</span>
+    <span class="icon top">default</span>
+</div>
