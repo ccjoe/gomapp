@@ -1,6 +1,6 @@
 define(['base/core/view'], function(View) {
     var defaultView = {
-        media: 'img', // 'icon'
+        media: '', // 'icon'
         card: false, //false
         list: [{
             img: '',
@@ -12,7 +12,8 @@ define(['base/core/view'], function(View) {
             title: '',
             desc: '',
             badge: '',
-            isDivider: true
+            isDivider: true,
+            collapse: true
         }],
     };
 
@@ -22,13 +23,12 @@ define(['base/core/view'], function(View) {
             opts.tmplname = 'ui.list';
             this._super(opts);
         },
-
         events: {
-            'click .table-view-divider': 'collapseListGroup'
+            'click .table-view-divider.table-view-collapse': 'collapseListGroup'
         },
 
-        collapseListGroup: function(e){
-            console.log(e, this);
+        collapseListGroup: function(e, current){
+            $(current).next().filter('.table-view-cell').toggle();
         }
     });
 

@@ -3,10 +3,8 @@
 <ul class="table-view">
     {{ _.each(data.list, function(item){ }}
 
-        <li class="{{= item.isDivider?'table-view-divider':'table-view-cell' }}">
-            {{ if(item.isDivider){ }}
-                {{=item.title}}
-            {{ return; } }}
+        <li class="{{= item.isDivider?'table-view-divider':'table-view-cell' }}{{= item.collapse ? ' table-view-collapse':'' }}">
+            {{ if(item.isDivider){ }}{{=item.title}}{{ return; } }}
             <a class="navigate-right">
                 {{ if(item.badge !== void 0){ }}
                     <span class="badge">{{=item.badge}}</span>

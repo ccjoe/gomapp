@@ -25,7 +25,7 @@ define(['base/utils/store'], function(store){
         construct:function(opts){
             console.log('[VIEW CONSTRUCT RUN WHEN EXTEND VIEW‘S OBJECT HASN’T CONSTRUCT]');
             if(this.events){
-                this._parseEvent(opts.ctrl || opts);
+                this._parseEvent(opts.ctrl || this);
             }
         },
 
@@ -39,8 +39,9 @@ define(['base/utils/store'], function(store){
 
         //显示视图
         show: function (){
-            this.wrapper.html(this.getHTMLFragment());
-            //this._parseEvent(this);
+            this.wrapper.html(this.getHTMLFragment()).css('display', 'block');
+
+            console.log(this.wrapper, 'this.wrapper');
         },
         //更新视图
         update: function(data){
@@ -109,6 +110,7 @@ define(['base/utils/store'], function(store){
         },
         //给组件或页面绑定事件，采用了事件代理的方式
         onview: function(eventType, selector, listener){
+            //console.log(this.wrapper, eventType,  selector, listener,  'this.wrapper.$el on event');
             this.wrapper.on(eventType, selector, listener);
             return this;
         },
@@ -122,15 +124,24 @@ define(['base/utils/store'], function(store){
          *   'touch .selecor': 'function2'
          * }
          **/
-         //obj为事件绑定时的listener所在的执行环境
-        _parseEvent: function(obj){
+         //that为事件绑定时的listener所在的执行环境
+        _parseEvent: function(env){
+            var that = this;
+            this.offview();
             if(!this.events) return;
             var events = this.events;
             for(var eve in events){
-                var eventSrc = getEventSrc(eve),
-                    eventListener = events[eve];
-                this.onview(eventSrc.event, eventSrc.selector, obj[eventListener]);
+                (function(eve){
+                    var eventSrc = getEventSrc(eve),
+                        eventListener = events[eve];
+                    that.onview(eventSrc.event, eventSrc.selector, function (e){
+                        env[eventListener](e, this);
+                        return false;
+                    });
+                })(eve);
             }
+            //如此的话， events触发的listener的this指向 发生动作的元素， e，对原生event对象， 第二个参数this为发生的对象，  eventListener里的this指向that
+
 
             function getEventSrc(eve){
                 var ret = /(\w+)+\s+(.+)/.exec(eve);

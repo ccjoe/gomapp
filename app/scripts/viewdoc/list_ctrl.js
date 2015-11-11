@@ -17,7 +17,8 @@ define(['base/ui/ui.list'], function(List) {
                     badge: '12'
                 },{
                     title: '组2',
-                    isDivider: true
+                    isDivider: true,
+                    collapse: true
                 },{
                     img: '',
                     title: '列表3',
