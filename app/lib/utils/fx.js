@@ -2,7 +2,7 @@
  * 动画相关
  * @author Joe Liu
  */
-define(function () {
+(function () {
     //动画效果
     var easingMap = {
         "linear": [0.250, 0.250, 0.750, 0.750],
@@ -40,23 +40,25 @@ define(function () {
             Math.random().toFixed(3),
             Math.random().toFixed(3)]
     };
-    //animate(properties, [duration, [easing, [function(){ ... }]]])
-    //$("#some_element").animate({
-    //    opacity: 0.25, left: '50px',
-    //    color: '#abcdef',
-    //    rotateZ: '45deg', translate3d: '0,10px,0'
-    //}, 500, cubic-bezier())
-    //
-    //properties:
-    //[
-    //    css properties ||
-    //    translate(X|Y|Z|3d)
-    //    rotate(X|Y|Z|3d)
-    //    scale(X|Y|Z)
-    //    matrix(3d)
-    //    perspective
-    //    skew(X|Y)
-    //]
+   /**
+    * 设置heaer
+    * @method  $#fx
+    * @see http://zeptojs.com/#fx
+    * easing 支持tween效果，直接传入名称
+    properties:
+    [   css properties ||
+        translate(X|Y|Z|3d)
+        rotate(X|Y|Z|3d)
+        scale(X|Y|Z)
+        matrix(3d)
+        perspective
+        skew(X|Y)
+    ] */
+    $.fn.fx = function(properties, duration, easing, complete, dealy){
+        easing = easing || 'linear';
+        easing = easingMap[easing];
+        this.animate(properties, duration, "cubic-bezier(" + easing.join(',') + ")", complete, dealy);
+        return this;
+    };
 
-    return fx;
-});
+})();

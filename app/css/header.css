@@ -1,0 +1,16 @@
+.title-wrapper {
+  display: block;
+  width: 100%; }
+  .title-wrapper > * {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    margin: 0 -10px; }
+  .title-wrapper .title {
+    height: 24px;
+    line-height: 30px; }
+  .title-wrapper .subtitle {
+    top: 25px;
+    height: 20px;
+    line-height: 14px;
+    font-size: 12px; }

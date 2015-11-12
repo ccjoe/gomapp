@@ -1,0 +1,7 @@
+@mixin absCenter($width, $height, $pos: absolute){
+    position: $pos;
+    left: 50%; top:50%;
+    width: $width; height: $height;
+    margin-left: -$width/2;
+    @if $height!=auto { margin-top: -$height/2; }
+}

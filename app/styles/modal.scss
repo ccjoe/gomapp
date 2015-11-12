@@ -1,5 +1,8 @@
+@import "e:/git/sassCore/_function";
+@import 'mixins.scss';
 /* === Modals === */
 $modalBg: rgba(255,255,255,0.95);
+$modalBd: rgba(230,230,230,0.9);
 $modalButonColor : #ccc;
 $modalButonActiveBg: rgba(230,230,230,0.95);
 $modalHairlineColor: rgba(0,0,0,0.2);
@@ -11,10 +14,9 @@ $actionsModalHairlineColor: rgba(0,0,0,0.2);
 $actionsModalDuration: 300ms;
 
 $popoverBg: rgba(255,255,255,0.95);
-
 $popupDuration: 400ms;
-
 $actionsPopoverHairline: rgba(0,0,0,0.2);
+
 .modal-overlay, .preloader-indicator-overlay, .popup-overlay {
     position: absolute;
     left: 0;
@@ -33,20 +35,14 @@ $actionsPopoverHairline: rgba(0,0,0,0.2);
 .popup-overlay {
     z-index: 10500;
 }
-.modal {
-    width: 270px;
-    position: absolute;
+.modal-layout {
+    @include absCenter(270px, auto, fixed);
     z-index: 13500;
-    left: 50%;
-    margin-left: -135px;
-    margin-top: 0;
-    top: 50%;
     text-align: center;
     border-radius: 13px;
-    overflow: hidden;
     opacity: 0;
     color:#000;
-
+    overflow: hidden;
     &.modal-in {
         opacity: 1;
     }
@@ -55,6 +51,7 @@ $actionsPopoverHairline: rgba(0,0,0,0.2);
         z-index: 13500-1;
     }
 }
+
 .modal-inner {
     padding: 15px;
     border-radius: 13px 13px 0 0;
@@ -76,10 +73,12 @@ $actionsPopoverHairline: rgba(0,0,0,0.2);
 .modal-buttons {
     height: 44px;
     position: relative;
+    border-top: 1px solid $modalBd;
     &.modal-buttons-vertical {
         display: block;
         height: auto;
     }
+    @include display-flex(flex);
 }
 .modal-button {
     width: 100%;
@@ -98,7 +97,8 @@ $actionsPopoverHairline: rgba(0,0,0,0.2);
     box-sizing: border-box;
     -webkit-box-flex:1;
     -ms-flex:1;
-    background: $modalBg;
+
+    background-color:$modalBg;
     &:first-child {
         border-radius: 0 0 0 13px;
     }
@@ -131,4 +131,88 @@ $actionsPopoverHairline: rgba(0,0,0,0.2);
     .modal-buttons {
         display: none;
     }
+}
+
+.modal-loading{
+    overflow: hidden;
+    @include absCenter(80px, auto, fixed);
+    .modal-inner{
+        background-color: transparent;
+        width: 80px;
+        height: 80px;
+    }
+}
+.modal-confirm{
+    .modal-buttons{
+        .modal-button{
+            @include flex(2);
+        }
+    }
+}
+.modal-alert{
+    .modal-buttons{
+        .modal-button{
+            @include flex(1);
+        }
+    }
+}
+
+
+//loading
+.spinner {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -30px;
+    margin-left: -30px;
+}
+
+.double-bounce1, .double-bounce2 {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #fff;
+    opacity: 0.6;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    -webkit-animation: bounce 2.0s infinite ease-in-out;
+    animation: bounce 2.0s infinite ease-in-out;
+}
+
+.double-bounce2 {
+    -webkit-animation-delay: -1.0s;
+    animation-delay: -1.0s;
+}
+
+@-webkit-keyframes bounce {
+    0%, 100% {
+        -webkit-transform: scale(0.0)
+    }
+    50% {
+        -webkit-transform: scale(1.0)
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: scale(0.0);
+        -webkit-transform: scale(0.0);
+    }
+    50% {
+        transform: scale(1.0);
+        -webkit-transform: scale(1.0);
+    }
+}
+
+//TOAST
+.modal-toast{
+    background-color: $modalBg;
+    border: 1px solid $modalBd;
+    padding: 5px 10px;
+    text-align: center;
+    @include absCenter(250px, auto, absolute);
 }

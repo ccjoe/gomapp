@@ -10,7 +10,7 @@ var sass = require('gulp-ruby-sass');
 gulp.task('styles', function () {
   return sass('./app/styles/')
     .pipe(gulp.dest('./app/css/'))
-    // .pipe(livereload());
+     //.pipe();
 });
 
 //node-sass can't run on window
@@ -99,7 +99,9 @@ gulp.task('serve', ['styles', 'fonts'], function () {
   // watch for changes
   gulp.watch([
     'app/*.html',
-    'app/scripts/**/*.js',
+    'app/lib/**/*.*',
+    'app/lib/**/*.*',
+    'app/views/**/*',
     'app/images/**/*',
     '.tmp/fonts/**/*'
   ]).on('change', reload);

@@ -39,8 +39,7 @@ define(['base/utils/store'], function(store){
 
         //显示视图
         show: function (){
-            this.wrapper.html(this.getHTMLFragment()).css('display', 'block');
-
+            this.wrapper.html(this.getHTMLFragment());
             console.log(this.wrapper, 'this.wrapper');
         },
         //更新视图
@@ -127,7 +126,6 @@ define(['base/utils/store'], function(store){
          //that为事件绑定时的listener所在的执行环境
         _parseEvent: function(env){
             var that = this;
-            this.offview();
             if(!this.events) return;
             var events = this.events;
             for(var eve in events){

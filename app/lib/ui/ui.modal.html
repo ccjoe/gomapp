@@ -1,26 +1,28 @@
+{{ if(data.type.indexOf('toast') === -1 ){ }}
 <div class="modal-overlay modal-overlay-visible"></div>
-
-<div class="modal  modal-in modal-{{=data.type}}">
+<div class="modal-layout  modal-in modal-{{=data.type}}">
     <div class="modal-inner">
         {{ if(data.type === 'loading'){ }}
         <div class="spinner">
             <div class="double-bounce1"></div>
             <div class="double-bounce2"></div>
         </div>
-        {{ } }}
+        {{ }else{ }}
         <div class="modal-title">{{=data.title}}</div>
         <div class="modal-text">{{=data.content}}</div>
+        {{ } }}
     </div>
-    <div class="modal-buttons ">
-        <span class="modal-button modal-button-bold">{{= data.yes}}</span>
-        <span class="modal-button modal-button-bold">{{= data.no}}</span>
-        <span class="modal-button modal-button-bold">{{= data.cancel}}</span>
+    {{ var btns = data.btns; if(btns){ }}
+    <div class="modal-buttons">
+        {{ if(btns.yes){ }}<span class="modal-button modal-btn-yes modal-button-bold">{{= btns.yes}}</span> {{ } }}
+        {{ if(btns.no){ }}<span class="modal-button modal-btn-no modal-button-bold">{{= btns.no}}</span> {{ } }}
+        {{ if(btns.cancel){ }}<span class="modal-button modal-btn-def modal-button-bold">{{= btns.def}}</span> {{ } }}
     </div>
+    {{ } }}
 </div>
-
-<div id="toast" class="toast">
-    <span class="icon icon-info">info</span>
-    <span class="icon icon-check">success</span>
-    <span class="icon icon-close">error</span>
-    <span class="icon top">default</span>
+{{ }else{ }}
+<div class="modal-toast">
+    {{var type = data.type.match(/toast-(\w+)/)[1] }}
+    <span class="icon icon-{{= type==='info' ? 'info' : (type==='error'?'close': 'check')  }}">{{=data.content}}</span>
 </div>
+{{ } }}
