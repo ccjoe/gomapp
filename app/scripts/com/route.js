@@ -1,7 +1,6 @@
 'use strict';
 
-define(['require',
-    'com/ctrl',
+define([
     'main/ctrl',
     'auth/ctrl',
     'module/list_ctrl',
@@ -11,15 +10,13 @@ define(['require',
     'viewdoc/header_ctrl',
     'viewdoc/component_list_ctrl',
     'viewdoc/modal_ctrl'
-], function (require) {
-
-    var r = require;
+], function (main, auth, moduleList, moduleView, moduleAdd, viewdocList, viewdocHeader, viewdocComponentList, viewdocModal ) {
 
     //tmpl html FileName; ctrl js FileName
     var router = {
         // '/sample': {
         //     tmpl : 'sample'    //require  页面调用的模块名称 template
-        //     ctrl : r('sample') //optional 页面对应的ctrl的路径 ctrl
+        //     ctrl : samp//optional 页面对应的ctrl的路径 ctrl
         //     title: 'SAMPLE'    //optional 页面标题
         //     data : {}          //optional 页面需要的数据（一般不会直接写入，由ajax动态写入）
         //     wrapper: '#sample' //optional 页面需要插入的DOM位置
@@ -31,48 +28,48 @@ define(['require',
         // },
         '/': {
             tmplname: 'app',
-            ctrl: r('main/ctrl'),
+            ctrl: main,
             title: 'test'
         },
         '/login': {
             tmplname: 'login',
-            ctrl: r('auth/ctrl'),
+            ctrl: auth,
             title: '登录'
         },
         '/viewdoc': {
             '/': {
                 tmplname: 'viewdoc/component_list',
-                ctrl: r('viewdoc/component_list_ctrl'),
+                ctrl: viewdocComponentList,
                 title: '用户组件'
             },
             '/header': {
                 tmplname: 'viewdoc/header',
-                ctrl: r('viewdoc/header_ctrl'),
+                ctrl: viewdocHeader,
                 title: '头部设置文档'
             },
             '/list': {
                 tmplname: 'viewdoc/list',
-                ctrl: r('viewdoc/list_ctrl'),
+                ctrl: viewdocList,
                 title: '头部设置文档'
             },
             '/modal': {
                 tmplname: 'viewdoc/modal',
-                ctrl: r('viewdoc/modal_ctrl'),
+                ctrl: viewdocModal,
                 title: '头部设置文档'
             }
         },
         '/module': {
             '/': {
                 tmplname: 'module/list',
-                ctrl: r('module/list_ctrl')
+                ctrl: moduleList
             },
             '/:var': {
                 tmplname: 'module/view',
-                ctrl: r('module/view_ctrl')
+                ctrl: moduleView
             },
             '/add': {
                 tmplname: 'module/add',
-                ctrl: r('module/add_ctrl')
+                ctrl: moduleAdd
             },
             '/edit': {}
         },
@@ -90,7 +87,7 @@ define(['require',
             }
         },
         '/500': {
-            tmplname: '500',
+            tmplname: '500'
         }
     };
 

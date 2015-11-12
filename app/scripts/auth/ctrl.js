@@ -1,7 +1,5 @@
-define(['auth/model'], function(authModel) {
+define(['auth/model', 'com/ctrl'], function(authModel, comCtrl) {
     'use strict';
-    var authSvc = require('auth/model');
-    var comCtrl = require('com/ctrl');
 
     return {
         init: function(app, cr){

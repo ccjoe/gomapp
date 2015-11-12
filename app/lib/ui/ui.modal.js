@@ -21,7 +21,7 @@ define(['base/core/view'], function(View) {
         },
         //显示视图
         show: function (){
-            this.wrapper.html(this.getHTMLFragment()).css('display', 'block');
+            this.wrapper.show().html(this.getHTMLFragment());
             this.reloc();
             this.showModal();
             if(this.data.type.indexOf('toast')!==-1){
@@ -32,17 +32,22 @@ define(['base/core/view'], function(View) {
             return this.wrapper.find('.modal-layout');
         },
         showModal: function(){
-            this.getModal().fx({
-                width: 270,
+            this.getModal().css({
+                opacity: 0,
+                transform: 'scale(2)'
+            }).fx({
                 opacity: 1,
                 scale: 1
-            }, 200, 'easeOutBack');
+            }, 500, 'easeOutBack');
         },
         hideModal: function(){
+            var that = this;
             this.getModal().fx({
                 opacity: 0,
                 scale: 0.2
-            }, 200, 'easeInBack', this.close);
+            }, 500, 'easeInBack', function(){
+                that.wrapper.hide();
+            });
         },
         reloc: function(){
             var ml = this.wrapper.find('.modal-layout');
@@ -59,7 +64,7 @@ define(['base/core/view'], function(View) {
             }, 3000);
         },
         events: {
-            'click .modal-overlay': 'close',
+            'click .modal-overlay': 'onNo',
             'click .modal-btn-yes': 'onYes',
             'click .modal-btn-no': 'onNo',
         },
