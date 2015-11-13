@@ -55,10 +55,11 @@
         skew(X|Y)
     ] */
     $.fn.fx = function(properties, duration, easing, complete, dealy){
+        console.log(easing);
         easing = easing || 'linear';
         easing = easingMap[easing];
+        console.log(easing);
         this.animate(properties, duration, "cubic-bezier(" + easing.join(',') + ")", complete, dealy);
         return this;
     };
-
 })();

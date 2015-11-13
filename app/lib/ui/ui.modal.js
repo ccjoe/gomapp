@@ -4,9 +4,9 @@ define(['base/core/view'], function(View) {
         btns: {
             yes: '确定',
             no:  '取消'
-        },
+        }/*,
         title: '',
-        content: ''
+        content: ''*/
     };
     var noop = function(){};
     var Modal = View.extend({
@@ -21,37 +21,84 @@ define(['base/core/view'], function(View) {
         },
         //显示视图
         show: function (){
-            this.wrapper.show().html(this.getHTMLFragment());
+            this.wrapper.html(this.getHTMLFragment()).fadeIn(100);
             this.reloc();
-            this.showModal();
-            if(this.data.type.indexOf('toast')!==-1){
-                //this.autoHide();
+            this.toggleModal();
+
+            if(this.isToast()){
+                this.autoHide();
             }
         },
+        getType: function(){
+            return this.data.type;
+        },
+        isToast: function(){
+            return this.getType().indexOf('toast')!==-1;
+        },
+        /**
+         *@return {string} top|bottom, false时为非modal top|bottom
+         */
+        isTopBot: function(){
+            var type =  this.getType();
+            var is = (type ==='top' || type==='bottom');
+            if(is){return type}
+            return is;
+        },
         getModal: function(){
-            return this.wrapper.find('.modal-layout');
+            return this.wrapper.find(this.isToast() ? '.modal-toast' : '.modal-layout');
         },
-        showModal: function(){
+        /**
+         * 判断显示与隐藏及相应动画
+         * @method Page#PUSH
+         * @param {string} inOrOut in|显+out|隐
+         * @param {function} callback
+         **/
+        toggleModal: function(inout){
+            inout = inout || 'In';
+            var pos = this.isTopBot();
+            if(pos){
+                this['slide'+inout+'Modal'](pos);
+            }else{
+                this['scale'+inout+'Modal'](); //居中
+            }
+        },
+
+        scaleInModal: function(){
             this.getModal().css({
-                opacity: 0,
-                transform: 'scale(2)'
+                opacity: 0.2, transform: 'scale(2)'
             }).fx({
-                opacity: 1,
-                scale: 1
-            }, 500, 'easeOutBack');
+                opacity: 1, scale: 1
+            }, 300, 'easeOutBack');
         },
-        hideModal: function(){
+        scaleOutModal: function(){
             var that = this;
             this.getModal().fx({
-                opacity: 0,
-                scale: 0.2
-            }, 500, 'easeInBack', function(){
+                opacity: 0, scale: 0.2
+            }, 300, 'easeInBack', function(){
                 that.wrapper.hide();
             });
         },
+        /**
+         *@param {string} pos top|bottom
+         */
+        slideInModal: function(pos){
+            var fxprops = {opacity: 1};
+                fxprops[pos] = 0;
+            this.getModal().fx(fxprops, 300, 'easeOutBack');
+        },
+        slideOutModal: function(pos){
+            var that = this;
+            var fxprops = {opacity: 0};
+                fxprops[pos] = -this.getModal().height();
+            this.getModal().fx(fxprops, 300, 'easeOutBack', function(){
+                that.wrapper.hide();
+            });
+        },
+        //重置为动画前状态
         reloc: function(){
-            var ml = this.wrapper.find('.modal-layout');
-            ml.css({'height': ml.height(), 'margin-top':-ml.height()/2});
+            var ml = this.getModal(),  h = ml.height(), pos = this.isTopBot();
+            var props = {}; props[pos] = -h;
+            ml.css('height', h).css(pos ? props : {'margin-top': -h/2}); //居上|下 //居中
         },
         close: function(){
             this.wrapper.hide();
@@ -59,22 +106,22 @@ define(['base/core/view'], function(View) {
         autoHide: function(){
             var that = this;
             var time = setTimeout(function(){
-                that.wrapper.hide();
+                that.toggleModal('Out');
                 clearTimeout(time);
             }, 3000);
         },
         events: {
             'click .modal-overlay': 'onNo',
             'click .modal-btn-yes': 'onYes',
-            'click .modal-btn-no': 'onNo',
+            'click .modal-btn-no': 'onNo'
         },
         onYes: function(){
             this.yes();
-            this.hideModal();
+            this.toggleModal('Out');
         },
         onNo: function(){
             this.no();
-            this.hideModal();
+            this.toggleModal('Out');
         }
     });
 
@@ -112,10 +159,40 @@ define(['base/core/view'], function(View) {
                 }
             });
         },
-        topup:function(){},
-        top: function(){},
-        bottom: function(){},
-        popover: function(){},
+        top: function(opts){
+            var bottomStatic = {
+                type: 'top',
+                title: opts.title || '',
+                btns: false,
+                content: {
+                    'list': 'asdfas'
+                }
+            };
+            return this.layout(bottomStatic, opts);
+        },
+        bottom: function(opts){
+            //比如下面的时间选择器， ACTIONSHEET等
+            var bottomStatic = {
+                type: 'bottom',
+                title: opts.title || '',
+                btns: {
+                    no: '取消',
+                    //yes: '完成'
+                },
+                content: {
+                    'list': 'asdfas'
+                }
+            };
+            return this.layout(bottomStatic, opts);
+        },
+        popover: function(opts){
+            var tipsStatic = {
+                type: 'tips',
+                btn: false,
+                content: [{},{},{}]
+            };
+            return this.layout(tipsStatic, opts);
+        },
         toast: function(toastType, content){
             toastType = toastType || 'info';
             return new Modal({
@@ -126,7 +203,7 @@ define(['base/core/view'], function(View) {
                     btns: false,
                     title: false
                 }
-            })
+            });
         }
     };
     return $.extend({}, {modal: Modal}, ModalExtend);

@@ -127,6 +127,7 @@ define(['base/utils/store'], function(store){
         _parseEvent: function(env){
             var that = this;
             if(!this.events) return;
+            this.offview();
             var events = this.events;
             for(var eve in events){
                 (function(eve){

@@ -1,4 +1,4 @@
-@import "/Users/shaofengliu/IT/git/sassCore/_function";
+@import "e:/git/sassCore/_function";
 @import 'mixins.scss';
 /* === Modals === */
 $modalBg: rgba(255,255,255,0.95);
@@ -43,13 +43,7 @@ $actionsPopoverHairline: rgba(0,0,0,0.2);
     opacity: 0;
     color:#000;
     overflow: hidden;
-    &.modal-in {
-        opacity: 1;
-    }
-    &.modal-out {
-        opacity: 0;
-        z-index: 13500-1;
-    }
+    @include backface-visibility;
 }
 
 .modal-inner {
@@ -157,6 +151,28 @@ $actionsPopoverHairline: rgba(0,0,0,0.2);
     }
 }
 
+.modal-top, .modal-bottom{
+    width: 100%;
+    border-radius: 0;
+    margin: 0!important;
+    left: 0!important;
+    .modal-inner, .modal-button{
+        border-radius: 0;
+    }
+}
+
+.modal-top{
+    top: 0;
+    bottom: auto!important;
+}
+.modal-bottom{
+    top: auto!important;
+    bottom:0;
+}
+
+.modal-popover{
+    width: 150px;
+}
 
 //loading
 .spinner {
@@ -209,10 +225,11 @@ $actionsPopoverHairline: rgba(0,0,0,0.2);
 }
 
 //TOAST
-.modal-toast{
+#Toast{
     background-color: $modalBg;
     border: 1px solid $modalBd;
     padding: 5px 10px;
     text-align: center;
-    @include absCenter(250px, auto, absolute);
+    display: none;
+    @include absCenter(250px, auto, fixed);
 }
