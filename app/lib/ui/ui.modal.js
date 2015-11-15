@@ -4,9 +4,10 @@ define(['base/core/view'], function(View) {
         btns: {
             yes: '确定',
             no:  '取消'
-        }/*,
+        },
         title: '',
-        content: ''*/
+        content: '',   //content为str或html,如果为function则需要返回str或html
+        class: ''
     };
     var noop = function(){};
     var Modal = View.extend({
@@ -20,7 +21,7 @@ define(['base/core/view'], function(View) {
             this.no = opts.no || noop;
         },
         //显示视图
-        show: function (){
+        aftershow: function (){
             this.wrapper.html(this.getHTMLFragment()).fadeIn(100);
             this.reloc();
             this.toggleModal();
@@ -29,6 +30,10 @@ define(['base/core/view'], function(View) {
                 this.autoHide();
             }
         },
+        //setContent: function(){
+        //    data.content = (data.content !== 'function') ? data.content : data.content();
+        //    this.render();
+        //},
         getType: function(){
             return this.data.type;
         },
@@ -137,8 +142,7 @@ define(['base/core/view'], function(View) {
                     yes: 'OK'
                 }
             };
-            console.log($.extend({}, opts, alertStatic));
-            return this.layout(alertStatic, opts);
+            return this.layout(alertStatic, opts).render();
         },
         confirm:function(opts){
             var confirmStatic = {
@@ -148,7 +152,7 @@ define(['base/core/view'], function(View) {
                     yes: '确定', no: '取消'
                 }
             };
-            return this.layout(confirmStatic, opts);
+            return  this.layout(confirmStatic, opts).render();
         },
         loading:function(){
             return new Modal({
@@ -157,7 +161,7 @@ define(['base/core/view'], function(View) {
                     btns: false,
                     title: false
                 }
-            });
+            }).render();
         },
         top: function(opts){
             var bottomStatic = {
@@ -168,8 +172,9 @@ define(['base/core/view'], function(View) {
                     'list': 'asdfas'
                 }
             };
-            return this.layout(bottomStatic, opts);
+            return this.layout(bottomStatic, opts).render();
         },
+        //
         bottom: function(opts){
             //比如下面的时间选择器， ACTIONSHEET等
             var bottomStatic = {
@@ -179,11 +184,9 @@ define(['base/core/view'], function(View) {
                     no: '取消',
                     //yes: '完成'
                 },
-                content: {
-                    'list': 'asdfas'
-                }
+                content: opts.content
             };
-            return this.layout(bottomStatic, opts);
+            return this.layout(bottomStatic, opts).render();
         },
         popover: function(opts){
             var tipsStatic = {
@@ -191,9 +194,9 @@ define(['base/core/view'], function(View) {
                 btn: false,
                 content: [{},{},{}]
             };
-            return this.layout(tipsStatic, opts);
+            return this.layout(tipsStatic, opts).render();
         },
-        toast: function(toastType, content){
+        toast: function(content, toastType){
             toastType = toastType || 'info';
             return new Modal({
                 wrapper: '#Toast',
@@ -203,7 +206,7 @@ define(['base/core/view'], function(View) {
                     btns: false,
                     title: false
                 }
-            });
+            }).render();
         }
     };
     return $.extend({}, {modal: Modal}, ModalExtend);

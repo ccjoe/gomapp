@@ -9,8 +9,9 @@ define([
     'viewdoc/list_ctrl',
     'viewdoc/header_ctrl',
     'viewdoc/component_list_ctrl',
-    'viewdoc/modal_ctrl'
-], function (main, auth, moduleList, moduleView, moduleAdd, viewdocList, viewdocHeader, viewdocComponentList, viewdocModal ) {
+    'viewdoc/modal_ctrl',
+    'viewdoc/button_ctrl'
+], function (main, auth, moduleList, moduleView, moduleAdd, viewdocList, viewdocHeader, viewdocComponentList, viewdocModal, viewdocButton ) {
 
     //tmpl html FileName; ctrl js FileName
     var router = {
@@ -29,7 +30,7 @@ define([
         '/': {
             tmplname: 'app',
             ctrl: main,
-            title: 'test'
+            title: 'H5 MVC Histroy App'
         },
         '/login': {
             tmplname: 'login',
@@ -50,12 +51,17 @@ define([
             '/list': {
                 tmplname: 'viewdoc/list',
                 ctrl: viewdocList,
-                title: '头部设置文档'
+                title: '列表文档'
             },
             '/modal': {
                 tmplname: 'viewdoc/modal',
                 ctrl: viewdocModal,
-                title: '头部设置文档'
+                title: 'Modal设置文档'
+            },
+            '/button': {
+                tmplname: 'viewdoc/button',
+                ctrl: viewdocButton,
+                title: '按钮Button文档'
             }
         },
         '/module': {

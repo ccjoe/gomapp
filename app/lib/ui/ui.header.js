@@ -15,17 +15,22 @@ define(['base/core/view'], function(View) {
         init: function (opts) {
             opts.data = _.extend({}, defaultHeader, opts.data);
             opts.tmplname = 'ui.header';
-            opts.wrapper = opts.wrapper || opts.config.selector.header
+            opts.wrapper = opts.wrapper || opts.config.selector.header;
+            $.extend(opts, this);   //将List实例混合到opts上， 去父对象上执行
             this._super(opts);
-
             this.title = opts.title;
         },
         setTitle: function(text){
             this.data.title = text;
             this.update();
         },
-        event: {
-
+        events: {
+            'click .icon-left-nav': 'goBack'
+        },
+        goBack: function(){
+            console.log(123);
+            History.go(-1);
+            return;
         }
     });
 

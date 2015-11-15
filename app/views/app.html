@@ -1,5 +1,6 @@
 {{ include headerTmpl }}
 <div class="content sliding" id="#content">
+    <div id="indexList"></div>
     <ul class="table-view">
         <li class="table-view-divider">栏目</li>
     {{ _.each(data, function(item, i){ }}
@@ -12,9 +13,6 @@
         </a>
       </li>
     {{  }) }}
-      <li class="table-view-divider">页面</li>
-      <li class="table-view-cell">Item 1</li>
-      <li class="table-view-cell">Item 2</li>
     </ul>
 </div>
 {{ include footerTmpl }}

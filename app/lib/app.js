@@ -42,7 +42,7 @@ if ('addEventListener' in document) {
     }, false);
 }
 
-define(['base/core/page', 'base/utils/url'], function(Page, url){
+define(['base/core/page', 'base/utils/url', 'base/core/model'], function(Page, Url, Model){
     /**
      * App对象
      * @namespace
@@ -68,21 +68,33 @@ define(['base/core/page', 'base/utils/url'], function(Page, url){
             History.Adapter.bind(window, 'statechange', function(e){
                 var state = History.getState();
                 state.data.hash = state.data.hash || '/';
-                //state.data.prevHash = that.getPrevHash();
-                console.log(document.referrer, state, 'state');
                 that._routeByHash(state.data.hash);
             });
             History.Adapter.trigger(window, 'statechange');
 
+            this.initHref();
+        },
+        initHref: function(){
             //对所有链接进行html5处理
-            //@todo 需要处理为智能判断url与绝对、相应地址
+            //@todo 需要处理为智能判断Url与绝对、相应地址
+            //? 站内链接跳转
+            //# 站内组件或hash跳转
+            //http:// 站间跳转
+            //''为空时当作非链接处理
+            var that = this;
             $("body").off().on("click", 'a', function(){
                 var $t = $(this),
-                    hash =  $t.attr('href').substring(1);
+                    href = $t.attr('href');
+                if(!href) return;
+                var hash =  href.substring(1);
                 History.pushState({hash: hash, prevHash: that.getPrevHash()}, $t.attr('title'), '?'+hash);
+                return false;
+            }).on('click', '.icon-left-nav', function(){
+                History.go(-1);
                 return false;
             });
         },
+
         getPrevHash: function(){
             return location.search.substring(1);
         },
@@ -101,7 +113,7 @@ define(['base/core/page', 'base/utils/url'], function(Page, url){
          * @example ?module/list  ?module/123
          */
         getPageSets: function (hashPath) {
-            var hashRoute = url.getHashPath(hashPath, true),
+            var hashRoute = Url.getHashPath(hashPath, true),
                 router = this.route;
 
             if (hashPath === '/') {
@@ -186,15 +198,15 @@ define(['base/core/page', 'base/utils/url'], function(Page, url){
             return history[history.length-index];
         },
         isBack: function(){
-            var oldHashArr = url.getHashPath(this.getLastHashByLastIndex(2), true),
-                newHashArr = url.getHashPath(this.getLastHashByLastIndex(1), true);
+            var oldHashArr = Url.getHashPath(this.getLastHashByLastIndex(2), true),
+                newHashArr = Url.getHashPath(this.getLastHashByLastIndex(1), true);
             console.log(_.compact(oldHashArr), _.compact(newHashArr),   'IS GO OR BACK');
             return _.compact(newHashArr).length < _.compact(oldHashArr).length;
         },
         //判断是否存在CRO而404
         isRouteNotFound: function(CRO){
             if (!CRO) {
-                this.route['/404']['data'] = {url: location.href};
+                this.route['/404']['data'] = {Url: location.href};
                 this.goto('404');
                 return true;
             }

@@ -15,6 +15,10 @@ define(function() {
                         name: 'modal',
                         hash: 'viewdoc/modal'
                     },
+                    button:{
+                        name: 'button',
+                        hash: 'viewdoc/button'
+                    },
                     tips:{
                         name: 'tips',
                         hash: 'viewdoc/tips'

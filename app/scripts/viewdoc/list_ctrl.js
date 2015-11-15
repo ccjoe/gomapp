@@ -45,7 +45,8 @@ define(['base/ui/ui.list'], function(List) {
                 },{
                     img: 'icon-gear',
                     title: '组2',
-                    isDivider: true
+                    isDivider: true,
+                    collapse: false
                 },{
                     icon: 'icon-pages',
                     title: '列表3',

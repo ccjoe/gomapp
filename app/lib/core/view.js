@@ -5,6 +5,42 @@ define(['base/utils/store'], function(store){
         interpolate : /\{\{=(.+?)\}\}/g,
         escape      : /\{\{\-(.+?)\}\}/g
     };
+
+    //重、写_.underscore方式，去支持include语法
+    var template = function (str, data) {
+        // match "<% include template-id %>"
+        return _.template(
+            str.replace(
+                // /<%\s*include\s*(.*?)\s*%>/g,
+                /\{\{\s*include\s*(.*?)\s*\}\}/g,
+                function(match, templateId) {
+                    var el = document.getElementById(templateId);
+                    return el ? el.innerHTML : '';
+                }
+            ),
+            data
+        );
+    };
+
+    var getPartialTmplStatus = 'init';  //初始
+    var getPartialTmpl = function (callback){
+        if(getPartialTmplStatus === 'loading'){
+            return;
+        }
+        getPartialTmplStatus = 'loading';   //正请求
+        $.ajax({url:'lib/ui/ui.html', dataType:'html', async: false, success: function (tmpl){
+            getPartialTmplStatus = 'finished';  //已完成
+            var tmpls = $(tmpl).find("script"), tmplID;
+            tmpls.prevObject.each(function(i, item){
+                tmplID = item.id;
+                if(!!tmplID){
+                    store.set(tmplID, $(item).html());
+                }
+            });
+            callback ? callback() : null;
+        }});
+    };
+    getPartialTmpl();
     /**
      * View对象
      * @namespace
@@ -19,6 +55,7 @@ define(['base/utils/store'], function(store){
             this.data   = opts.data || {};
             this.events = opts.events || {};
             this.wrapper = $(opts.wrapper);
+            this.replace = opts.replace || false;                    //是否替换原标签
             this.construct(opts);
         },
         //new View()时即执行的对象
@@ -29,19 +66,23 @@ define(['base/utils/store'], function(store){
             }
         },
 
-        //根据STORE与AJAX条件渲染视图,供View.extend的Page UI内部调用
+        //根据STORE与AJAX条件渲染视图,供View.extend的Page UI内部调用, 有wrapper时直接插入到页面，否则返回HTMLFragment,但是能返回的前提是，view是同步的
         render: function(){
-            var that = this;
+            var that = this, frag;
             this.getTmpl('partial', function(){
-                that.show();
+                frag = that.getHTMLFragment();
+                if(that.wrapper){
+                    console.log(that.wrapper, 'wrapper');
+                    that.replace ? that.wrapper.replaceWith(frag) : that.wrapper.html(frag);
+                    that.aftershow();
+                }
             });
+            return that.wrapper ? that : frag;
         },
 
-        //显示视图
-        show: function (){
-            this.wrapper.html(this.getHTMLFragment());
-            console.log(this.wrapper, 'this.wrapper');
-        },
+        //显示后视图,ui extended view需要用到，不能去除
+        aftershow: function (){},
+
         //更新视图
         update: function(data){
             if(data){
@@ -56,7 +97,7 @@ define(['base/utils/store'], function(store){
         //获取带模板数据的virtual dom
         getHTMLFragment: function(){
             if(!this.tmpl) return;
-            return this.data ? this.template(this.tmpl)(this) : this.template(this.tmpl);
+            return this.data ? template(this.tmpl)(this) : template(this.tmpl);
         },
 
         //获取STORE与AJAX条件获取模板
@@ -83,29 +124,23 @@ define(['base/utils/store'], function(store){
                 type = type || 'view';
                 next = arguments[1];
             }
-            var that = this,
-                baseUrl = (type === 'partial' ? '/lib/ui/' : '/views/');
+            var that = this;
 
-            $.get(baseUrl + this.tmplname + '.html', function (tmpl) {
-                //store.set(that.tmplname, tmpl);
-                that.tmpl = tmpl;
-                next ? next() : null;
-            });
-        },
-        //重、写_.underscore方式，去支持include语法
-        template: function (str, data) {
-            // match "<% include template-id %>"
-            return _.template(
-                str.replace(
-                    // /<%\s*include\s*(.*?)\s*%>/g,
-                    /\{\{\s*include\s*(.*?)\s*\}\}/g,
-                    function(match, templateId) {
-                        var el = document.getElementById(templateId);
-                        return el ? el.innerHTML : '';
-                    }
-                ),
-                data
-            );
+            if(type === 'view'){
+                $.get('/views/'+this.tmplname+'.html', function (tmpl) {
+                    store.set(that.tmplname, tmpl);
+                    that.tmpl = tmpl;
+                    next ? next() : null;
+                });
+                return;
+            }
+            //如果是获取组件模板，则先整体获取，再通过store获取;
+            if(type === 'partial'){
+                getPartialTmpl(function(){
+                    that.getStoreTmpl();
+                    next();
+                });
+            }
         },
         //给组件或页面绑定事件，采用了事件代理的方式
         onview: function(eventType, selector, listener){

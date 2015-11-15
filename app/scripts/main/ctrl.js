@@ -1,4 +1,4 @@
-define(function(require) {
+define(['base/ui/ui.list'], function(List) {
     'use strict';
     var indexData = [
         {
@@ -47,15 +47,37 @@ define(function(require) {
     return {
         init: function(page) {
             page.data = indexData;
-            page.render();
+            page.render(this.side);
         },
 
-        login: function() {
+        side: function() {
+            var viewList = {
+                media: 'img', // 'icon'
+                list: [{
+                    isDivider: true,
+                    title: '文档相关',
+                    collapse: true
+                },{
+                    title: 'viewdoc(UI)',
+                    desc: 'UI组件相关使用实例及文档描述【组件层】',
+                    hash: '?viewdoc',
+                    badge: 5,
+                },{
+                    title: 'pagedoc',
+                    desc: '页面文档及相关【视图层】',
+                    hash: '?pagedoc'
+                },{
+                    title: 'modeldoc',
+                    desc: '页面文档及相关【模型层】',
+                    hash: '?modeldoc'
+                }],
+            };
 
-        },
-
-        logout: function() {
-
+            var ListSet = new List({
+                data: viewList,
+                wrapper: '#indexList'
+            });
+            ListSet.render();
         }
     };
 });

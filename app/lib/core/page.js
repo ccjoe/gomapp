@@ -1,9 +1,10 @@
-define(['base/core/view'], function(View){
+define(['base/core/view', 'base/ui/ui'], function(View, UI){
 
     var Page = View.extend({
         init:function (opts) {
             opts.wrapper = opts.wrapper || opts.config.selector.wrapper || '#viewport';
             this.title  = opts.title || '';
+            this.widgets = [];
             this.dom = {
                 root   : opts.root || '',
                 header : opts.header || '',
@@ -31,6 +32,21 @@ define(['base/core/view'], function(View){
             if (this.title) {
                 this.setHeader();
             }
+            this.initWidgetUI();
+        },
+        //自动组件实例化
+        initWidgetUI: function(){
+            var $t, uitype, that = this;
+            $('body').find('[ui-widget]').each(function(i, it){
+                $t = $(it);
+                uitype = $t.attr('ui-widget');
+
+                that.widgets[i] = new UI[uitype]({
+                    wrapper: $t,
+                    data: $.extend({}, $t.data('opts'), {title: $t.text()})
+                });
+                that.widgets[i].render();
+            });
         },
         /**
          * 设置heaer
