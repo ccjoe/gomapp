@@ -1,15 +1,15 @@
-.title-wrapper {
+.title-ms {
   display: block;
   width: 100%; }
-  .title-wrapper > * {
+  .title-ms > * {
     width: 100%;
     text-align: center;
     position: absolute;
     margin: 0 -10px; }
-  .title-wrapper .title {
+  .title-ms .title {
     height: 24px;
     line-height: 30px; }
-  .title-wrapper .subtitle {
+  .title-ms .subtitle {
     top: 25px;
     height: 20px;
     line-height: 14px;

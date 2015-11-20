@@ -16,7 +16,7 @@
     {{ if(type === 'link'){  }}<button class="btn btn-link btn-nav pull-{{=posi}}">{{= text }}</button>{{ } }}
     {{ }); }}
 
-    <div class="title-wrapper">
+    <div class="title-wrapper {{=data.subtitle ? 'title-ms' : ''}}">
         <h1 class="title">{{=data.title}}</h1>
         {{ if(data.subtitle){ }}<h2 class="subtitle">{{=data.subtitle}}</h2>{{ } }}
     </div>

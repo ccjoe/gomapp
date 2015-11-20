@@ -16,6 +16,7 @@ define(['base/ui/ui.header'], function(Header) {
             var header = new Header({
                 data: {
                     title: '新头部',
+                    subtitle: 'from 2015/11/11'
                 },
                 wrapper: '#header'
             });

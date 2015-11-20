@@ -1,5 +1,13 @@
 define(['base/core/view', 'base/ui/ui'], function(View, UI){
-
+    /**
+     * page.js相关
+     * 1. 页面转场相关
+     * 2. 自动初始化页面，在此基础上可以定义ctrl去获取数据与改变数据结构再渲染页面
+     * 3. 支持声明式组件写法
+     * 4. 页面SEO相关的设置
+     * @extend View
+     * @example
+     **/
     var Page = View.extend({
         init:function (opts) {
             opts.wrapper = opts.wrapper || opts.config.selector.wrapper || '#viewport';
@@ -34,7 +42,7 @@ define(['base/core/view', 'base/ui/ui'], function(View, UI){
             }
             this.initWidgetUI();
         },
-        //自动组件实例化
+        //自动实例化组件，去支持声明式初始UI组件
         initWidgetUI: function(){
             var $t, uitype, that = this;
             $('body').find('[ui-widget]').each(function(i, it){
@@ -55,21 +63,22 @@ define(['base/core/view', 'base/ui/ui'], function(View, UI){
          * @param {effect} swipe-left, swipe-rigth, swipe-top, swipe-bottom 推入的html
          **/
         push: function(dom, effect){
-            var $dc = $(this.wrapper ? this.wrapper : '#body');
+            var $dc = $(this.wrapper ? this.wrapper : '#viewport');
+                $dc.append(dom);
+
             if(!effect){    //如果没有效果直接放进去
-                $dc.html(dom);
             }else{
                 var xy = /left|right/.test(effect) ? 'X' : 'Y',
                     val = /left|top/.test(effect) ? '100%' : '-100%',
                     effcss = 'translate'+xy+'('+val+')';
 
-                var $ct = $dc.html(dom).find('.content');
+                var $ct = $dc.find('.content');
                 if(/swipe-/.test(effect)){
                     $ct.css({'transform': effcss})
                         .animate({
                             translateX: '0',
                             translate3d: '0,0,0'
-                        }, 200, 'ease-out');
+                        }, 300, 'ease-out');
                     return;
                 }
             }
@@ -108,6 +117,7 @@ define(['base/core/view', 'base/ui/ui'], function(View, UI){
          * @return {object} CRO (Current Router Object)返回具体路由指向的路由表对象
          */
         setHeader: function () {
+            //alert(this.title);
             $('header.bar .title').text(this.title);
         },
         setSeo: function(seoInfo){

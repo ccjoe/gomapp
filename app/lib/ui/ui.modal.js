@@ -15,7 +15,7 @@ define(['base/core/view'], function(View) {
             opts.data = $.extend({}, data, opts.data);
             $.extend(opts, this);   //将List实例混合到opts上， 去父对象上执行
             opts.tmplname = 'ui.modal';
-            opts.wrapper = opts.wrapper || '#Modal';
+            opts.wrapper = opts.wrapper || '#modal';
             this._super(opts);
             this.yes = opts.yes || noop;
             this.no = opts.no || noop;
@@ -199,7 +199,7 @@ define(['base/core/view'], function(View) {
         toast: function(content, toastType){
             toastType = toastType || 'info';
             return new Modal({
-                wrapper: '#Toast',
+                wrapper: '#toast',
                 data:{
                     type: 'toast-'+toastType,
                     content: content,
