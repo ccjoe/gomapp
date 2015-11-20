@@ -61,10 +61,15 @@ define(['base/core/view', 'base/ui/ui'], function(View, UI){
          * @method Page#PUSH
          * @param {dom} dom 推入的html
          * @param {effect} swipe-left, swipe-rigth, swipe-top, swipe-bottom 推入的html
+         * 保留最近的二个页面
          **/
         push: function(dom, effect){
             var $dc = $(this.wrapper ? this.wrapper : '#viewport');
                 $dc.append(dom);
+            var $dcct = $dc.find('.content');
+            if($dcct.length > 2){
+                $dcct.eq(0).remove();
+            }
 
             if(!effect){    //如果没有效果直接放进去
             }else{

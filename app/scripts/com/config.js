@@ -11,7 +11,7 @@ define(function() {
             wrapper: '#viewport',
             header: '#header',
             footer: '#footer',
-            content: '#content'
+            content: '.content'
         }
     };
 
