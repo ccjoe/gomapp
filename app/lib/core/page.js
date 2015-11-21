@@ -77,9 +77,8 @@ define(['base/core/view', 'base/ui/ui'], function(View, UI){
                     val = /left|top/.test(effect) ? '100%' : '-100%',
                     effcss = 'translate'+xy+'('+val+')';
 
-                var $ct = $dc.find('.content');
                 if(/swipe-/.test(effect)){
-                    $ct.css({'transform': effcss})
+                    $dcct.last().css({'transform': effcss})
                         .animate({
                             translateX: '0',
                             translate3d: '0,0,0'

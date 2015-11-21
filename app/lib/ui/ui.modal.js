@@ -7,7 +7,8 @@ define(['base/core/view'], function(View) {
         },
         title: '',
         content: '',   //content为str或html,如果为function则需要返回str或html
-        class: ''
+        class: '',
+        mask: true
     };
     var noop = function(){};
     var Modal = View.extend({
@@ -19,6 +20,7 @@ define(['base/core/view'], function(View) {
             this._super(opts);
             this.yes = opts.yes || noop;
             this.no = opts.no || noop;
+            this.mask = opts.mask;
         },
         //显示视图
         aftershow: function (){
@@ -29,11 +31,11 @@ define(['base/core/view'], function(View) {
             if(this.isToast()){
                 this.autoHide();
             }
+            if(this.mask !== true){
+                $('.modal-overlay').removeClass('modal-overlay-visible');
+            }
         },
-        //setContent: function(){
-        //    data.content = (data.content !== 'function') ? data.content : data.content();
-        //    this.render();
-        //},
+
         getType: function(){
             return this.data.type;
         },
@@ -70,7 +72,7 @@ define(['base/core/view'], function(View) {
 
         scaleInModal: function(){
             this.getModal().css({
-                opacity: 0.2, transform: 'scale(2)'
+                opacity: 0.2, transform: 'scale(1.5)'
             }).fx({
                 opacity: 1, scale: 1
             }, 300, 'easeOutBack');
@@ -159,7 +161,8 @@ define(['base/core/view'], function(View) {
                 data:{
                     type: 'loading',
                     btns: false,
-                    title: false
+                    title: false,
+                    mask: false
                 }
             }).render();
         },

@@ -4,7 +4,7 @@ define(['base/core/view'], function(View) {
         effect: 'slide'
     };
 
-    var Button = View.extend({
+    var Sides = View.extend({
         init: function (opts) {
             opts.data = _.extend({}, defaultBtn, opts.data);
             opts.tmplname = 'ui.sides';
@@ -14,5 +14,9 @@ define(['base/core/view'], function(View) {
         }
     });
 
-    return Button;
+    return function(pos){
+        new Sides({
+            position: pos
+        }).render();
+    }
 });

@@ -77,7 +77,7 @@ define(['base/utils/store'], function(store){
                     that.aftershow();
                 }
             });
-            return that.wrapper ? that : frag;
+            return that.wrapper.length ? that : frag;
         },
 
         //显示后视图,ui extended view需要用到，不能去除

@@ -1,5 +1,5 @@
 ///Users/shaofengliu/IT
-@import "e:/git/sassCore/_function";
+@import '/Users/shaofengliu/IT/git/sassCore/_function.scss';
 @import 'mixins.scss';
 /* === Modals === */
 $modalBg: rgba(255,255,255,0.95);
@@ -198,7 +198,7 @@ $actionsPopoverHairline: rgba(0,0,0,0.2);
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    background-color: #fff;
+    background-color: #007aff;
     opacity: 0.6;
     position: absolute;
     top: 0;
@@ -233,8 +233,12 @@ $actionsPopoverHairline: rgba(0,0,0,0.2);
     }
 }
 
+#modal{
+    width: 100%;
+    height: 100%;}
+
 //TOAST
-#Toast{
+#toast{
     display: none;
     //@include absCenter(250px, auto, fixed);
     position: fixed;

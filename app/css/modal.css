@@ -163,7 +163,7 @@
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background-color: #fff;
+  background-color: #007aff;
   opacity: 0.6;
   position: absolute;
   top: 0;
@@ -187,28 +187,32 @@
   50% {
     transform: scale(1);
     -webkit-transform: scale(1); } }
-#Toast {
+#modal {
+  width: 100%;
+  height: 100%; }
+
+#toast {
   display: none;
   position: fixed;
   bottom: 20%;
   width: 100%;
   text-align: center; }
-  #Toast .modal-toast {
+  #toast .modal-toast {
     padding: 5px 10px;
     text-align: center;
     display: inline-block;
     margin: 0 auto;
     color: #fff; }
-    #Toast .modal-toast .icon {
+    #toast .modal-toast .icon {
       font-size: 15px; }
-      #Toast .modal-toast .icon:before {
+      #toast .modal-toast .icon:before {
         font-size: 18px;
         position: relative;
         top: 1px;
         margin-right: 5px; }
-  #Toast .modal-toast-info {
+  #toast .modal-toast-info {
     background-color: #333; }
-  #Toast .modal-toast-success {
+  #toast .modal-toast-success {
     background-color: forestgreen; }
-  #Toast .modal-toast-error {
+  #toast .modal-toast-error {
     background-color: orangered; }

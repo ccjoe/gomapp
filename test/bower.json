@@ -1,5 +1,5 @@
 {
-  "name": "h5-mvc",
+  "name": "gom",
   "private": true,
   "dependencies": {
     "chai": "~1.8.0",

@@ -1,18 +1,6 @@
 <!--{{ include headerTmpl }}-->
 <div class="content">
     <div id="indexList"></div>
-    <ul class="table-view">
-        <li class="table-view-divider">栏目</li>
-    {{ _.each(data, function(item, i){ }}
-        <li class="table-view-cell media">
-        <a class="navigate-right" href="?{{= item.hash }}">
-          <span class="media-object pull-left icon icon-{{= item.icon }}"></span>
-          <div class="media-body">
-            {{= item.name }}
-          </div>
-        </a>
-      </li>
-    {{  }) }}
-    </ul>
+    <div class="content-padded"><p>{{= data }}</p></div>
 </div>
 <!--{{ include footerTmpl }}-->
