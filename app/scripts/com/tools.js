@@ -189,7 +189,8 @@ define(function() {
             return {};
         }
         var objstr = '{',
-            index = 0;
+            index = 0,
+            objDivStr;
         for (var key in obj) {
             index++;
             if (typeof obj[key] !== 'function') {
