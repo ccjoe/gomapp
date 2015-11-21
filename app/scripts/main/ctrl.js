@@ -1,6 +1,6 @@
 define(['base/ui/ui.list', 'base/ui/ui.sides'], function(List, Sides) {
     'use strict';
-    var data = '上面的列表是组件渲染方式，这里的文本数据是页面渲染的部分, gom分页面渲染和ui组件渲染，其都继承于View对象,都有data属性，通过定义组织data，然后调用render方法可以实现不同的渲染方式';
+    var data = '上面的列表是组件渲染方式，这里的文本数据是页面渲染的部分, GoM分页面渲染和ui组件渲染，其都继承于View对象,都有data属性，通过定义组织data，然后调用render方法可以实现不同的渲染方式';
 
     var viewList = {
         media: 'img', // 'icon'
@@ -42,7 +42,7 @@ define(['base/ui/ui.list', 'base/ui/ui.sides'], function(List, Sides) {
         //wrapper: '#indexList'     //有wrapper时直接渲染，否则返回fragmentHTML
     }).render();
 
-    return {
+    var mainCtrl =  {
         init: function(page) {
             page.data = data;  //页面的tmpl与data生成的页面
             page.render(this.mainList);    //this.sides页面渲染后回调生成ui组件组成的页面
@@ -50,19 +50,18 @@ define(['base/ui/ui.list', 'base/ui/ui.sides'], function(List, Sides) {
         events:{
 
         },
-        //左右侧边栏
+
         mainList: function() {
             $('#indexList').html(ListSet);
+            mainCtrl.sides();
         },
+        //左右侧边栏
         sides: function(){
             var side = new Sides({
-
-            });
-            //var ListSet = new List({
-            //    data: viewList,
-            //    wrapper: '#indexList'
-            //});
-            //ListSet.render();
+                position: 'left',
+                wrapper: '#sides'
+            }).render();
         }
     };
+    return mainCtrl;
 });

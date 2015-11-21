@@ -30,7 +30,7 @@ define([
         '/': {
             tmplname: 'app',
             ctrl: main,
-            title: 'H5 MVC Histroy App'
+            title: 'GoM App'
         },
         '/login': {
             tmplname: 'login',

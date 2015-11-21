@@ -8,15 +8,10 @@ define(['base/core/view'], function(View) {
         init: function (opts) {
             opts.data = _.extend({}, defaultBtn, opts.data);
             opts.tmplname = 'ui.sides';
-            opts.replace = true;
             $.extend(opts, this);   //将List实例混合到opts上， 去父对象上执行
             this._super(opts);
         }
     });
 
-    return function(pos){
-        new Sides({
-            position: pos
-        }).render();
-    }
+    return Sides;
 });
