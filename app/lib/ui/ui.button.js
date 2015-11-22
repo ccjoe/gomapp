@@ -9,7 +9,7 @@ define(['base/core/view'], function(View) {
 
     var Button = View.extend({
         init: function (opts) {
-            var data = opts.data = _.extend({}, defaultBtn, opts.data);
+            opts.data = _.extend({}, defaultBtn, opts.data);
             opts.tmplname = 'ui.button';
             opts.replace = true;
             $.extend(opts, this);   //将List实例混合到opts上， 去父对象上执行

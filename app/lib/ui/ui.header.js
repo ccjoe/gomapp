@@ -34,7 +34,6 @@ define(['base/core/view'], function(View) {
             'click .icon-left-nav': 'goBack'
         },
         goBack: function(){
-            console.log(123);
             History.go(-1);
             return;
         }

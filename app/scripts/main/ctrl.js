@@ -67,7 +67,7 @@ define(['base/ui/ui.list', 'base/ui/ui.sides'], function(List, Sides) {
             this.side.content = sidesDesc + ListSet;
             this.side.setContent();
             var that = this;
-            this.side.wrapper.off().on('click', 'a', function(){
+            this.side.wrapper.off('click', 'a').on('click', 'a', function(){
                 var $t = $(this);
                 if($t.hasClass('close')){
                     that.side.hide();

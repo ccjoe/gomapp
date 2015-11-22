@@ -1,7 +1,11 @@
 define(['base/core/view'], function(View) {
+    /**
+     * @default
+     * @prop position left, right
+     * @prop content, sides的内容
+     */
     var defaultBtn = {
         position: 'left',   //left or right
-        effect: 'slide',
         content: ''         // string or html
     };
 
@@ -13,25 +17,36 @@ define(['base/core/view'], function(View) {
             $.extend(opts, this);   //将List实例混合到opts上， 去父对象上执行
             this._super(opts);
         },
-
-        getSide: function(){
-          return  this.wrapper.find('.sides');
+        events:{
+            'click .sides-overlay': 'hide'
+        },
+        getSides: function(){
+            return  this.wrapper.find('.sides');
+        },
+        getOverlay: function(){
+            return  this.wrapper.find('.sides-overlay');
         },
         setContent: function(){
-          this.getSide().html(this.content);
+          this.getSides().html(this.content);
         },
+
         show: function(){
+            this.getOverlay().css('visibility', 'visible');
+
             var fxprops = {};
             fxprops[this.data.position] = 0;
             this.showed = true;
-            this.getSide().fx(fxprops, 300, 'easeInBack');
+            this.getSides().fx(fxprops, 300, 'easeInBack');
         },
         hide: function(){
-            var side = this.getSide();
+            var that = this;
+            var side = this.getSides();
             var fxprops = {};
                 fxprops[this.data.position] = -side.width();
             this.showed = false;
-            side.fx(fxprops, 300, 'easeInBack');
+            side.fx(fxprops, 300, 'easeInBack', function(){
+                that.getOverlay().css('visibility', 'hidden');
+            });
         }
     });
 

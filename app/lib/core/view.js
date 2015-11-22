@@ -144,7 +144,6 @@ define(['base/utils/store'], function(store){
         },
         //给组件或页面绑定事件，采用了事件代理的方式
         onview: function(eventType, selector, listener){
-            //console.log(this.wrapper, eventType,  selector, listener,  'this.wrapper.$el on event');
             this.wrapper.on(eventType, selector, listener);
             return this;
         },
@@ -158,12 +157,13 @@ define(['base/utils/store'], function(store){
             //this._parseEvent(this);
         },
         /**
+         * @param {object} env env为事件绑定时的listener所在的执行环境,为ctrl或View, UI-widget
          * events: {
          *   'click,touch selector1,selector2': 'function',
          *   'touch .selecor': 'function2'
          * }
+         * function有二个参数 (e, item),其this指向所在的环境即env
          **/
-         //that为事件绑定时的listener所在的执行环境
         _parseEvent: function(env){
             var that = this;
             if(!this.events) return;
