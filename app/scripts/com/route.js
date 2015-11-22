@@ -17,7 +17,7 @@ define([
     var router = {
         // '/sample': {
         //     tmpl : 'sample'    //require  页面调用的模块名称 template
-        //     ctrl : samp//optional 页面对应的ctrl的路径 ctrl
+        //     ctrl : sample optional 页面对应的ctrl的路径 ctrl
         //     title: 'SAMPLE'    //optional 页面标题
         //     data : {}          //optional 页面需要的数据（一般不会直接写入，由ajax动态写入）
         //     wrapper: '#sample' //optional 页面需要插入的DOM位置
