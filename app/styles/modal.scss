@@ -170,6 +170,10 @@ $actionsPopoverHairline: rgba(0,0,0,0.2);
 .modal-top{
     top: 0;
     bottom: auto!important;
+    .modal-inner{
+        background-color:rgba(0, 0, 0, 0.85);
+        color: #fff;
+    }
 }
 .modal-bottom{
     top: auto!important;

@@ -190,6 +190,9 @@
 .modal-top {
   top: 0;
   bottom: auto !important; }
+  .modal-top .modal-inner {
+    background-color: rgba(0, 0, 0, 0.85);
+    color: #fff; }
 
 .modal-bottom {
   top: auto !important;
