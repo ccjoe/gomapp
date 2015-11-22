@@ -3,6 +3,7 @@ define(function(require){
         Button: require('base/ui/ui.button'),
         Header: require('base/ui/ui.header'),
         List:   require('base/ui/ui.list'),
-        Modal:  require('base/ui/ui.modal')
+        Modal:  require('base/ui/ui.modal'),
+        Sides:  require('base/ui/ui.sides')
     }
 });

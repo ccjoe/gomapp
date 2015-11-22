@@ -23,8 +23,8 @@ define(['base/core/view'], function(View) {
             this.mask = opts.mask;
         },
         //显示视图
-        aftershow: function (){
-            this.wrapper.html(this.getHTMLFragment()).fadeIn(100);
+        show: function (frag){
+            this.wrapper.fadeIn(100);
             this.reloc();
             this.toggleModal();
 

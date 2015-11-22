@@ -53,7 +53,7 @@ define(['base/utils/store'], function(store){
             this.tmplname   = opts.tmplname  || '';  //模板名称, view的话在route里面配置，partial的话
             this.tmpl = '';                          //模板html,有模板名称则从通过名称取到tmpl;
             this.data   = opts.data || {};
-            this.events = opts.events || {};
+            this.events = opts.events || {};          // 对象上的events对象仅适用于此对象的wrapper元素内的事件绑定
             this.wrapper = $(opts.wrapper);
             this.replace = opts.replace || false;                    //是否替换原标签
             this.construct(opts);
@@ -72,27 +72,27 @@ define(['base/utils/store'], function(store){
             this.getTmpl('partial', function(){
                 frag = that.getHTMLFragment();
                 if(that.wrapper){
-                    console.log(that.wrapper, 'wrapper');
                     that.replace ? that.wrapper.replaceWith(frag) : that.wrapper.html(frag);
-                    that.aftershow();
                 }
+                that.show();
             });
             return that.wrapper.length ? that : frag;
         },
 
-        //显示后视图,ui extended view需要用到，不能去除
-        aftershow: function (){},
+        show: function (){
+            //this.wrapper.removeClass('hide');
+        },
 
         //更新视图
         update: function(data){
             if(data){
-                this.data = data;
+                this.data = $.extend({}, this.data, data);
             }
             this.render();
         },
         //销毁视图
         destory: function(){
-
+            this.wrapper.empty();
         },
         //获取带模板数据的virtual dom
         getHTMLFragment: function(){
@@ -151,6 +151,11 @@ define(['base/utils/store'], function(store){
         offview: function(eventType, selector, listener){
             this.wrapper.off(eventType, selector, listener);
             return this;
+        },
+        //当没有wrapper时，render返回fragmentHTML,没有绑定事件，当fragmentHTML插入document后，可以调用此方法绑定固有事件
+        refreshEvent: function(){
+            //this.wrapper =  //@todo如何找到 fragmentHTML 被插入的多个位置并重新绑定事件
+            //this._parseEvent(this);
         },
         /**
          * events: {

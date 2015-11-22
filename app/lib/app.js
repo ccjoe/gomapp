@@ -3,6 +3,8 @@
  * By John Resig http://ejohn.org/
  * MIT Licensed.
  */
+
+//@todo config ref by everywhere
 (function(){
     var initializing = false, fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
     this.Class = function(){};

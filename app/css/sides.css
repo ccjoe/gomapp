@@ -1,5 +1,19 @@
 .sides {
   width: 220px;
   height: 100%;
-  background: #F5F2F2;
-  position: fixed; }
+  background: #222426;
+  position: fixed;
+  left: -220px;
+  right: auto;
+  z-index: 100; }
+  .sides .table-view {
+    background-color: transparent; }
+    .sides .table-view .table-view-divider {
+      background-color: #333; }
+    .sides .table-view .media-body {
+      color: #0F5DB3; }
+    .sides .table-view .badge {
+      background-color: rgba(255, 255, 255, 0.6); }
+  .sides.sides-right {
+    left: auto;
+    right: -220px; }

@@ -54,6 +54,7 @@ define(['base/core/view', 'base/ui/ui'], function(View, UI){
                     data: $.extend({}, $t.data('opts'), {title: $t.text()})
                 });
                 that.widgets[i].render();
+                $t.data('widget', that.widgets[i]);
             });
         },
         /**
