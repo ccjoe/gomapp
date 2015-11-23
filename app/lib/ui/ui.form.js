@@ -5,20 +5,28 @@ define(['base/core/view'], function(View) {
      * @prop content, sides的内容
      */
     var defaultForm = {
-        position: 'left',   //left or right
-        content: ''         // string or html
     };
 
     var Form = View.extend({
         init: function (opts) {
-            opts.data = _.extend({}, defaultBtn, opts.data);
-            opts.tmplname = 'ui.sides';
-            opts.wrapper = opts.wrapper || '#sides';
+            opts.data = _.extend({}, defaultForm, opts.data);
+            opts.tmplname = 'ui.form';
             $.extend(opts, this);   //将List实例混合到opts上， 去父对象上执行
             this._super(opts);
-        },
-
+        }
     });
 
-    return Form;
+    var Toggle = View.extend({
+        init: function (opts) {
+            opts.data = _.extend({}, opts.data);
+            opts.tmplname = 'ui.toggle';
+            $.extend(opts, this);   //将List实例混合到opts上， 去父对象上执行
+            this._super(opts);
+        }
+    });
+
+    return {
+        Form: Form,
+        Toggle: Toggle
+    };
 });

@@ -5,3 +5,8 @@
     margin-left: -$width/2;
     @if $height!=auto { margin-top: -$height/2; }
 }
+
+@mixin encoded-svg-background($svg) {
+    //$url: `encodeURIComponent(${svg})`;
+    background-image: url("data:image/svg+xml;charset=utf-8,#{$svg}");
+}

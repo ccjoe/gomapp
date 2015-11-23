@@ -36,7 +36,7 @@ define(['base/core/view'], function(View) {
             var fxprops = {};
             fxprops[this.data.position] = 0;
             this.showed = true;
-            this.getSides().fx(fxprops, 300, 'easeInBack');
+            this.getSides().fx(fxprops, 500, 'easeOutCirc');
         },
         hide: function(){
             var that = this;
@@ -44,7 +44,7 @@ define(['base/core/view'], function(View) {
             var fxprops = {};
                 fxprops[this.data.position] = -side.width();
             this.showed = false;
-            side.fx(fxprops, 300, 'easeInBack', function(){
+            side.fx(fxprops, 500, 'easeOutCirc', function(){
                 that.getOverlay().css('visibility', 'hidden');
             });
         }

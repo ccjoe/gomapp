@@ -13,14 +13,17 @@ define(['base/ui/ui.list', 'base/ui/ui.sides'], function(List, Sides) {
             desc: 'UI组件相关使用实例及文档描述【组件层】',
             hash: '?viewdoc',
             badge: 5,
+            img: ''
         },{
             title: 'pagedoc',
             desc: '页面文档及相关【视图层】',
-            hash: '?pagedoc'
+            hash: '?pagedoc',
+            img: ''
         },{
             title: 'modeldoc',
             desc: '页面文档及相关【模型层】',
-            hash: '?modeldoc'
+            hash: '?modeldoc',
+            img: ''
         },{
             isDivider: true,
             title: '公用页面',

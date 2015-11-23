@@ -60,7 +60,7 @@ define(['base/utils/store'], function(store){
         },
         //new View()时即执行的对象
         construct:function(opts){
-            console.log('[VIEW CONSTRUCT RUN WHEN EXTEND VIEW‘S OBJECT HASN’T CONSTRUCT]');
+            console.log('this is', this, '[VIEW CONSTRUCT RUN WHEN EXTEND VIEW‘S OBJECT HASN’T CONSTRUCT]');
             if(this.events){
                 this._parseEvent(opts.ctrl || this);
             }

@@ -10,8 +10,19 @@ define([
     'viewdoc/header_ctrl',
     'viewdoc/component_list_ctrl',
     'viewdoc/modal_ctrl',
-    'viewdoc/button_ctrl'
-], function (main, auth, moduleList, moduleView, moduleAdd, viewdocList, viewdocHeader, viewdocComponentList, viewdocModal, viewdocButton ) {
+    //'viewdoc/button_ctrl',
+    'viewdoc/slide_ctrl'
+], function (main,
+             auth,
+             moduleList,
+             moduleView,
+             moduleAdd,
+             viewdocList,
+             viewdocHeader,
+             viewdocComponentList,
+             viewdocModal,
+             //viewdocButton,
+             viewdocSlide ) {
 
     //tmpl html FileName; ctrl js FileName
     var router = {
@@ -58,10 +69,15 @@ define([
                 ctrl: viewdocModal,
                 title: 'Modal设置文档'
             },
+            '/slide':{
+                tmplname: 'viewdoc/slide',
+                ctrl: viewdocSlide,
+                title: 'Slide'
+            },
             '/button': {
                 tmplname: 'viewdoc/button',
-                ctrl: viewdocButton,
-                title: '按钮Button文档'
+                title: '按钮Button文档',
+                //ctrl: viewdocButton,    //纯静态页面可以不用ctrl初始化
             }
         },
         '/module': {

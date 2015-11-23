@@ -87,3 +87,26 @@
     <div class="sides sides-{{= data.position }}"></div>
 </script>
 
+<script id="ui.toggle" type="text/template">
+    <div class="toggle active">
+        <div class="toggle-handle"></div>
+    </div>
+</script>
+
+<script id="ui.slide" type="text/template">
+    <div class="slide-container slide-init ks-demo-slider slide-container-{{= data.type }}">
+        <div class="slide-pagination">
+            <span class="slide-pagination-bullet slide-pagination-bullet-active"></span>
+            {{ _.each(data.list, function(item){ }}
+                <span class="slide-pagination-bullet"></span>
+            {{ }); }}
+        </div>
+        <div class="slide-wrapper">
+            <!--<div class="slide-slide slide-slide-active"></div>-->
+            <!--<div class="slide-slide slide-slide-next"></div>-->
+            {{_.each(data.list, function(item){ }}
+                <div class="slide-slide">{{=item.content}}</div>
+            {{ }); }}
+        </div>
+    </div>
+</script>
