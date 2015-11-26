@@ -118,7 +118,9 @@ define(['base/core/view'], function(View) {
         show: function(){
             this.wrapper.find('.slide-slide').each(function(i, item){
                 swipe($(item), {
-
+                    moveCallback: function(point){
+                        $(item).html('<p>x距离：'+point.swipeX+'</p><p>y距离：'+point.swipeY+'</p><p>角度：'+point.degree+'</p><p>用时：'+point.swipeTime+'</p>');
+                    }
                 });
             });
 
