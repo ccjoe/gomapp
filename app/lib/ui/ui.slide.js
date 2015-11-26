@@ -1,50 +1,66 @@
 function swipe($elem, opts){
     //触发事件的条件 opts defaults lastOpts
     var defaults = {
-        'position': 'left',   //left right top bottom
-        'x-distance': 30,     //x horizontal distance
-        'y-distance': 30,     //y vertical distance
-        'degree': 30          //0为不限制，否则动作必须小于这个角度才能触发相应事件
+        'swipeX': 30,     //x horizontal distance
+        'swipeY': 30,     //y vertical distance
+        //'degree': 30          //0为不限制，否则动作必须小于这个角度才能触发相应事件
     };
-
     var lastOpts = $.extend({}, defaults, opts);
 
-    //设置或获取point信息并申明初始值
-    var point = {
-        xd: 0,
-        yd: 0,
-        dg: 0,
-        set: function(name, val){
-            if(typeof name === 'string'){
-                this[name] = val;
-            }else{
-                $.extend(this, name);
-                return this;
-            }
-        }
-    };
-
     var doPoint = {
-        //边界检查
-        checkRange: function(){
-
+        setNull: {
+            startX: null,
+            startY: null,
+            startTime: null,
+            moveX: null,
+            moveY: null,
+            moveTime: null,
+            swipeX: null,
+            swipeY: null,
+            swipeTime: null,
+            identifier: null
         },
-        // 方向检测(左移距离，上移距离)
+        //边界检查
+        checkRange: function(point){
+            return point.swipeX >= lastOpts.swipeX && point.swipeY >= lastOpts.swipeY;
+        },
+        //方向检测(左移距离，上移距离)
         directionDetect: function(l, t) {
             if (Math.abs(t) < touchPoint.maxY && Math.abs(l) > touchPoint.minX) {
                 return l < 0 ? 'left' : 'right';
             }
             return false;
         },
-        //计算角度
-        getAngle: function(){
-
+        //计算角度 垂直方向近0,水平方向近90
+        getAngle: function(xd, yd){
+            return Math.atan(yd/xd) * 180 / Math.PI;
+        }
+    };
+    //设置或获取point信息
+    var point = {
+        set: function(name, val){      //设置相应属性
+            if(typeof name === 'string'){
+                this[name] = val;
+            }else{
+                $.extend(this, name);
+                this.auto();           //move与end更新时更新相应opts信息
+                console.log(this, 'poine');
+                return this;
+            }
+        },
+        auto: function(){             //计算opts相应值
+            this.swipeX = this.moveX - this.startX;     //滑动距离X
+            this.swipeY = this.moveY - this.startY;     //滑动距离Y
+            this.swipeTime = this.moveTime - this.startTime;  //滑动时长Yms
+            this.degree = doPoint.getAngle(this.swipeY, this.swipeX);  //滑动角度Yms
         }
     };
 
+    //callbacks
     var cbs = {
         startCallback : function(e){
-            var cp = e.touch[0],
+            $.extend(point, doPoint.setNull); //重置初始值
+            var cp = e.touches[0],
                 startPoint = {
                     startX: cp.pageX,
                     startY: cp.pageY,
@@ -52,10 +68,11 @@ function swipe($elem, opts){
                     identifier: e.identifier
                 };
             point.set(startPoint);
-            lastOpts.startCallback ? lastOpts.startCallback() : null;
+
+            lastOpts.startCallback ? lastOpts.startCallback(point) : null;
         },
         moveCallback : function(e){
-            var cp = e.touch[0],
+            var cp = e.touches[0],
                 movePoint = {
                     moveX: cp.pageX,
                     moveY: cp.pageY,
@@ -63,17 +80,10 @@ function swipe($elem, opts){
                     identifier: e.identifier
                 };
             point.set(movePoint);
-            lastOpts.moveCallback ? lastOpts.moveCallback() : null;
+            lastOpts.moveCallback ? lastOpts.moveCallback(point) : null;
         },
         endCallback : function(e){
-            var cp = e.touch[0],
-                endPoint = {
-                    endX: cp.pageX,
-                    endY: cp.pageY,
-                    endTime: +new Date(),
-                    identifier: e.identifier
-                };
-            point.set(endPoint);
+            console.log(e, 'endE');
             lastOpts.endCallback ? lastOpts.endCallback() : null;
         }
     };
