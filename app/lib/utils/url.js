@@ -1,7 +1,8 @@
-/******************************** publisher-subscriber ***********************************/
+/******************************** URL parse ***********************************/
 /**
  * Url处理
  * @author Joe Liu
+ * @email icareu.joe@gmail.com
  */
 define(function () {
     var re = {

@@ -1,3 +1,9 @@
+/**
+ * localstorage api封装
+ * @author Joe Liu
+ * @email icareu.joe@gmail.com
+ */
+
 define(function () {
     var storage = window.localStorage;
 
