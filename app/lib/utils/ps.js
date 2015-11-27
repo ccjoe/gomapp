@@ -21,7 +21,15 @@
  * Cora.PS.send('pubNO2', {data:'pubNo2 From!'}) //pubNO1发布消息
  * @done 解决为一个PS对象，管理所有发布订阅对象
  */
-define(function() {
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define(factory);            // AMD. Register as an anonymous module.
+    } else if (typeof module === 'object' && module.exports) {
+        module.exports = factory(require());     // Node. Does not work with strict CommonJS, but only CommonJS-like environments that support module.exports, like Node.
+    } else {
+        root.returnExports = factory(root); // Browser globals (root is window)
+    }
+}(this, function () {
     /**
      * @see Cora.PS
      */
@@ -40,7 +48,7 @@ define(function() {
     };
     PubSub.prototype.del = function(name){
         delete  this.pubs[name];
-    }
+    };
     /**
      * 创建新增发布者，并且有订阅者时绑定传入的订阅者
      * 如果发布者已存在，则为设置发布者
@@ -93,9 +101,9 @@ define(function() {
      */
     Function.prototype.unsub = function(name){
         var psArr = ps.pubs[name];
-        psArr.splice(psArr.indexOf(this),1)
+        psArr.splice(psArr.indexOf(this),1);
         return this;
     };
 
     return ps;
-});
+}));

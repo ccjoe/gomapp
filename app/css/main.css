@@ -28,6 +28,9 @@
   letter-spacing: 1px;
   line-height: 2em; }
 
+body {
+  min-width: 300px; }
+
 .content {
   margin-top: 44px; }
 
