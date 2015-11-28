@@ -2,15 +2,12 @@ gom is Go Mobile!
 一个H5的项目框架
 将实现webapp hybridapp spa mpa多种方式的开发模式
 
-__bower build__
-`bower install jch5`
-
 # 依赖：  
 ```
 "requirejs":"~2.1.15",
-"dot": "~1.0.3",
-"history.js": "1.8.0",
-"zepto-full": "~1.1.2",
+"dot": "~1.0.3",    (后面会使用，去除underscore依赖)
+"history.js": "1.8.0", (将去除依赖)
+"zepto-full": "~1.1.2", (将去除依赖)
 "ratchet": "~2.0.2"
 ```
 
@@ -45,7 +42,6 @@ require(['base/app', 'com/config', 'com/route'], function(App, config, route){
 + 每个路由都有相应的cr(current Route)对象，那么一个路由表的配置就类似如下：
 
 ```javascript
-var r = require;
  var router = {
         // '/sample': {
         //     tmpl : 'sample'    //require  页面调用的模块名称 template

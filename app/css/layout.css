@@ -1,2 +1,12 @@
+body {
+  min-width: 300px; }
+
+.ui-modal, .modal-overlay, input, textarea, select, header, footer, section {
+  outline: none;
+  -webkit-tap-highlight-color: transparent; }
+
 .content {
   margin-top: 44px; }
+
+.table-view-cell img {
+  width: 60px; }

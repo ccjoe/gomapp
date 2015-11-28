@@ -4,3 +4,6 @@
   .slide-example .slide-container-vertical, .slide-example .slide-container-horizontal {
     width: 100%;
     height: 100%; }
+
+.content-padded.content-swipe-demo {
+  height: 80%; }

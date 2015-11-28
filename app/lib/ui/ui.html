@@ -34,7 +34,7 @@
                 <span class="badge">{{=item.badge}}</span>
                 {{ } }}
                 {{ if(data.media){ }}
-                {{ if(data.media === 'img'){ }}
+                {{ if(data.media === 'img' && item.img){ }}
                 <img class="media-object pull-left" src="{{= item.img }}">
                 {{ }else{ }}
                 <span class="media-object pull-left icon {{= item.icon }}"></span>
@@ -94,18 +94,17 @@
 </script>
 
 <script id="ui.slide" type="text/template">
-    <div class="slide-container slide-init ks-demo-slider slide-container-{{= data.type }}">
+    <div class="slide-container slide-init ks-demo-slider slide-container-{{= data.direction }}">
         <div class="slide-pagination">
-            <span class="slide-pagination-bullet slide-pagination-bullet-active"></span>
-            {{ _.each(data.list, function(item){ }}
-                <span class="slide-pagination-bullet"></span>
+            {{ _.each(data.list, function(item, i){ }}
+                <span class="slide-pagination-bullet {{= i===0 ? 'slide-pagination-bullet-active' : '' }}"></span>
             {{ }); }}
         </div>
         <div class="slide-wrapper">
             <!--<div class="slide-slide slide-slide-active"></div>-->
             <!--<div class="slide-slide slide-slide-next"></div>-->
-            {{_.each(data.list, function(item){ }}
-                <div class="slide-slide">{{=item.content}}</div>
+            {{_.each(data.list, function(item, i){ }}
+                <div class="slide-slide" index="{{=i+1}}">{{=item.content}}</div>
             {{ }); }}
         </div>
     </div>

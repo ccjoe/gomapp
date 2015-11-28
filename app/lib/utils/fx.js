@@ -40,13 +40,13 @@
             Math.random().toFixed(3),
             Math.random().toFixed(3)]
     };
-   /**
+    /**
     * 设置heaer
     * @method  $#fx
     * @see http://zeptojs.com/#fx
     * easing 支持tween效果，直接传入名称
-    properties:
-    [   css properties ||
+        properties:
+        [css properties ||
         translate(X|Y|Z|3d)
         rotate(X|Y|Z|3d)
         scale(X|Y|Z)

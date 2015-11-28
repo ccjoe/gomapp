@@ -9,21 +9,21 @@ define(['base/ui/ui.list', 'base/ui/ui.sides'], function(List, Sides) {
             title: '文档页面',
             collapse: true
         },{
-            title: 'viewdoc(UI)',
-            desc: 'UI组件相关使用实例及文档描述【组件层】',
+            title: '组件及插件(UI)',
+            desc: 'UI组件及插件文档【VIEW】',
             hash: '?viewdoc',
             badge: 5,
-            img: ''
+            img: '/images/v.png'
         },{
-            title: 'pagedoc',
-            desc: '页面文档及相关【视图层】',
+            title: '页面Page与Ctrl相关',
+            desc: '页面文档及相关【VIEW,CTRL】',
             hash: '?pagedoc',
-            img: ''
+            img: '/images/c.png'
         },{
-            title: 'modeldoc',
-            desc: '页面文档及相关【模型层】',
+            title: '模型Model类',
+            desc: '与服务端交互相关封装【MODEL】',
             hash: '?modeldoc',
-            img: ''
+            img: '/images/m.png'
         },{
             isDivider: true,
             title: '公用页面',

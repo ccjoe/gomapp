@@ -24,20 +24,24 @@ define(['base/ui/ui.list'], function(List) {
             slide:{
                 title: 'slide',
                 hash: '?viewdoc/slide',
-                desc: '实现横向纵向滚动,图片文本等slide效果',
+                desc: '实现横向纵向滚动,图片文本等slide效果,swipe的实现',
                 icon: 'icon-pages'
             },
             button:{
                 title: 'button',
-                hash: '?viewdoc/button'
+                desc: '包含按钮的(或组件类)的三种声明方式',
+                hash: '?viewdoc/button',
+                icon: 'icon-pages'
+            },
+            swipe:{
+                title: 'swipe插件',
+                desc: 'slide的实现原理，实现各种滑动',
+                hash: '?pluginsdoc/swipe',
+                icon: 'icon icon-star-filled'
             },
             tips:{
                 title: 'tips',
                 hash: '?viewdoc/tips'
-            },
-            scroll:{
-                title: 'scroll',
-                hash: '?viewdoc/scroll'
             },
             switch:{
                 title: 'switch',

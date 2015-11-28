@@ -1,8 +1,22 @@
-define(function () {
+/**
+ * localstorage api封装
+ * @author Joe Liu
+ * @email icareu.joe@gmail.com
+ */
+
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define(factory);            // AMD. Register as an anonymous module.
+    } else if (typeof module === 'object' && module.exports) {
+        module.exports = factory(require());     // Node. Does not work with strict CommonJS, but only CommonJS-like environments that support module.exports, like Node.
+    } else {
+        root.returnExports = factory(root); // Browser globals (root is window)
+    }
+}(this, function () {
     var storage = window.localStorage;
 
     var parseval = function(val){
-        if (typeof val !== 'string') { return undefined ;}
+        if (typeof val !== 'string') {return undefined ;}
         try { return JSON.parse(val) ;}
         catch(e) { return val || undefined ;}
     };
@@ -19,13 +33,20 @@ define(function () {
             "expire": +new Date()+expire
         });
     };
-
+    /**
+     * @namespace url
+     */
     var store = {
         on: function(callback){
             window.addEventListener('storage', function(e) {
                 callback(e);
             });
         },
+        /**
+         * 遍历 store
+         * @method store.each
+         * @param {function} callback 参数为key, val
+         */
         each: function(callback){
             var that = this;
             for(var i=0; i<storage.length; i++){
@@ -38,7 +59,7 @@ define(function () {
         },
         /**
          * 判断key是否过期，没有返回key的值，过期返回false
-         * @method Cora.store.noexpire
+         * @method store.noexpire
          * @param {string} key
          * @return noexpire
          */
@@ -55,6 +76,12 @@ define(function () {
             }
             return data.value;
         },
+        /**
+         * 通过key获取store的value值
+         * @method store.get
+         * @param {string} key 可以为string或空，为空时取所有的localstorage(不包含过期的)
+         * @return vaule || object
+         */
         get: function(key){
             if(key){
                 return this.noexpire(key);
@@ -66,7 +93,7 @@ define(function () {
             return ret;
         },
         /**
-         * 输出Debug执行时cpu信息, 在chrome profile面板查看相应详情
+         * 设置store键值对及过期时间
          * @method Cora.store.set
          * @param {string} key
          * @param {object} val OR(string)
@@ -83,17 +110,41 @@ define(function () {
                 this.set(k, val, expire);
             }
         },
+        /**
+         * 删除store某个key及值
+         * @method store.del
+         * @param {string} key string
+         * @return store
+         */
         del: function(key){
             storage.removeItem(key);
             return this;
         },
+        /**
+         * 清除所有store存储
+         * @method store.del
+         * @param {string} key string
+         * @return store
+         */
         cls:function(){
             storage.clear();
             return this;
         },
+        /**
+         * 判断某key是否存在
+         * @method store.has
+         * @param {string} key string
+         * @return boolean
+         */
         has: function(key){
             return storage.hasOwnProperty(key);
         },
+        /**
+         * 获取store已存储的大小
+         * @method store.size
+         * @param {string} unit 单位默认返回bytes,可以为KB, MB;
+         * @return int
+         */
         size: function(unit){
             var bytes = JSON.stringify(localStorage).length
             if(!unit)
@@ -106,4 +157,4 @@ define(function () {
         }
     };
     return store;
-});
+}));

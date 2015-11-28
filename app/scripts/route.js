@@ -11,7 +11,8 @@ define([
     'viewdoc/component_list_ctrl',
     'viewdoc/modal_ctrl',
     //'viewdoc/button_ctrl',
-    'viewdoc/slide_ctrl'
+    'viewdoc/slide_ctrl',
+    'pluginsdoc/swipe_ctrl'
 ], function (main,
              auth,
              moduleList,
@@ -22,7 +23,8 @@ define([
              viewdocComponentList,
              viewdocModal,
              //viewdocButton,
-             viewdocSlide ) {
+             viewdocSlide,
+             pluginsdocSwipe) {
 
     //tmpl html FileName; ctrl js FileName
     var router = {
@@ -78,6 +80,18 @@ define([
                 tmplname: 'viewdoc/button',
                 title: '按钮Button文档',
                 //ctrl: viewdocButton,    //纯静态页面可以不用ctrl初始化
+            }
+        },
+        '/pluginsdoc':{
+            '/swipe':{
+                tmplname: 'pluginsdoc/swipe',
+                ctrl: pluginsdocSwipe,
+                title: 'Swipe'
+            },
+            '/fn':{
+                tmplname: 'plugindocs/fx',
+                //ctrl: pluginsdocFx,
+                title: 'Fx'
             }
         },
         '/module': {

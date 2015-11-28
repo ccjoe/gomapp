@@ -28,8 +28,18 @@
   letter-spacing: 1px;
   line-height: 2em; }
 
+body {
+  min-width: 300px; }
+
+.ui-modal, .modal-overlay, input, textarea, select, header, footer, section {
+  outline: none;
+  -webkit-tap-highlight-color: transparent; }
+
 .content {
   margin-top: 44px; }
+
+.table-view-cell img {
+  width: 60px; }
 
 .title-ms {
   display: block;
@@ -648,6 +658,9 @@
   .slide-example .slide-container-vertical, .slide-example .slide-container-horizontal {
     width: 100%;
     height: 100%; }
+
+.content-padded.content-swipe-demo {
+  height: 80%; }
 
 body {
   background: #fafafa;

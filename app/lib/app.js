@@ -127,7 +127,7 @@ define(['base/core/page', 'base/utils/url', 'base/core/model'], function(Page, U
 
             var CRO = router['/' + hash1];
 
-            console.log(hashPath, hashRoute, CRO, 'hashinfo');
+            //console.log(hashPath, hashRoute, CRO, 'hashinfo');
             if (!hash2) {
                 if (CRO && CRO.hasOwnProperty('/')) {
                     CRO = CRO['/'];
@@ -181,7 +181,7 @@ define(['base/core/page', 'base/utils/url', 'base/core/model'], function(Page, U
             }else{
                 page.render();
             }
-            console.log( CRO, page, "----- CURRENT ROUTE! -----");
+            //console.log( CRO, page, "----- CURRENT ROUTE! -----");
         },
         _manageHistory: function(hashPath){
             if(this.getLastHashByLastIndex(1) === hashPath){
@@ -192,7 +192,7 @@ define(['base/core/page', 'base/utils/url', 'base/core/model'], function(Page, U
             if(history.length > 10){
                 history.shift();
             }
-            console.log(history, 'THIS HISTORY');
+            //console.log(history, 'THIS HISTORY');
         },
         //从倒数位置index取历史hash
         getLastHashByLastIndex: function(index){
@@ -202,7 +202,7 @@ define(['base/core/page', 'base/utils/url', 'base/core/model'], function(Page, U
         isBack: function(){
             var oldHashArr = Url.getHashPath(this.getLastHashByLastIndex(2), true),
                 newHashArr = Url.getHashPath(this.getLastHashByLastIndex(1), true);
-            console.log(_.compact(oldHashArr), _.compact(newHashArr),   'IS GO OR BACK');
+            //console.log(_.compact(oldHashArr), _.compact(newHashArr),   'IS GO OR BACK');
             return _.compact(newHashArr).length < _.compact(oldHashArr).length;
         },
         //判断是否存在CRO而404
