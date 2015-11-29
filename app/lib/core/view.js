@@ -162,7 +162,7 @@ define(['base/utils/store'], function(store){
          *   'click,touch selector1,selector2': 'function',
          *   'touch .selecor': 'function2'
          * }
-         * function有二个参数 (e, item),其this指向所在的环境即env
+         * function有二个参数 (e, target),其this指向所在的环境即env
          **/
         _parseEvent: function(env){
             var that = this;
@@ -173,8 +173,10 @@ define(['base/utils/store'], function(store){
                 (function(eve){
                     var eventSrc = getEventSrc(eve),
                         eventListener = events[eve];
+                        eventListener = (typeof eventListener==='function') ? eventListener : env[eventListener];
+
                     that.onview(eventSrc.event, eventSrc.selector, function (e){
-                        env[eventListener](e, this);
+                        eventListener(e, this);
                         return false;
                     });
                 })(eve);

@@ -1,18 +1,18 @@
 define(['base/ui/ui.slide'], function(Slide) {
     'use strict';
-    return {
+     var ctrl = {
         init: function(page){
             var that = this;
-            page.render(function(){
-                that.textSlide('vertical');
-            });
+            page.render(this.textSlide);
         },
         //todo events文档,  events支持值为function直接量, 双向切换
         events: {
-            'click .slide-change': 'textSlide'
+            'click .slide-change': function(e, targe){
+                ctrl.textSlide('vertical');
+            }
         },
         textSlide: function(direction){
-            direction = typeof direction === 'string' ?  direction : 'horizontal';
+            direction =  direction || 'horizontal';
             var slide = new Slide({
                 wrapper: '.slide-example',
                 data: {
@@ -29,5 +29,7 @@ define(['base/ui/ui.slide'], function(Slide) {
             //console.log(slide, 'slide');
         }
     };
+
+    return ctrl;
 });
 

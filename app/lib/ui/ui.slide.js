@@ -32,7 +32,7 @@ define(['base/core/view'], function(View) {
                 isize = isX ? $slides.width() : $slides.height(); //计算尺寸,
                 swipeXY = isX ? 'swipeX' : 'swipeY',
                 swipeDR = isX ? ['left', 'right'] : ['top', 'bottom'];
-            console.log(isize, 'size');
+
             $slide.each(function(i, item){
                   $i = $(item);
                   $i.swipe({
@@ -42,9 +42,13 @@ define(['base/core/view'], function(View) {
 
                       },
                       endCallback: function(point){
-                          var distance, index;
+                          var index, rollback = function(num){
+                              num = num !== void 0 ? num : i; //无参默认回滚
+                              $slides.fx(that.swipeCount(point, isize*-num));
+                          };
+
                           if(Math.abs(point[swipeXY]) < that.data[swipeXY]){
-                              $slides.fx(that.swipeCount(point, isize*-i));
+                              rollback();
                               return;
                           }
 
@@ -52,7 +56,7 @@ define(['base/core/view'], function(View) {
                               index = i+1;
                               if(index === len){
                                   if(!isloop){
-                                      $slides.fx(that.swipeCount(point, isize*-i));
+                                      rollback();
                                       return;
                                   }
                                   index =  0;
@@ -61,22 +65,21 @@ define(['base/core/view'], function(View) {
                               index = i-1;
                               if(index < 0){
                                   if(!isloop){
-                                      $slides.fx(that.swipeCount(point, isize*-i));
+                                      rollback();
                                       return;
                                   }
                                   index = len-1;
                               }
 
+                          }else{    //水平滚动时非swipe非水平时回滚
+                              rollback();
                           }
-                          console.log(index, len, 'index');
-                          distance = isize*-index;
-                          $slides.fx(that.swipeCount(point, distance));
+                          rollback(index);
                           $index.find('.slide-pagination-bullet').eq(index).addClass('slide-pagination-bullet-active')
                                                                 .siblings().removeClass('slide-pagination-bullet-active');
                       }
                   });
               });
-
         },
         //get {-webkit-transform: translate3d(x,y,0)}
         swipeCount: function(point, distance){
