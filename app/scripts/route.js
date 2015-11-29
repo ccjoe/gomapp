@@ -11,7 +11,7 @@ define([
     'viewdoc/component_list_ctrl',
     'viewdoc/modal_ctrl',
     //'viewdoc/button_ctrl',
-    'viewdoc/slide_ctrl',
+    'viewdoc/switch_ctrl',
     'pluginsdoc/swipe_ctrl'
 ], function (main,
              auth,
@@ -23,7 +23,7 @@ define([
              viewdocComponentList,
              viewdocModal,
              //viewdocButton,
-             viewdocSlide,
+             viewdocSwitch,
              pluginsdocSwipe) {
 
     //tmpl html FileName; ctrl js FileName
@@ -71,9 +71,9 @@ define([
                 ctrl: viewdocModal,
                 title: 'Modal设置文档'
             },
-            '/slide':{
-                tmplname: 'viewdoc/slide',
-                ctrl: viewdocSlide,
+            '/switch':{
+                tmplname: 'viewdoc/switch',
+                ctrl: viewdocSwitch,
                 title: 'Slide'
             },
             '/button': {

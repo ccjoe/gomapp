@@ -293,7 +293,8 @@ body {
   position: fixed;
   left: -220px;
   right: auto;
-  z-index: 100; }
+  z-index: 100;
+  overflow-y: auto; }
   .sides .table-view {
     background-color: transparent; }
     .sides .table-view .table-view-divider {
@@ -313,8 +314,10 @@ body {
   overflow: hidden;
   /* Fix of Webkit flickering */
   z-index: 1; }
+  .slide-container .card {
+    overflow: visible; }
 
-.slide-container-no-flexbox .slide-slide {
+.slide-container-no-flexbox .control-content {
   float: left; }
 
 .slide-container-vertical > .slide-wrapper {
@@ -365,13 +368,14 @@ body {
   transition-timing-function: ease-out;
   margin: 0 auto; }
 
-.slide-slide {
+.control-content {
   -webkit-flex-shrink: 0;
   -ms-flex: 0 0 auto;
   flex-shrink: 0;
   width: 100%;
   height: 100%;
-  position: relative; }
+  position: relative;
+  display: block; }
 
 /* Auto Height */
 .slide-container-autoheight, .slide-container-autoheight .slide-slide {
@@ -457,11 +461,12 @@ body {
   display: inline-block;
   border-radius: 100%;
   background: #000;
-  opacity: 0.2; }
-
-.slide-pagination-bullet-active {
-  opacity: 1;
-  background: #007aff; }
+  opacity: 0.2;
+  line-height: 0;
+  font-size: 0; }
+  .slide-pagination-bullet.active {
+    opacity: 1;
+    background: #007aff; }
 
 .slide-container-vertical > .slide-pagination {
   right: 10px;
@@ -488,7 +493,7 @@ body {
   -moz-perspective: 1200px;
   -o-perspective: 1200px;
   perspective: 1200px; }
-  .slide-container-3d .slide-wrapper, .slide-container-3d .slide-slide, .slide-container-3d .slide-slide-shadow-left, .slide-container-3d .slide-slide-shadow-right, .slide-container-3d .slide-slide-shadow-top, .slide-container-3d .slide-slide-shadow-bottom, .slide-container-3d .slide-cube-shadow {
+  .slide-container-3d .slide-wrapper, .slide-container-3d .control-content, .slide-container-3d .slide-slide-shadow-left, .slide-container-3d .slide-slide-shadow-right, .slide-container-3d .slide-slide-shadow-top, .slide-container-3d .slide-slide-shadow-bottom, .slide-container-3d .slide-cube-shadow {
     -webkit-transform-style: preserve-3d;
     -moz-transform-style: preserve-3d;
     -ms-transform-style: preserve-3d;
@@ -552,15 +557,15 @@ body {
   -ms-perspective: 1200px; }
 
 /* Fade */
-.slide-container-fade.slide-container-free-mode .slide-slide {
+.slide-container-fade.slide-container-free-mode .control-content {
   -webkit-transition-timing-function: ease-out;
   -moz-transition-timing-function: ease-out;
   -ms-transition-timing-function: ease-out;
   -o-transition-timing-function: ease-out;
   transition-timing-function: ease-out; }
-.slide-container-fade .slide-slide {
+.slide-container-fade .control-content {
   pointer-events: none; }
-  .slide-container-fade .slide-slide .slide-slide {
+  .slide-container-fade .control-content .control-content {
     pointer-events: none; }
 .slide-container-fade .slide-slide-active, .slide-container-fade .slide-slide-active .slide-slide-active {
   pointer-events: auto; }
@@ -568,7 +573,7 @@ body {
 /* Cube */
 .slide-container-cube {
   overflow: visible; }
-  .slide-container-cube .slide-slide {
+  .slide-container-cube .control-content {
     pointer-events: none;
     visibility: hidden;
     -webkit-transform-origin: 0 0;
@@ -582,7 +587,7 @@ body {
     width: 100%;
     height: 100%;
     z-index: 1; }
-  .slide-container-cube.slide-container-rtl .slide-slide {
+  .slide-container-cube.slide-container-rtl .control-content {
     -webkit-transform-origin: 100% 0;
     -moz-transform-origin: 100% 0;
     -ms-transform-origin: 100% 0;
@@ -652,6 +657,9 @@ body {
   margin-top: -21px;
   z-index: 10; }
 
+.tab-container .control-content img {
+  width: 100%; }
+
 .slide-example {
   width: 100%;
   height: 100%; }
@@ -661,6 +669,19 @@ body {
 
 .content-padded.content-swipe-demo {
   height: 80%; }
+
+.slide-example img {
+  width: 100%; }
+.slide-example .slide-guide {
+  position: absolute;
+  bottom: 50px;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  padding: 10px 0;
+  background-color: rgba(0, 0, 0, 0.6); }
+  .slide-example .slide-guide button {
+    color: #000; }
 
 body {
   background: #fafafa;

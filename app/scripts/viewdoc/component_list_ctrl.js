@@ -21,10 +21,10 @@ define(['base/ui/ui.list'], function(List) {
                 desc: '弹出层相关，包含对话框，确认框， top/bottom弹出， loading, toast',
                 icon: 'icon-pages'
             },
-            slide:{
-                title: 'slide',
-                hash: '?viewdoc/slide',
-                desc: '实现横向纵向滚动,图片文本等slide效果,swipe的实现',
+            switch:{
+                title: 'switch',
+                hash: '?viewdoc/switch',
+                desc: '实现横向纵向滚动,图片文本等slide效果,swipe的实现,tab 等',
                 icon: 'icon-pages'
             },
             button:{
@@ -43,10 +43,7 @@ define(['base/ui/ui.list'], function(List) {
                 title: 'tips',
                 hash: '?viewdoc/tips'
             },
-            switch:{
-                title: 'switch',
-                hash: '?viewdoc/switch'
-            },
+
             tab:{
                 title: 'tab',
                 hash: '?viewdoc/tab'

@@ -11,7 +11,8 @@
   position: fixed;
   left: -220px;
   right: auto;
-  z-index: 100; }
+  z-index: 100;
+  overflow-y: auto; }
   .sides .table-view {
     background-color: transparent; }
     .sides .table-view .table-view-divider {

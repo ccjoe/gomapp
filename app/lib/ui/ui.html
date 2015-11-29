@@ -93,19 +93,47 @@
     </div>
 </script>
 
-<script id="ui.slide" type="text/template">
-    <div class="slide-container slide-init ks-demo-slider slide-container-{{= data.direction }}">
-        <div class="slide-pagination">
+
+<!--<div class="segmented-control">
+    <a class="control-item active" href="#item1mobile">
+        Thing one
+    </a>
+    <a class="control-item" href="#item2mobile">
+        Thing two
+    </a>
+    <a class="control-item" href="#item3mobile">
+        Thing three
+    </a>
+</div>
+<div class="card">
+    <span class=" active">Item 1</span>
+    <span class="control-content">Item 2</span>
+    <span class="control-content">Item 3</span>
+</div>-->
+
+<script id="ui.switch" type="text/template">
+    {{ var switchType = /(^\w+)-?(\w+)?/.exec(data.type), isSlide = switchType[1]==='slide', position = switchType[2];}}
+    <div class="switch-container slide-container {{= isSlide ? 'slide-container-'+position : 'tab-container slide-container-horizontal'}}">
+        {{ if(isSlide || (!isSlide && position==='top')){ }}
+        <div class="switch-pagination {{= isSlide ? 'slide-pagination' : 'segmented-control'}}">
             {{ _.each(data.list, function(item, i){ }}
-                <span class="slide-pagination-bullet {{= i===0 ? 'slide-pagination-bullet-active' : '' }}"></span>
+                <span  index="{{=i}}" class="switch-pagination-bullet {{= isSlide ? 'slide-pagination-bullet' : 'control-item'}} {{= i===0 ? 'active' : '' }}">{{=item.title}}</span>
             {{ }); }}
         </div>
-        <div class="slide-wrapper">
-            <!--<div class="slide-slide slide-slide-active"></div>-->
-            <!--<div class="slide-slide slide-slide-next"></div>-->
+        {{ } }}
+        <div class="switch-wrapper slide-wrapper" index="0">
+            <!--<div class="slide-slide slide-slide-active"></div>
+            <div class="slide-slide slide-slide-next"></div>-->
             {{_.each(data.list, function(item, i){ }}
-                <div class="slide-slide" index="{{=i+1}}">{{=item.content}}</div>
+                <div class="switch-item control-content">{{=item.content}}</div>
             {{ }); }}
         </div>
+        {{ if(!isSlide && position==='bottom'){ }}
+        <div class="switch-pagination {{= isSlide ? 'slide-pagination' : 'segmented-control'}}">
+            {{ _.each(data.list, function(item, i){ }}
+            <span index="{{=i}}" class="switch-pagination-bullet"  {{= isSlide ? 'slide-pagination-bullet' : 'control-item'}} {{= i===0 ? 'active' : '' }}">{{=item.title}}</span>
+            {{ }); }}
+        </div>
+        {{ } }}
     </div>
 </script>

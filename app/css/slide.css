@@ -1,23 +1,23 @@
 /*
 Error: Undefined mixin 'encoded-svg-background'.
-        on line 127 of ./app/styles/slide.scss, in `encoded-svg-background'
-        from line 127 of ./app/styles/slide.scss
+        on line 131 of ./app/styles/slide.scss, in `encoded-svg-background'
+        from line 131 of ./app/styles/slide.scss
 
-122:         cursor: auto;
-123:         pointer-events: none;
-124:     }
-125: }
-126: .slide-button-prev, .slide-container-rtl .slide-button-next {
-127:     @include encoded-svg-background("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 27 44'><path d='M0,22L22,0l2.1,2.1L4.2,22l19.9,19.9L22,44L0,22L0,22L0,22z' fill='#007aff'/></svg>");
-128:     left: 10px;
-129:     right: auto;
-130: }
-131: .slide-button-next, .slide-container-rtl .slide-button-prev {
-132:     @include encoded-svg-background("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 27 44'><path d='M27,22L27,22L5,44l-2.1-2.1L22.8,22L2.9,2.1L5,0L27,22L27,22z' fill='#007aff'/></svg>");
+126:         cursor: auto;
+127:         pointer-events: none;
+128:     }
+129: }
+130: .slide-button-prev, .slide-container-rtl .slide-button-next {
+131:     @include encoded-svg-background("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 27 44'><path d='M0,22L22,0l2.1,2.1L4.2,22l19.9,19.9L22,44L0,22L0,22L0,22z' fill='#007aff'/></svg>");
+132:     left: 10px;
+133:     right: auto;
+134: }
+135: .slide-button-next, .slide-container-rtl .slide-button-prev {
+136:     @include encoded-svg-background("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 27 44'><path d='M27,22L27,22L5,44l-2.1-2.1L22.8,22L2.9,2.1L5,0L27,22L27,22z' fill='#007aff'/></svg>");
 
 Backtrace:
-./app/styles/slide.scss:127:in `encoded-svg-background'
-./app/styles/slide.scss:127
+./app/styles/slide.scss:131:in `encoded-svg-background'
+./app/styles/slide.scss:131
 /Library/Ruby/Gems/2.0.0/gems/sass-3.4.19/lib/sass/tree/visitors/perform.rb:349:in `block in visit_mixin'
 /Library/Ruby/Gems/2.0.0/gems/sass-3.4.19/lib/sass/stack.rb:98:in `block in with_mixin'
 /Library/Ruby/Gems/2.0.0/gems/sass-3.4.19/lib/sass/stack.rb:115:in `with_frame'
@@ -70,4 +70,4 @@ Backtrace:
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: Undefined mixin 'encoded-svg-background'.\A         on line 127 of ./app/styles/slide.scss, in `encoded-svg-background'\A         from line 127 of ./app/styles/slide.scss\A \A 122:         cursor: auto;\A 123:         pointer-events: none;\A 124:     }\A 125: }\A 126: .slide-button-prev, .slide-container-rtl .slide-button-next {\A 127:     @include encoded-svg-background(\"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 27 44'><path d='M0,22L22,0l2.1,2.1L4.2,22l19.9,19.9L22,44L0,22L0,22L0,22z' fill='#007aff'/></svg>\");\A 128:     left: 10px;\A 129:     right: auto;\A 130: }\A 131: .slide-button-next, .slide-container-rtl .slide-button-prev {\A 132:     @include encoded-svg-background(\"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 27 44'><path d='M27,22L27,22L5,44l-2.1-2.1L22.8,22L2.9,2.1L5,0L27,22L27,22z' fill='#007aff'/></svg>\");"; }
+  content: "Error: Undefined mixin 'encoded-svg-background'.\A         on line 131 of ./app/styles/slide.scss, in `encoded-svg-background'\A         from line 131 of ./app/styles/slide.scss\A \A 126:         cursor: auto;\A 127:         pointer-events: none;\A 128:     }\A 129: }\A 130: .slide-button-prev, .slide-container-rtl .slide-button-next {\A 131:     @include encoded-svg-background(\"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 27 44'><path d='M0,22L22,0l2.1,2.1L4.2,22l19.9,19.9L22,44L0,22L0,22L0,22z' fill='#007aff'/></svg>\");\A 132:     left: 10px;\A 133:     right: auto;\A 134: }\A 135: .slide-button-next, .slide-container-rtl .slide-button-prev {\A 136:     @include encoded-svg-background(\"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 27 44'><path d='M27,22L27,22L5,44l-2.1-2.1L22.8,22L2.9,2.1L5,0L27,22L27,22z' fill='#007aff'/></svg>\");"; }

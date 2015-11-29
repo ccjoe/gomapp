@@ -152,10 +152,10 @@ define(['base/utils/store'], function(store){
             return this;
         },
         //当没有wrapper时，render返回fragmentHTML,没有绑定事件，当fragmentHTML插入document后，可以调用此方法绑定固有事件
-        refreshEvent: function(){
-            //this.wrapper =  //@todo如何找到 fragmentHTML 被插入的多个位置并重新绑定事件
-            //this._parseEvent(this);
-        },
+        //refreshEvent: function(){
+        //    //this.wrapper =  //@todo如何找到 fragmentHTML 被插入的多个位置并重新绑定事件
+        //    //this._parseEvent(this);
+        //},
         /**
          * @param {object} env env为事件绑定时的listener所在的执行环境,为ctrl或View, UI-widget
          * events: {
@@ -173,15 +173,19 @@ define(['base/utils/store'], function(store){
                 (function(eve){
                     var eventSrc = getEventSrc(eve),
                         eventListener = events[eve];
-                        eventListener = (typeof eventListener==='function') ? eventListener : env[eventListener];
 
                     that.onview(eventSrc.event, eventSrc.selector, function (e){
-                        eventListener(e, this);
+                        if(typeof eventListener === 'function'){
+                            eventListener(e, this, that);   //events对象值为函数直接量时，参列为(e, target, that)第三个参数为所在的执行环境that,即this
+                            return false;
+                        }
+                        env[eventListener](e, this);    //events对象值为字符串时, 参列为(e, target){ //内部this指向执行环境 }
                         return false;
                     });
                 })(eve);
             }
-            //如此的话， events触发的listener的this指向 发生动作的元素， e，对原生event对象， 第二个参数this为发生的对象，  eventListener里的this指向that
+            //如此的话， events触发的listener的this指向 发生动作的元素， e，对原生event对象， 第二个参数this为发生的对象，
+            // eventListener里的this指向that,
 
 
             function getEventSrc(eve){
