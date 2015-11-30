@@ -157,11 +157,13 @@ define(['base/core/page', 'base/utils/url'], function(Page, Url){
             if(isstr){
                 var urls = Url.get(where);
                 var isThisHost = urls.host+urls.port === location.host;
-                if(/^(https:)?\/\//.test(where) && !isThisHost){
-                    location.href = where;
-                    return;
-                }else{
-                    where = Url.getHashPath(urls.search);   //获取serach里的path部分
+                if(/^(https:)?\/\//.test(where)){
+                    if(!isThisHost){
+                        location.href = where;
+                        return;
+                    }else{
+                        where = Url.getHashPath(urls.search);   //获取serach里的path部分
+                    }
                 }
             }
             this[isstr ? '_routeByHash' : '_routeByCRO'](where);
@@ -228,5 +230,6 @@ define(['base/core/page', 'base/utils/url'], function(Page, Url){
         }
     });
     Gom.version =  '1.0.0';
+    Gom.isWebApp = /http(s)?:\/\//.test(location.protocol);
     return Gom;
 });

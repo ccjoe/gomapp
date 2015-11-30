@@ -20,6 +20,7 @@ define(['base/ui/ui.modal'], function(Modal){
     var modelInject = $.extend({}, defaultInject);
     //如果有外部Ajax截击器则均触发，否则仅触发默认;
     var inject = function(req, res){
+
         modelInject.request = function(e, xhr, options){
             defaultInject.request(e, xhr, options);
             req(e, xhr, options);
@@ -53,35 +54,41 @@ define(['base/ui/ui.modal'], function(Modal){
         loading.toggleModal('Out');
     });
 
- /*   $.ajax({
-        url: 'http://xproduct.ctrip.me:3003/api/mall/receipts',
-        headers: {
-            joejoe: 'joetestHeader'     //自定义请求会触发预请求
-        },
-        type: 'GET',
-        xhrFields: {
-            withCredentials: true
-        },
-        crossDomain: true,
-        success: function(data){
-            console.log(data);
-        }
-    });*/
     /**
      * Model分构造函数与方式调用二种调用，
      * 其用处为构造函数时用于构造Modal的ajax封装，用法为 new Model(opts);
      * 为方式时作为ajax拦截注入器注入request与response, 用法为 Model({req:function(){}, res: function(){}});
      * @param {object} opts 参列或 opts.req, opts.res
      */
-    var Model = function(opts){
-        //如果为注入器，仅执行注入操作，不实例化Model;
-        if(opts.req || opts.res){
-            inject(opts.req, opts.res);
-            return;
+    var Model = Class.extend({
+        init: function(opts){
+            //如果为注入器，仅执行注入操作，不实例化Model;
+            if(opts.req || opts.res){
+                inject(opts.req, opts.res);
+                return;
+            }
+            this.url = '';
+            this.data = data;
+        },
+        /**
+         * 一般用于post保存数据
+         */
+        save: function(){
+
+        },
+        /**
+         * 一般用于get获取数据
+         */
+        fetch: function(){
+
+        },
+        /**
+         *
+         */
+        changed: function(props){
+
         }
-        this.url = '';
-        this.data = data;
-    };
+    });
 
     return Model;
 });

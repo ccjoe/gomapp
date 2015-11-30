@@ -2,7 +2,7 @@ define(['base/core/model'], function(Model) {
     'use strict';
 
     //Model ajax注入器操作
-    Model({
+    new Model({
         req:function(e, xhr, options){
             console.log(e, xhr, options, 'def request inject');
         },
@@ -10,7 +10,20 @@ define(['base/core/model'], function(Model) {
             console.log(e, xhr, options, 'def response inject');
         }
     });
-
+    //$.ajax({
+    //    url: 'http://xproduct.ctrip.me:3003/api/mall/receipts',
+    //    headers: {
+    //        joejoe: 'joetestHeader'     //自定义请求会触发预请求
+    //    },
+    //    type: 'GET',
+    //    xhrFields: {
+    //        withCredentials: true
+    //    },
+    //    crossDomain: true,
+    //    success: function(data){
+    //        console.log(data);
+    //    }
+    //});
     return {
         init: function(page){
             page.render(this.swipeDemo);
