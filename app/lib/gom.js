@@ -44,23 +44,23 @@ if ('addEventListener' in document) {
     }, false);
 }
 
-define(['base/core/page', 'base/utils/url', 'base/core/model'], function(Page, Url, Model){
+define(['base/core/page', 'base/utils/url'], function(Page, Url){
     /**
-     * App对象
+     * Gom对象
      * @namespace
-     * @constructs App
-     * @return {Object} App
+     * @constructs Gom
+     * @return {Object} Gom
      * @example
-     * new App(config, route); 传入配置文件与路由文件
+     * new Gom(config, route); 传入配置文件与路由文件
      */
-    var App = Class.extend({
+    var Gom = Class.extend({
         init: function (config, route) {
             this.config = config || {};
             this.route = route || {};
             this.model = {};
             this.history = [];
         },
-        run: function(){       //App初始化
+        run: function(){       //Gom初始化
             var that = this;
             var isHistoryApi = !!(window.history && history.pushState);
             if(!isHistoryApi){
@@ -87,7 +87,7 @@ define(['base/core/page', 'base/utils/url', 'base/core/model'], function(Page, U
             $("body").off().on("click", 'a', function(){
                 var $t = $(this),
                     href = $t.attr('href');
-                if(!href) return;
+                if(!href || !!~href.indexOf('#')) return; //无链接或hash跳转不处理
                 var hash =  href.substring(1);
                 History.pushState({hash: hash, prevHash: that.getPrevHash()}, $t.attr('title'), '?'+hash);
                 return false;
@@ -110,7 +110,7 @@ define(['base/core/page', 'base/utils/url', 'base/core/model'], function(Page, U
         },
         /**
          * 根据完整hash获取页面对象(即具体路由指向的路由表对象)
-         * @method App#getPageSets
+         * @method Gom#getPageSets
          * @return {object} CRO (Current Router Object)返回具体路由指向的路由表对象
          * @example ?module/list  ?module/123
          */
@@ -145,19 +145,31 @@ define(['base/core/page', 'base/utils/url', 'base/core/model'], function(Page, U
         },
         /**
          * 根据完整hash路由或CRO对象到页面，封装了_routeByHash 与 _routeByCRO实现
-         * @method App#goto
+         * @method Gom#goto
          * @example module/list  module/123
+         * * ? 站内链接跳转
+         * # 站内组件或hash跳转(仅页面内)
+         * http(s)://或// 站间跳转 判断是否本域,本域的话跳转到search部分
+         * @todo 页面间数据传递
          */
         goto: function(where){
             var isstr = typeof where === 'string';
+            if(isstr){
+                var urls = Url.get(where);
+                var isThisHost = urls.host+urls.port === location.host;
+                if(/^(https:)?\/\//.test(where) && !isThisHost){
+                    location.href = where;
+                    return;
+                }else{
+                    where = Url.getHashPath(urls.search);   //获取serach里的path部分
+                }
+            }
             this[isstr ? '_routeByHash' : '_routeByCRO'](where);
         },
-        _setEventByCtrl: function(){
 
-        },
         /**
          * 根据完整hash路由到页面
-         * @method App#_routeByHash
+         * @method Gom#_routeByHash
          * @example module/list  module/123
          */
         _routeByHash: function (hashPath) {
@@ -215,6 +227,6 @@ define(['base/core/page', 'base/utils/url', 'base/core/model'], function(Page, U
             return false;
         }
     });
-
-    return App;
+    Gom.version =  '1.0.0';
+    return Gom;
 });

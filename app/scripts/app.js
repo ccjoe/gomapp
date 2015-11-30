@@ -6,6 +6,6 @@ require.config({
     }
 });
 
-require(['base/app', 'com/config', 'route'], function(App, config, route){
-    new App(config, route).run();
+require(['base/gom', 'com/config', 'route'], function(Gom, config, route){
+    new Gom(config, route).run();
 });

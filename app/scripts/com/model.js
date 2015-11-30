@@ -10,6 +10,7 @@ define(['com/config'], function(Config) {
     $.ajaxSettings.xhrFields = {
         withCredentials: true   //带上认证信息(如 cookie)
     };
+    $.ajaxSettings.timeout = 1000 * 60; //默认超时时间为1分钟
     $.ajaxSettings.error = function(xhr, errorType) {
         if (errorType === 'timeout') {
             Dailog.error('信号偏弱，访问超时');

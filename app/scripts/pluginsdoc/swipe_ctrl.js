@@ -1,5 +1,16 @@
-define(function(Slide) {
+define(['base/core/model'], function(Model) {
     'use strict';
+
+    //Model ajax注入器操作
+    Model({
+        req:function(e, xhr, options){
+            console.log(e, xhr, options, 'def request inject');
+        },
+        res: function(e, xhr, options){
+            console.log(e, xhr, options, 'def response inject');
+        }
+    });
+
     return {
         init: function(page){
             page.render(this.swipeDemo);

@@ -199,6 +199,11 @@ define(['base/core/view'], function(View) {
             };
             return this.layout(tipsStatic, opts).render();
         },
+        /**
+         * @param {string} content 显示的内容;
+         * @param {string} toastType 显示类别，有 warn info error, 默认info;
+         * @return toast
+         */
         toast: function(content, toastType){
             toastType = toastType || 'info';
             return new Modal({

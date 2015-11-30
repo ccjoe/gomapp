@@ -1,221 +1,73 @@
-/* === Modals === */
-.modal-overlay, .preloader-indicator-overlay, .popup-overlay {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 13000;
-  visibility: hidden;
-  opacity: 0; }
-  .modal-overlay.modal-overlay-visible, .preloader-indicator-overlay.modal-overlay-visible, .popup-overlay.modal-overlay-visible {
-    visibility: visible;
-    opacity: 1; }
+/*
+Error: Undefined mixin 'backface-visibility'.
+        on line 46 of ./app/styles/modal.scss, in `backface-visibility'
+        from line 46 of ./app/styles/modal.scss
 
-.popup-overlay {
-  z-index: 10500; }
+41:     text-align: center;
+42:     border-radius: 13px;
+43:     opacity: 0;
+44:     color:#000;
+45:     overflow: hidden;
+46:     @include backface-visibility;
+47: }
+48: 
+49: .modal-inner {
+50:     padding: 15px;
+51:     border-radius: 13px 13px 0 0;
 
-.modal-layout {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  width: 270px;
-  height: auto;
-  margin-left: -135px;
-  z-index: 13500;
-  text-align: center;
-  border-radius: 13px;
-  opacity: 0;
-  color: #000;
-  overflow: hidden;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden; }
-
-.modal-inner {
-  padding: 15px;
-  border-radius: 13px 13px 0 0;
-  position: relative;
-  background: rgba(255, 255, 255, 0.95); }
-
-.modal-title {
-  font-weight: 500;
-  font-size: 18px;
-  text-align: center; }
-  html.ios-gt-8 .modal-title {
-    font-weight: 600; }
-  .modal-title + .modal-text {
-    margin-top: 5px; }
-
-.modal-buttons {
-  height: 44px;
-  position: relative;
-  border-top: 1px solid rgba(230, 230, 230, 0.9);
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: -moz-flex;
-  display: flex; }
-  .modal-buttons.modal-buttons-vertical {
-    display: block;
-    height: auto; }
-
-.modal-button {
-  width: 100%;
-  padding: 0 5px;
-  height: 44px;
-  font-size: 17px;
-  line-height: 44px;
-  text-align: center;
-  color: #ccc;
-  display: block;
-  position: relative;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  cursor: pointer;
-  box-sizing: border-box;
-  -webkit-box-flex: 1;
-  -ms-flex: 1;
-  background-color: rgba(255, 255, 255, 0.95); }
-  .modal-button:first-child {
-    border-radius: 0 0 0 13px; }
-  .modal-button:last-child {
-    border-radius: 0 0 13px 0; }
-  .modal-button:first-child:last-child {
-    border-radius: 0 0 13px 13px; }
-  .modal-button.modal-button-bold {
-    font-weight: 500; }
-    html.ios-gt-8 .modal-button.modal-button-bold {
-      font-weight: 600; }
-  html:not(.watch-active-state) .modal-button:active, .modal-button.active-state {
-    background: rgba(230, 230, 230, 0.95); }
-  .modal-buttons-vertical .modal-button {
-    border-radius: 0; }
-    .modal-buttons-vertical .modal-button:last-child {
-      border-radius: 0 0 13px 13px; }
-
-.modal-no-buttons .modal-inner {
-  border-radius: 13px; }
-.modal-no-buttons .modal-buttons {
-  display: none; }
-
-.modal-loading {
-  overflow: hidden;
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  width: 80px;
-  height: auto;
-  margin-left: -40px; }
-  .modal-loading .modal-inner {
-    background-color: transparent;
-    width: 80px;
-    height: 80px; }
-
-.modal-confirm .modal-buttons .modal-button {
-  -webkit-box-flex: 2;
-  -ms-flex: 2;
-  -webkit-flex: 2;
-  -moz-flex: 2;
-  flex: 2; }
-
-.modal-alert .modal-buttons .modal-button {
-  -webkit-box-flex: 1;
-  -ms-flex: 1;
-  -webkit-flex: 1;
-  -moz-flex: 1;
-  flex: 1; }
-
-.modal-top, .modal-bottom {
-  width: 100%;
-  border-radius: 0;
-  margin: 0 !important;
-  left: 0 !important; }
-  .modal-top .modal-inner, .modal-top .modal-button, .modal-bottom .modal-inner, .modal-bottom .modal-button {
-    border-radius: 0; }
-  .modal-top .modal-button:first-child, .modal-top .modal-button:last-child, .modal-bottom .modal-button:first-child, .modal-bottom .modal-button:last-child {
-    border-radius: 0; }
-
-.modal-top {
-  top: 0;
-  bottom: auto !important; }
-  .modal-top .modal-inner {
-    background-color: rgba(0, 0, 0, 0.85);
-    color: #fff; }
-
-.modal-bottom {
-  top: auto !important;
-  bottom: 0; }
-  .modal-bottom .modal-inner {
-    padding: 0; }
-
-.modal-popover {
-  width: 150px; }
-
-.spinner {
-  width: 60px;
-  height: 60px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -30px;
-  margin-left: -30px; }
-
-.double-bounce1, .double-bounce2 {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background-color: #007aff;
-  opacity: 0.6;
-  position: absolute;
-  top: 0;
-  left: 0;
-  -webkit-animation: bounce 2.0s infinite ease-in-out;
-  animation: bounce 2.0s infinite ease-in-out; }
-
-.double-bounce2 {
-  -webkit-animation-delay: -1.0s;
-  animation-delay: -1.0s; }
-
-@-webkit-keyframes bounce {
-  0%, 100% {
-    -webkit-transform: scale(0); }
-  50% {
-    -webkit-transform: scale(1); } }
-@keyframes bounce {
-  0%, 100% {
-    transform: scale(0);
-    -webkit-transform: scale(0); }
-  50% {
-    transform: scale(1);
-    -webkit-transform: scale(1); } }
-#modal {
-  width: 100%;
-  height: 100%; }
-
-#toast {
-  display: none;
-  position: fixed;
-  bottom: 20%;
-  width: 100%;
-  text-align: center; }
-  #toast .modal-toast {
-    padding: 5px 10px;
-    text-align: center;
-    display: inline-block;
-    margin: 0 auto;
-    color: #fff; }
-    #toast .modal-toast .icon {
-      font-size: 15px; }
-      #toast .modal-toast .icon:before {
-        font-size: 18px;
-        position: relative;
-        top: 1px;
-        margin-right: 5px; }
-  #toast .modal-toast-info {
-    background-color: #333; }
-  #toast .modal-toast-success {
-    background-color: forestgreen; }
-  #toast .modal-toast-error {
-    background-color: orangered; }
+Backtrace:
+./app/styles/modal.scss:46:in `backface-visibility'
+./app/styles/modal.scss:46
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/tree/visitors/perform.rb:349:in `block in visit_mixin'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/stack.rb:98:in `block in with_mixin'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/stack.rb:115:in `with_frame'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/stack.rb:98:in `with_mixin'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/tree/visitors/perform.rb:347:in `visit_mixin'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/tree/visitors/base.rb:36:in `visit'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/tree/visitors/perform.rb:158:in `block in visit'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/stack.rb:79:in `block in with_base'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/stack.rb:115:in `with_frame'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/stack.rb:79:in `with_base'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/tree/visitors/perform.rb:158:in `visit'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/tree/visitors/perform.rb:431:in `block (2 levels) in visit_rule'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/tree/visitors/perform.rb:431:in `map'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/tree/visitors/perform.rb:431:in `block in visit_rule'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/tree/visitors/perform.rb:179:in `with_environment'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/tree/visitors/perform.rb:429:in `visit_rule'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/tree/visitors/base.rb:36:in `visit'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/tree/visitors/perform.rb:158:in `block in visit'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/stack.rb:79:in `block in with_base'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/stack.rb:115:in `with_frame'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/stack.rb:79:in `with_base'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/tree/visitors/perform.rb:158:in `visit'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/tree/visitors/base.rb:52:in `block in visit_children'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/tree/visitors/base.rb:52:in `map'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/tree/visitors/base.rb:52:in `visit_children'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/tree/visitors/perform.rb:167:in `block in visit_children'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/tree/visitors/perform.rb:179:in `with_environment'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/tree/visitors/perform.rb:166:in `visit_children'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/tree/visitors/base.rb:36:in `block in visit'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/tree/visitors/perform.rb:186:in `visit_root'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/tree/visitors/base.rb:36:in `visit'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/tree/visitors/perform.rb:157:in `visit'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/tree/visitors/perform.rb:8:in `visit'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/tree/root_node.rb:36:in `css_tree'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/tree/root_node.rb:20:in `render'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/engine.rb:278:in `render'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/plugin/compiler.rb:492:in `update_stylesheet'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/plugin/compiler.rb:209:in `each'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/plugin.rb:82:in `update_stylesheets'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/exec/sass_scss.rb:364:in `watch_or_update'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/exec/sass_scss.rb:51:in `process_result'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/exec/base.rb:52:in `parse'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/lib/sass/exec/base.rb:19:in `parse!'
+D:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.18/bin/sass:13:in `<top (required)>'
+D:/Ruby22/bin/sass:23:in `load'
+D:/Ruby22/bin/sass:23:in `<main>'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Error: Undefined mixin 'backface-visibility'.\A         on line 46 of ./app/styles/modal.scss, in `backface-visibility'\A         from line 46 of ./app/styles/modal.scss\A \A 41:     text-align: center;\A 42:     border-radius: 13px;\A 43:     opacity: 0;\A 44:     color:#000;\A 45:     overflow: hidden;\A 46:     @include backface-visibility;\A 47: }\A 48: \A 49: .modal-inner {\A 50:     padding: 15px;\A 51:     border-radius: 13px 13px 0 0;"; }
