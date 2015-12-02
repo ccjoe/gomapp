@@ -65,12 +65,12 @@ define(['base/ui/ui.list'], function(List) {
     return {
         init: function(page){
             page.data = viewList;
-            page.render(function(){
-                new List({
-                    data: viewList,
-                    wrapper: '.component-list'
-                }).render();
-            });
+            page.render();
+
+            new List({
+                data: viewList,
+                wrapper: '.component-list'
+            }).render();
         }
     };
 });

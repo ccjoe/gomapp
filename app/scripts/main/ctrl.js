@@ -48,7 +48,8 @@ define(['base/ui/ui.list', 'base/ui/ui.sides'], function(List, Sides) {
     var main =  {
         init: function(page) {
             page.data = data;  //页面的tmpl与data生成的页面
-            page.render(this.initCtrl);    //this.sides页面渲染后回调生成ui组件组成的页面
+            page.render();    //this.sides页面渲染后回调生成ui组件组成的页面
+            this.initCtrl();
         },
 
         initCtrl: function(){

@@ -21,15 +21,9 @@ define(['base/utils/store'], function(store){
             data
         );
     };
-
-    var getPartialTmplStatus = 'init';  //初始
+    //同步获取组件模板
     var getPartialTmpl = function (callback){
-        if(getPartialTmplStatus === 'loading'){
-            return;
-        }
-        getPartialTmplStatus = 'loading';   //正请求
         $.ajax({url:'lib/ui/ui.html', dataType:'html', async: false, success: function (tmpl){
-            getPartialTmplStatus = 'finished';  //已完成
             var tmpls = $(tmpl).find("script"), tmplID;
             tmpls.prevObject.each(function(i, item){
                 tmplID = item.id;
@@ -68,15 +62,13 @@ define(['base/utils/store'], function(store){
 
         //根据STORE与AJAX条件渲染视图,供View.extend的Page UI内部调用, 有wrapper时直接插入到页面，否则返回HTMLFragment,但是能返回的前提是，view是同步的
         render: function(){
-            var that = this, frag;
-            this.getTmpl('partial', function(){
-                frag = that.getHTMLFragment();
-                if(that.wrapper){
-                    that.replace ? that.wrapper.replaceWith(frag) : that.wrapper.html(frag);
-                }
-                that.show();
-            });
-            return that.wrapper.length ? that : frag;
+            this.getTmpl('partial');
+            var frag = this.getHTMLFragment();
+            if(this.wrapper){
+                this.replace ? this.wrapper.replaceWith(frag) : this.wrapper.html(frag);
+            }
+            this.show();
+            return this.wrapper.length ? this : frag;
         },
 
         show: function (){
@@ -100,45 +92,40 @@ define(['base/utils/store'], function(store){
             return this.data ? template(this.tmpl)(this) : template(this.tmpl);
         },
 
-        //获取STORE与AJAX条件获取模板
-        getTmpl: function(type, callback){
+        //根据是否存在STORE与AJAX条件获取获取模板
+        getTmpl: function(type){
             var hasStoreView = this.getStoreTmpl();
             if(hasStoreView){
-                callback();
                 return;
             }
-            this.getAjaxTmpl(type, callback);
+            this.getAjaxTmpl(type);
         },
-        getStoreTmpl: function(){
-            var tmpl = store.get(this.tmplname);
+        //获取已存储的STORE模板
+        getStoreTmpl: function(tmplkey){
+            tmplkey = tmplkey || this.tmplname;
+            var tmpl = store.get(tmplkey);
             if(tmpl){
                 this.tmpl = tmpl;
-                return true;
+                return tmpl;
             }
             return false;
         },
+        //根据type获取组件或页面模板
         getAjaxTmpl: function(type){
-            if(typeof type === 'function'){
-               next = type;
-            }else{
+            var that = this,
                 type = type || 'view';
-                next = arguments[1];
-            }
-            var that = this;
 
             if(type === 'view'){
-                $.get('/views/'+this.tmplname+'.html', function (tmpl) {
+                $.ajax({url:'/views/'+this.tmplname+'.html', dataType:'html', async: false, success: function (tmpl){
                     store.set(that.tmplname, tmpl);
                     that.tmpl = tmpl;
-                    next ? next() : null;
-                });
+                }});
                 return;
             }
             //如果是获取组件模板，则先整体获取，再通过store获取;
             if(type === 'partial'){
                 getPartialTmpl(function(){
                     that.getStoreTmpl();
-                    next();
                 });
             }
         },

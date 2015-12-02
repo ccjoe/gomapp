@@ -93,24 +93,6 @@
     </div>
 </script>
 
-
-<!--<div class="segmented-control">
-    <a class="control-item active" href="#item1mobile">
-        Thing one
-    </a>
-    <a class="control-item" href="#item2mobile">
-        Thing two
-    </a>
-    <a class="control-item" href="#item3mobile">
-        Thing three
-    </a>
-</div>
-<div class="card">
-    <span class=" active">Item 1</span>
-    <span class="control-content">Item 2</span>
-    <span class="control-content">Item 3</span>
-</div>-->
-
 <script id="ui.switch" type="text/template">
     {{ var switchType = /(^\w+)-?(\w+)?/.exec(data.type), isSlide = switchType[1]==='slide', position = switchType[2];}}
     <div class="switch-container slide-container {{= isSlide ? 'slide-container-'+position : 'tab-container slide-container-horizontal'}}">
@@ -129,11 +111,14 @@
             {{ }); }}
         </div>
         {{ if(!isSlide && position==='bottom'){ }}
-        <div class="switch-pagination {{= isSlide ? 'slide-pagination' : 'segmented-control'}}">
+        <nav class="bar bar-tab switch-pagination">
             {{ _.each(data.list, function(item, i){ }}
-            <span index="{{=i}}" class="switch-pagination-bullet"  {{= isSlide ? 'slide-pagination-bullet' : 'control-item'}} {{= i===0 ? 'active' : '' }}">{{=item.title}}</span>
+            <a class="tab-item switch-pagination-bullet {{= i===0 ? 'active' : '' }}" href="#" index="{{=i}}">
+                {{ if(item.icon){ }}<span class="icon {{=item.icon}}"></span> {{ } }}
+                <span class="tab-label">{{=item.title}}</span>
+            </a>
             {{ }); }}
-        </div>
+        </nav>
         {{ } }}
     </div>
 </script>
