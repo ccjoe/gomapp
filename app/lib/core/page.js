@@ -8,6 +8,7 @@ define(['base/core/view', 'base/ui/ui'], function(View, UI){
      * @extend View
      * @example
      **/
+
     var Page = View.extend({
         init:function (opts) {
             opts.wrapper = opts.wrapper || opts.config.selector.wrapper || '#viewport';
@@ -27,12 +28,16 @@ define(['base/core/view', 'base/ui/ui'], function(View, UI){
             this._super(opts);
         },
 
-        render: function (cb) {
-            var that = this;
-            this.getTmpl('view', function(){
-                that.show();
-                cb ? cb() : null;
-            });
+        render: function () {
+            //没有指定this.tmplname先渲染空页面,由ctrl及组件去填充页面
+            if(!this.tmplname){
+                this.tmpl = '<div class="'+ (opts.wrapper || opts.config.selector.wrapper || "content") +'"></div>';
+                this.show();
+                return;
+            }
+            //指定了this.tmplname时获取页面模板
+            this.getTmpl('view');
+            this.show();
         },
         show: function(){
             this.push(this.getHTMLFragment(), !this.isback ? 'swipe-left':'swipe-right');
@@ -42,12 +47,12 @@ define(['base/core/view', 'base/ui/ui'], function(View, UI){
             }
             this.initWidgetUI();
         },
-        //自动实例化组件，去支持声明式初始UI组件
+        //渲染页面后自动实例化组件，去支持声明式初始UI组件
         initWidgetUI: function(){
             var $t, uitype, that = this;
-            $('body').find('[ui-widget]').each(function(i, it){
+            $('body').find('[data-ui-widget]').each(function(i, it){
                 $t = $(it);
-                uitype = $t.attr('ui-widget');
+                uitype = $t.data('ui-widget');
 
                 that.widgets[i] = new UI[uitype]({
                     wrapper: $t,
@@ -73,6 +78,7 @@ define(['base/core/view', 'base/ui/ui'], function(View, UI){
             }
 
             if(!effect){    //如果没有效果直接放进去
+
             }else{
                 var xy = /left|right/.test(effect) ? 'X' : 'Y',
                     val = /left|top/.test(effect) ? '100%' : '-100%',

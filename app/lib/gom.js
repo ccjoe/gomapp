@@ -190,7 +190,7 @@ define(['base/core/page', 'base/utils/url'], function(Page, Url){
                 CRO.events = ctrl.events;   //将ctrl的事件设置到当前路由对象
             }
             var page = this.setPage(CRO);   //初始页面并绑定事件
-            if(ctrl){
+            if(ctrl && ctrl.init){
                 ctrl.init(page);
             }else{
                 page.render();

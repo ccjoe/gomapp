@@ -12,6 +12,7 @@ define([
     'viewdoc/modal_ctrl',
     //'viewdoc/button_ctrl',
     'viewdoc/switch_ctrl',
+    'viewdoc/switchall_ctrl',
     'pluginsdoc/swipe_ctrl'
 ], function (main,
              auth,
@@ -24,12 +25,13 @@ define([
              viewdocModal,
              //viewdocButton,
              viewdocSwitch,
+             viewdocSwitchAll,
              pluginsdocSwipe) {
 
     //tmpl html FileName; ctrl js FileName
     var router = {
         // '/sample': {
-        //     tmpl : 'sample'    //require  页面调用的模块名称 template
+        //     tmpl : 'sample'    //optional(tmpl与ctrl必须指定一个) 页面调用的模块名称 template
         //     ctrl : sample optional 页面对应的ctrl的路径 ctrl
         //     title: 'SAMPLE'    //optional 页面标题
         //     data : {}          //optional 页面需要的数据（一般不会直接写入，由ajax动态写入）
@@ -74,7 +76,12 @@ define([
             '/switch':{
                 tmplname: 'viewdoc/switch',
                 ctrl: viewdocSwitch,
-                title: 'Slide'
+                title: 'Slide',
+                ':id': {
+                    tmplname: 'viewdoc/switchall',
+                    ctrl: viewdocSwitchAll,
+                    title: 'Slide综合示例'
+                }
             },
             '/button': {
                 tmplname: 'viewdoc/button',
@@ -88,7 +95,7 @@ define([
                 ctrl: pluginsdocSwipe,
                 title: 'Swipe'
             },
-            '/fn':{
+            '/fx':{
                 tmplname: 'plugindocs/fx',
                 //ctrl: pluginsdocFx,
                 title: 'Fx'

@@ -4,14 +4,47 @@ define(['base/core/view'], function(View) {
         swipeX: 60,
         isloop: true,         //是否从最后一张到第一张
         initIndex: 0,         //初始显示index
-        list: []              //列表内容
+        list: [/*{},{
+            title: '街景',               //标题，tab时用到
+            icon: 'icon-home',           //标题，tab时用到
+            content: '',                 //A:内容
+            src: 'example.com/test.html',//B:或为url获取模板
+            data: {}                     //当有B时，可以有data字段与src合并为数据模板渲染到页面
+        }*/]              //列表内容
     };
 
     var vendor = (/webkit/i).test(navigator.appVersion) ? 'webkit' :
         (/firefox/i).test(navigator.userAgent) ? 'Moz' :
             'opera' in window ? 'O' : '';
     var has3d = 'WebKitCSSMatrix' in window && 'm11' in new WebKitCSSMatrix();
-
+    /**
+     * Slide 滑动相关组件
+     * @class Slide
+     * @extend View
+     * @example
+     * var slide = new Slide({
+            wrapper: '.slide-example',
+            data: {
+                type: direction,    //slide-vertical slide-horizontal tab-top tab-bottom
+                list:[{
+                    title: '街景',                //标题，tab时用到
+                    icon: 'icon-home',           //标题，tab时用到
+                    //content: '',               //A:滑动面板内容
+                    src: 'example.com/test.html',//B:滑动面板内容支持远程url获取模板,此时不能与content同时存在。
+                    data: {}                     //当为B时，可以有data字段与src合并为数据模板渲染到页面，框架已处理，仅需要配置
+                },{ title: '美女',
+                    icon: 'icon-person',
+                    content: 'content2'          //A:滑动面板内容
+                },{ title: '巴黎',
+                    icon: 'icon-star-filled',
+                    content: 'content3'
+                },{ title: '巴黎',
+                    icon: 'icon-gear',
+                    content: 'content4'
+                }]
+            }
+        }).render();
+     */
     var Slide = View.extend({
         init: function (opts) {
             opts.data = _.extend({}, defaults, opts.data);
@@ -28,7 +61,13 @@ define(['base/core/view'], function(View) {
         getListDom: function(){
           return this.wrapper.find('.switch-wrapper');
         },
-        getIndexDom: function(){
+        getIndexData: function(index){
+            return this.data.list[index];
+        },
+        getIndexDom: function(index){
+            return this.getListDom().find('.switch-item').eq(index);
+        },
+        getPaginationDom: function(){
           return this.wrapper.find('.switch-pagination');
         },
         events:{
@@ -38,13 +77,27 @@ define(['base/core/view'], function(View) {
         },
         //滚动到或回滚到index
         rollback: function(index){
-            var $switchs = this.getListDom(),
-                $index = this.getIndexDom(),
+            var that = this,
+                $switchs = this.getListDom(),
+                $index = this.getPaginationDom(),
                 isX =  /(^\w+)-?(\w+)?/.exec(this.data.type)[2] !== 'vertical',       //水平垂直
                 isize = isX ? $switchs.width() : $switchs.height(); //计算尺寸
 
-            $switchs.fx(this.swipeCount(isize*-index));
-            $index.find('.switch-pagination-bullet').eq(index).addClass('active').siblings().removeClass('active');
+            var showIndex = function(){
+                $switchs.fx(that.swipeCount(isize*-index));
+                $index.find('.switch-pagination-bullet').eq(index).addClass('active').siblings().removeClass('active');
+            };
+
+            var indexData = this.getIndexData(index);
+            //如果不存在content存在src的话远程获取content
+            if(!indexData.content && indexData.src !== void 0){
+                this.getIndexAsync(index, function(content){
+                    that.getIndexDom(index).html(content);
+                    showIndex();
+                });
+            }else{
+                showIndex();
+            }
         },
         //index为初始显示
         swipeContainer: function(index){
@@ -52,11 +105,9 @@ define(['base/core/view'], function(View) {
                 $root = this.getRootDom(),
                 $switchs = this.getListDom(),            //滑动容器
                 $switch = $switchs.find('.switch-item'),  //滑动子项
-                $index = this.getIndexDom(),            //指示
                 len = $switch.length, that = this,//元素个数, 元素,  this
                 isloop = this.data.isloop,              //是否循环滚动
                 isX =  /(^\w+)-?(\w+)?/.exec(this.data.type)[2] !== 'vertical',       //水平垂直
-                isize = isX ? $switchs.width() : $switchs.height(), //计算尺寸,
                 swipeXY = isX ? 'swipeX' : 'swipeY',
                 swipeDR = isX ? ['left', 'right'] : ['top', 'bottom'];
 
@@ -98,6 +149,26 @@ define(['base/core/view'], function(View) {
                   console.log(index, len);
                 }
             });
+        },
+        //如果每个滑动子项是远程数据的话,从ajax(需要同源)获取或从store获取,返回处理后的模板content
+        getIndexAsync: function(index, next){
+            var indexData = this.getIndexData(index),
+                indexSrc = indexData?indexData.src:null,
+                indexStore = this.getStoreTmpl(indexSrc);
+
+            var getContent = function(tmpl){
+                return !indexData.data ? tmpl : _.template(tmpl)(indexData.data);
+            };
+            if(indexSrc){
+                if(indexStore){
+                    next(getContent(indexStore));
+                }
+                $.get(indexSrc, function (tmpl) {
+                    var tmplStr = getContent(tmpl);
+                    store.set(indexSrc, tmpl);  //仅缓存模板，不缓存数据(有时需要实时获取)
+                    next ? next(tmplStr) : null;
+                });
+            }
         },
         //get {-webkit-transform: translate3d(x,y,0)}
         swipeCount: function(distance){

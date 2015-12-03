@@ -2,7 +2,8 @@ define(['base/ui/ui.list'], function(List) {
     'use strict';
     return {
         init: function(page){
-            page.render(this.createList);
+            page.render();
+            this.createList();
         },
         events: {
           'click .create-list':'createList2'
