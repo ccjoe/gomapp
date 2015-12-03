@@ -35,12 +35,17 @@ define(['base/utils/store'], function(store){
                 tmplID = item.id;
                 if(!!tmplID){
                     store.set(tmplID, $(item).html());
+                    store.set('GOM_APP_UI', 1);
                 }
             });
             callback ? callback() : null;
         }});
     };
-    getPartialTmpl();
+
+    if(!store.get('GOM_APP_UI')){
+        getPartialTmpl();
+    }
+
     /**
      * View对象
      * @namespace

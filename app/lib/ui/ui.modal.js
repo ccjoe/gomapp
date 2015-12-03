@@ -134,7 +134,7 @@ define(['base/core/view'], function(View) {
 
     var ModalExtend = {
         layout: function(static, opts){
-            return   new Modal({data: $.extend({}, opts, static)});
+            return   new Modal({data: $.extend({}, static, opts)});
         },
         alert:function(opts){
             var alertStatic = {
@@ -185,7 +185,7 @@ define(['base/core/view'], function(View) {
                 title: opts.title || '',
                 btns: {
                     no: '取消',
-                    //yes: '完成'
+                    yes: '完成'
                 },
                 content: opts.content
             };
