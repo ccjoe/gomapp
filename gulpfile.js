@@ -9,7 +9,7 @@ var reload = browserSync.reload;
 var sass = require('gulp-ruby-sass');
 gulp.task('styles', function () {
   return sass('./app/styles/main.scss')
-    .pipe(gulp.dest('./app/css/main.css'))
+    .pipe(gulp.dest('./app/css/'));
      //.pipe();
 });
 

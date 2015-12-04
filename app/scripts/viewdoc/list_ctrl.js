@@ -23,7 +23,7 @@ define(['base/ui/ui.list'], function(List) {
                 },{
                     img: '',
                     title: '列表3',
-                    desc: '列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——列表 ——',
+                    desc: '列表1列表1列表1列表1列表1',
                     badge: '10',
                 }],
             };
@@ -41,7 +41,7 @@ define(['base/ui/ui.list'], function(List) {
                 list: [{
                     icon: 'icon-trash',
                     title: '列表1',
-                    desc: '列表1列表1列表1列表1列表1列表1列表1列表1列表1列表1列表1列表1列表1',
+                    desc: '列表1列表1列表1列表1列表1列表1',
                     badge: '12'
                 },{
                     img: 'icon-gear',
@@ -51,7 +51,7 @@ define(['base/ui/ui.list'], function(List) {
                 },{
                     icon: 'icon-pages',
                     title: '列表3',
-                    desc: '列表1列表1列表1列表1列表1列表1列表1列表1列表1列表1列表1列表1列表1',
+                    desc: '列表1列表1列表1列表1列表1列表1列表1',
                     badge: '10',
                 }],
             };

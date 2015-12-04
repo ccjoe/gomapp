@@ -20,10 +20,10 @@ define(['base/core/view'], function(View) {
             this._super(opts);
             this.yes = opts.yes || noop;
             this.no = opts.no || noop;
-            this.mask = opts.mask;
+            this.mask = opts.data.mask;
         },
         //显示视图
-        show: function (frag){
+        show: function (){
             this.wrapper.fadeIn(100);
             this.reloc();
             this.toggleModal();

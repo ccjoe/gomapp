@@ -3,7 +3,7 @@
 /* === Modals === */
 $modalBg: rgba(255,255,255,0.95);
 $modalBd: rgba(230,230,230,0.9);
-$modalButonColor : #ccc;
+$modalButonColor : #007aff;
 $modalButonActiveBg: rgba(230,230,230,0.95);
 $modalHairlineColor: rgba(0,0,0,0.2);
 $modalDuration: 400ms;
@@ -116,6 +116,21 @@ $actionsPopoverHairline: rgba(0,0,0,0.2);
         &:last-child {
             border-radius: 0 0 13px 13px;
         }
+    }
+    &:after{
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 0;
+        left: auto;
+        bottom: auto;
+        width: 1px;
+        height: 100%;
+        background-color: #b5b5b5;
+        display: block;
+        z-index: 15;
+        -webkit-transform-origin: 100% 50%;
+        transform-origin: 100% 50%;
     }
 }
 .modal-no-buttons {

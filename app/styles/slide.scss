@@ -72,6 +72,9 @@
     height: 100%;
     position: relative;
     display: block;
+    img{
+        width: 100%;
+    }
 }
 /* Auto Height */
 .slide-container-autoheight, .slide-container-autoheight .slide-slide {
@@ -194,7 +197,8 @@
         }
     }
 }
-/* 3D Container */
+/*
+/!* 3D Container *!/
 .slide-container-3d {
     -webkit-perspective: 1200px;
     -moz-perspective: 1200px;
@@ -216,43 +220,43 @@
         z-index: 10;
     }
     .slide-slide-shadow-left {
-        background-image: -webkit-gradient(linear, left top, right top, from(rgba(0,0,0,0.5)), to(rgba(0,0,0,0))); /* Safari 4+, Chrome */
-        background-image: -webkit-linear-gradient(right, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Chrome 10+, Safari 5.1+, iOS 5+ */
-        background-image:    -moz-linear-gradient(right, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Firefox 3.6-15 */
-        background-image:      -o-linear-gradient(right, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Opera 11.10-12.00 */
-        background-image:         linear-gradient(to left, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Firefox 16+, IE10, Opera 12.50+ */
+        background-image: -webkit-gradient(linear, left top, right top, from(rgba(0,0,0,0.5)), to(rgba(0,0,0,0))); /!* Safari 4+, Chrome *!/
+        background-image: -webkit-linear-gradient(right, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Chrome 10+, Safari 5.1+, iOS 5+ *!/
+        background-image:    -moz-linear-gradient(right, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Firefox 3.6-15 *!/
+        background-image:      -o-linear-gradient(right, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Opera 11.10-12.00 *!/
+        background-image:         linear-gradient(to left, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Firefox 16+, IE10, Opera 12.50+ *!/
     }
     .slide-slide-shadow-right {
-        background-image: -webkit-gradient(linear, right top, left top, from(rgba(0,0,0,0.5)), to(rgba(0,0,0,0))); /* Safari 4+, Chrome */
-        background-image: -webkit-linear-gradient(left, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Chrome 10+, Safari 5.1+, iOS 5+ */
-        background-image:    -moz-linear-gradient(left, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Firefox 3.6-15 */
-        background-image:      -o-linear-gradient(left, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Opera 11.10-12.00 */
-        background-image:         linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Firefox 16+, IE10, Opera 12.50+ */
+        background-image: -webkit-gradient(linear, right top, left top, from(rgba(0,0,0,0.5)), to(rgba(0,0,0,0))); /!* Safari 4+, Chrome *!/
+        background-image: -webkit-linear-gradient(left, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Chrome 10+, Safari 5.1+, iOS 5+ *!/
+        background-image:    -moz-linear-gradient(left, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Firefox 3.6-15 *!/
+        background-image:      -o-linear-gradient(left, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Opera 11.10-12.00 *!/
+        background-image:         linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Firefox 16+, IE10, Opera 12.50+ *!/
     }
     .slide-slide-shadow-top {
-        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,0.5)), to(rgba(0,0,0,0))); /* Safari 4+, Chrome */
-        background-image: -webkit-linear-gradient(bottom, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Chrome 10+, Safari 5.1+, iOS 5+ */
-        background-image:    -moz-linear-gradient(bottom, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Firefox 3.6-15 */
-        background-image:      -o-linear-gradient(bottom, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Opera 11.10-12.00 */
-        background-image:         linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Firefox 16+, IE10, Opera 12.50+ */
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,0.5)), to(rgba(0,0,0,0))); /!* Safari 4+, Chrome *!/
+        background-image: -webkit-linear-gradient(bottom, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Chrome 10+, Safari 5.1+, iOS 5+ *!/
+        background-image:    -moz-linear-gradient(bottom, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Firefox 3.6-15 *!/
+        background-image:      -o-linear-gradient(bottom, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Opera 11.10-12.00 *!/
+        background-image:         linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Firefox 16+, IE10, Opera 12.50+ *!/
     }
     .slide-slide-shadow-bottom {
-        background-image: -webkit-gradient(linear, left bottom, left top, from(rgba(0,0,0,0.5)), to(rgba(0,0,0,0))); /* Safari 4+, Chrome */
-        background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Chrome 10+, Safari 5.1+, iOS 5+ */
-        background-image:    -moz-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Firefox 3.6-15 */
-        background-image:      -o-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Opera 11.10-12.00 */
-        background-image:         linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Firefox 16+, IE10, Opera 12.50+ */
+        background-image: -webkit-gradient(linear, left bottom, left top, from(rgba(0,0,0,0.5)), to(rgba(0,0,0,0))); /!* Safari 4+, Chrome *!/
+        background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Chrome 10+, Safari 5.1+, iOS 5+ *!/
+        background-image:    -moz-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Firefox 3.6-15 *!/
+        background-image:      -o-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Opera 11.10-12.00 *!/
+        background-image:         linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Firefox 16+, IE10, Opera 12.50+ *!/
     }
 }
-/* Coverflow */
+/!* Coverflow *!/
 .slide-container-coverflow {
     .slide-wrapper {
-        /* Windows 8 IE 10 fix */
+        /!* Windows 8 IE 10 fix *!/
         -ms-perspective:1200px;
     }
 
 }
-/* Fade */
+/!* Fade *!/
 .slide-container-fade {
     &.slide-container-free-mode {
         .control-content {
@@ -275,7 +279,7 @@
         }
     }
 }
-/* Cube */
+/!* Cube *!/
 .slide-container-cube {
     overflow: visible;
     .control-content {
@@ -323,7 +327,7 @@
         z-index: 0;
     }
 }
-/* Scrollbar */
+/!* Scrollbar *!/
 .slide-scrollbar {
     border-radius: 10px;
     position: relative;
@@ -357,7 +361,7 @@
 }
 .slide-scrollbar-cursor-drag {
     cursor: move;
-}
+}*/
 /* Preloader */
 .slide-slide .preloader {
     width: 42px;

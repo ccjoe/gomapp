@@ -18,7 +18,7 @@ define(['com/config'], function(Config) {
             var statusCode = xhr.status;
             console.log(statusCode, 'statusCode');
             if (statusCode === 404 || statusCode === 500) {   //处理状态码错误
-                window.location.href = '#/' + statusCode;
+                //window.location.href = '?/' + statusCode;
             }
         }
     };

@@ -2,10 +2,6 @@
 
 define([
     'main/ctrl',
-    'auth/ctrl',
-    'module/list_ctrl',
-    'module/view_ctrl',
-    'module/add_ctrl',
     'viewdoc/list_ctrl',
     'viewdoc/header_ctrl',
     'viewdoc/component_list_ctrl',
@@ -15,10 +11,6 @@ define([
     'viewdoc/switchall_ctrl',
     'pluginsdoc/swipe_ctrl'
 ], function (main,
-             auth,
-             moduleList,
-             moduleView,
-             moduleAdd,
              viewdocList,
              viewdocHeader,
              viewdocComponentList,
@@ -35,6 +27,7 @@ define([
         //     ctrl : sample optional 页面对应的ctrl的路径 ctrl
         //     title: 'SAMPLE'    //optional 页面标题
         //     data : {}          //optional 页面需要的数据（一般不会直接写入，由ajax动态写入）
+        //     params: {}         //页面间相互传递数据时设置此对象
         //     wrapper: '#sample' //optional 页面需要插入的DOM位置
         //     seo: {
         //          title:        //上面title是显示在页面上的，这个设置是<title>标签里的值
@@ -46,11 +39,6 @@ define([
             tmplname: 'app',
             ctrl: main,
             title: 'GoM App'
-        },
-        '/login': {
-            tmplname: 'login',
-            ctrl: auth,
-            title: '登录'
         },
         '/viewdoc': {
             '/': {
@@ -77,7 +65,23 @@ define([
                 tmplname: 'viewdoc/switch',
                 ctrl: viewdocSwitch,
                 title: 'Slide',
-                ':id': {
+                '/all':{
+                    ctrl: viewdocSwitchAll,
+                    title: 'Slide综合示例'
+                },
+                '/slide':{
+                    ctrl: viewdocSwitchAll,
+                    title: 'Slide示例'
+                },
+                '/tab':{
+                    ctrl: viewdocSwitchAll,
+                    title: 'Tab示例'
+                },
+                '/ajax':{
+                    ctrl: viewdocSwitchAll,
+                    title: 'switch配置示例'
+                },
+                '/:var': {                          //对于这种情况一般这一级的hash都会被处理为路由参数routeParams,但如果匹配到了（如/all）则走上面流程。
                     tmplname: 'viewdoc/switchall',
                     ctrl: viewdocSwitchAll,
                     title: 'Slide综合示例'
@@ -101,26 +105,12 @@ define([
                 title: 'Fx'
             }
         },
-        '/module': {
-            '/': {
-                tmplname: 'module/list',
-                ctrl: moduleList
-            },
-            '/:var': {
-                tmplname: 'module/view',
-                ctrl: moduleView
-            },
-            '/add': {
-                tmplname: 'module/add',
-                ctrl: moduleAdd
-            },
-            '/edit': {}
+        '/pagedoc': {
+            tmplname: '/pagedoc/index',
+            title: 'Page对象及Ctrl说明'
         },
         '/modal': {
             tmplname: '/pages/modal'
-        },
-        '/slide': {
-            tmplname: '/pages/slide'
         },
         //HTTP 状态
         '/404': {

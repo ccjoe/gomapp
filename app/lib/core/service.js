@@ -9,10 +9,10 @@ define(['base/ui/ui.modal'], function(Modal){
     //默认Ajax截击器
     var defaultInject = {
         request: function(e, xhr, options){
-            console.log(e, xhr, options, 'default request inject');
+            //console.log(e, xhr, options, 'default request inject');
         },
         response: function(e, xhr, options){
-            console.log(e, xhr, options, 'default response inject');
+            //console.log(e, xhr, options, 'default response inject');
         }
     };
 
