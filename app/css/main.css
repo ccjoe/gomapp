@@ -127,7 +127,7 @@ body {
   font-size: 17px;
   line-height: 44px;
   text-align: center;
-  color: #ccc;
+  color: #007aff;
   display: block;
   position: relative;
   white-space: nowrap;
@@ -154,6 +154,20 @@ body {
     border-radius: 0; }
     .modal-buttons-vertical .modal-button:last-child {
       border-radius: 0 0 13px 13px; }
+  .modal-button:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    left: auto;
+    bottom: auto;
+    width: 1px;
+    height: 100%;
+    background-color: #b5b5b5;
+    display: block;
+    z-index: 15;
+    -webkit-transform-origin: 100% 50%;
+    transform-origin: 100% 50%; }
 
 .modal-no-buttons .modal-inner {
   border-radius: 13px; }
