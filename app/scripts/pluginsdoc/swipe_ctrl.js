@@ -15,9 +15,9 @@ define(['base/core/service'], function(Service) {
     var listModel = new Service({
        url: 'http://xproduct.ctrip.me:3003/api/mall/receipts'
     });
-    listModel.fetch({userId:123}).done(function(data){
-        console.log(data, 'data');
-    });
+    //listModel.fetch({userId:123}).done(function(data){
+    //    console.log(data, 'data');
+    //});
 
     return {
         init: function(page){
