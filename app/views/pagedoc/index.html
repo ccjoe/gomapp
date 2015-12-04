@@ -20,19 +20,21 @@ init: function(page){
     </pre>
     <h5>4. init方法里有个参数为page对象，包含到这个页面的所有信息，即cro对象，包含的内容很强大。通过框架提供的方法操作此对象可以很自由地处理各种逻辑，page对象包含如下属性：</h5>
     <pre class="prettyprint lang-js">
-config: Object      //全局配置config.js export的对象
-data: Object        //页面上数据对象
-tmpl: ""            //页面dom string
-events: Object      //页面对象上绑定的事件， gom在组件与页面上实现的事件绑定方式借用了 backbone events思想来实现的
-hashs: Array        //路由到当前页面的路由数组
-isback: false       //是否为后退
-params: null        //到此页面传递的参数对象
-replace: false      //在page实例里暂时无用， 继承自View对象,详见View对象
-seo: Object         //当前页面的seo配置信息
-title: "Slide示例"   //页面标题
-tmplname: ""        //页面路径
-widgets: Array[1]   //页面上所有经过声明式的组件对象数组， 函数式的在ctrl里可以直接引用
-wrapper: Z[1]       //路由到页面需要将页面插入的地方
+ {
+    config: Object      //全局配置config.js export的对象
+    data: Object        //页面上数据对象
+    tmpl: ""            //页面dom string
+    events: Object      //页面对象上绑定的事件， gom在组件与页面上实现的事件绑定方式借用了 backbone events思想来实现的
+    hashs: Array        //路由到当前页面的路由数组
+    isback: false       //是否为后退
+    params: null        //到此页面传递的参数对象
+    replace: false      //在page实例里暂时无用， 继承自View对象,详见View对象
+    seo: Object         //当前页面的seo配置信息
+    title: "Slide示例"   //页面标题
+    tmplname: ""        //页面路径
+    widgets: Array[1]   //页面上所有经过声明式的组件对象数组， 函数式的在ctrl里可以直接引用
+    wrapper: Z[1]       //路由到页面需要将页面插入的地方
+}
     </pre>
     <p>page对象上的方法参见文档：http:</p>
     <h5>5.ctrl代码结构一般如下：</h5>
