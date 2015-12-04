@@ -122,23 +122,18 @@ define(['base/core/page', 'base/utils/url'], function(Page, Url){
                 return router[hashPath];
             }
 
-            var hash1 = hashRoute[0],
-                hash2 = hashRoute[1];
+            var CRO = router, hashLen = hashRoute.length, index=0, hashIndex=0;
 
-            var CRO = router['/' + hash1];
-
-            //console.log(hashPath, hashRoute, CRO, 'hashinfo');
-            if (!hash2) {
-                if (CRO && CRO.hasOwnProperty('/')) {
+            for(;index<hashLen; index++){
+                hashIndex = hashRoute[index];
+                CRO = CRO['/'+hashIndex];
+                if (CRO && CRO.hasOwnProperty('/')){
                     CRO = CRO['/'];
                 }
-            } else {
-                //level2 hash没有匹配到路由表时, 看是否路由的为变量||ID
-                if (!CRO['/' + hash2] && CRO.hasOwnProperty('/:var')) {
+                if(!CRO  && CRO.hasOwnProperty('/:var')){
                     CRO = CRO['/:var'];
-                    CRO.routeParams = hash2;
-                } else {
-                    CRO = CRO['/' + hash2];
+                    CRO.routeParams = hashIndex;
+                    return CRO;
                 }
             }
             return CRO;

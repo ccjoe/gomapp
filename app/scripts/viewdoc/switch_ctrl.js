@@ -29,7 +29,7 @@ define(['base/ui/ui.list'], function(List) {
 
             var ListSet = new List({
                 data: viewList,
-                wrapper: '.content'
+                wrapper: $('.content').last()
             });
             ListSet.render();
         }

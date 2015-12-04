@@ -31,7 +31,7 @@ define(['base/core/view', 'base/ui/ui'], function(View, UI){
         render: function () {
             //没有指定this.tmplname先渲染空页面,由ctrl及组件去填充页面
             if(!this.tmplname){
-                this.tmpl = '<div class="'+ (opts.wrapper || opts.config.selector.wrapper || "content") +'"></div>';
+                this.tmpl = '<div class="'+ (this.wrapper ||"content") +'"></div>';
                 this.show();
                 return;
             }
