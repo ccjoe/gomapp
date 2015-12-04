@@ -6,6 +6,7 @@ define(['base/core/view', 'base/ui/ui'], function(View, UI){
      * 3. 支持声明式组件写法
      * 4. 页面SEO相关的设置
      * @extend View
+     * @clsss Page
      * @example
      **/
 
@@ -13,12 +14,8 @@ define(['base/core/view', 'base/ui/ui'], function(View, UI){
         init:function (opts) {
             opts.wrapper = opts.wrapper || opts.config.selector.wrapper || '#viewport';
             this.title  = opts.title || '';
-            this.widgets = [];
-            this.dom = {
-                root   : opts.root || '',
-                header : opts.header || '',
-                footer : opts.footer || ''
-            };
+            this.widgets = [];                  //页面上所有经过声明式的组件对象数组， 函数式的在ctrl里可以直接引用
+            this.params = opts.params || null;  //页面参数
             this.seo = opts.seo || {
                     title: '',
                     keywords: '',
@@ -26,12 +23,13 @@ define(['base/core/view', 'base/ui/ui'], function(View, UI){
                 };
             this.isback = opts.isback;
             this._super(opts);
+            this.config = opts.config;
         },
 
         render: function () {
             //没有指定this.tmplname先渲染空页面,由ctrl及组件去填充页面
             if(!this.tmplname){
-                this.tmpl = '<div class="'+ (this.wrapper ||"content") +'"></div>';
+                this.tmpl = '<div class="'+ (this.config.selector.content.substring(1) || "content") +'"></div>';
                 this.show();
                 return;
             }
@@ -39,6 +37,7 @@ define(['base/core/view', 'base/ui/ui'], function(View, UI){
             this.getTmpl('view');
             this.show();
         },
+
         show: function(){
             this.push(this.getHTMLFragment(), !this.isback ? 'swipe-left':'swipe-right');
             //this._parseEvent();
@@ -94,7 +93,6 @@ define(['base/core/view', 'base/ui/ui'], function(View, UI){
                 }
             }
         },
-
         /**
          * 设置heaer
          * @method App#setHeader
@@ -112,12 +110,6 @@ define(['base/core/view', 'base/ui/ui'], function(View, UI){
             $('header.bar .title').text(this.title);
         },
         setSeo: function(seoInfo){
-
-        },
-        setFooter: function () {
-
-        },
-        refresh: function (data) {
 
         }
     });

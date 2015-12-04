@@ -47,8 +47,8 @@ if ('addEventListener' in document) {
 define(['base/core/page', 'base/utils/url'], function(Page, Url){
     /**
      * Gom对象
-     * @namespace
      * @constructs Gom
+     * @param {object} config
      * @return {Object} Gom
      * @example
      * new Gom(config, route); 传入配置文件与路由文件
@@ -110,33 +110,49 @@ define(['base/core/page', 'base/utils/url'], function(Page, Url){
         },
         /**
          * 根据完整hash获取页面对象(即具体路由指向的路由表对象)
-         * @method Gom#getPageSets
+         * 路由查找规则，根据hash路径数据长度查找CRO对应对象，在每个长度的index找不到则查找'/:var'， 在最后index有‘/’则查找'/';
+         * @method Gom#getCRO
          * @return {object} CRO (Current Router Object)返回具体路由指向的路由表对象
          * @example ?module/list  ?module/123
          */
-        getPageSets: function (hashPath) {
+        getCRO: function (hashPath) {
             var hashRoute = Url.getHashPath(hashPath, true),
                 router = this.route;
-
             if (hashPath === '/') {
                 return router[hashPath];
             }
 
             var CRO = router, hashLen = hashRoute.length, index=0, hashIndex=0;
-
             for(;index<hashLen; index++){
                 hashIndex = hashRoute[index];
-                CRO = CRO['/'+hashIndex];
-                if (CRO && CRO.hasOwnProperty('/')){
-                    CRO = CRO['/'];
+                if(!index){
+                    CRO = CRO['/'+hashIndex];        //hash index=0时必须完全匹配，第二级才会有 '/'与':var'的路由
+                    if(CRO === void 0) return;
+                }else{
+                    CRO = CRO['/'+hashIndex] || CRO; //如果在当前index没有找到对应对象时，在此index上还保留上一个index的对象
                 }
-                if(!CRO  && CRO.hasOwnProperty('/:var')){
+
+                if(CRO.index === void 0){            //没有index则加上， 有的话说明取的是上一次设置的CRO,即本次index没有取到值
+                    CRO.index = index;               //没有则打上标签
+                }
+                if ((index === hashLen-1) && CRO.hasOwnProperty('/')){  //最后一个index时检查 '/'
+                    CRO = CRO['/'];
+                    return CRO;
+                }
+                //如果CRO的index还停留在上一个index，说明在此index上没找到路由对象
+                if(CRO.index === index-1 && CRO.hasOwnProperty('/:var')){
                     CRO = CRO['/:var'];
+                    CRO.index = index;
                     CRO.routeParams = hashIndex;
                     return CRO;
                 }
             }
+            CRO.hashs = hashRoute;
             return CRO;
+        },
+        //设置cro, 用于页面向某个页面传递数据
+        setCRO: function(cro){
+
         },
         /**
          * 根据完整hash路由或CRO对象到页面，封装了_routeByHash 与 _routeByCRO实现
@@ -171,7 +187,7 @@ define(['base/core/page', 'base/utils/url'], function(Page, Url){
          */
         _routeByHash: function (hashPath) {
             this._manageHistory(hashPath);
-            var CRO = this.getPageSets(hashPath);
+            var CRO = this.getCRO(hashPath);
             this._routeByCRO(CRO);
         },
 
@@ -186,11 +202,11 @@ define(['base/core/page', 'base/utils/url'], function(Page, Url){
             }
             var page = this.setPage(CRO);   //初始页面并绑定事件
             if(ctrl && ctrl.init){
-                ctrl.init(page);
+                page.hashs =  CRO.hashs;    //将hash对象传递到页面
+                ctrl.init(page);            //将传递到页面(ctrl)的所有信息;
             }else{
                 page.render();
             }
-            //console.log( CRO, page, "----- CURRENT ROUTE! -----");
         },
         _manageHistory: function(hashPath){
             if(this.getLastHashByLastIndex(1) === hashPath){
@@ -211,7 +227,7 @@ define(['base/core/page', 'base/utils/url'], function(Page, Url){
         isBack: function(){
             var oldHashArr = Url.getHashPath(this.getLastHashByLastIndex(2), true),
                 newHashArr = Url.getHashPath(this.getLastHashByLastIndex(1), true);
-            //console.log(_.compact(oldHashArr), _.compact(newHashArr),   'IS GO OR BACK');
+            console.log(_.compact(oldHashArr), _.compact(newHashArr),   'IS GO OR BACK');
             return _.compact(newHashArr).length < _.compact(oldHashArr).length;
         },
         //判断是否存在CRO而404

@@ -11,7 +11,7 @@ define(function() {
         storeViewExpire: 24,                     //缓存时间(小时)
         returnClass: '.icon-left-nav',
         selector: {                              //站点ID配置
-            wrapper: '#viewport',                //页面Viewport
+            viewport: '#viewport',               //页面Viewport
             header: '#header',                   //Header ID
             footer: '#footer',                   //Footer ID
             content: '.content'                  //页面交替内容

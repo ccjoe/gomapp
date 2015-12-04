@@ -1,4 +1,4 @@
-define(['base/core/view'], function(View) {
+define(['base/core/view', 'base/utils/store'], function(View, Store) {
     var defaults = {
         type: 'slide-horizontal',   //slide-vertical/slide-horizontal/tab-top/tab-bottom
         swipeX: 60,
@@ -25,7 +25,8 @@ define(['base/core/view'], function(View) {
      * var slide = new Slide({
             wrapper: '.slide-example',
             data: {
-                type: direction,    //slide-vertical slide-horizontal tab-top tab-bottom
+                type: direction,      //slide-vertical slide-horizontal tab-top tab-bottom
+                initIndex: 0,         //初始显示index
                 list:[{
                     title: '街景',                //标题，tab时用到
                     icon: 'icon-home',           //标题，tab时用到
@@ -162,10 +163,11 @@ define(['base/core/view'], function(View) {
             if(indexSrc){
                 if(indexStore){
                     next(getContent(indexStore));
+                    return;
                 }
                 $.get(indexSrc, function (tmpl) {
                     var tmplStr = getContent(tmpl);
-                    store.set(indexSrc, tmpl);  //仅缓存模板，不缓存数据(有时需要实时获取)
+                    Store.set(indexSrc, tmpl);  //仅缓存模板，不缓存数据(有时需要实时获取)
                     next ? next(tmplStr) : null;
                 });
             }
