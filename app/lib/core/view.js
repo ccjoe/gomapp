@@ -6,6 +6,7 @@ define(['base/utils/store'], function(store){
         escape      : /\{\{\-(.+?)\}\}/g
     };
 
+    var expires = 1000*60*5; //5min 过期时间，后面将从config.js配置里获取;
     //重、写_.underscore方式，去支持include语法
     var template = function (str, data) {
         // match "<% include template-id %>"
@@ -28,14 +29,14 @@ define(['base/utils/store'], function(store){
             tmpls.prevObject.each(function(i, item){
                 tmplID = item.id;
                 if(!!tmplID){
-                    store.set(tmplID, $(item).html());
-                    store.set('GOM_APP_UI', 1);
+                    store.set(tmplID, $(item).html(), expires);
                 }
             });
+            store.set('GOM_APP_UI', 1, expires);
             callback ? callback() : null;
         }});
     };
-
+    console.log(store.get('GOM_APP_UI'), 'GOM_APP_UI IS ISEXIST');
     if(!store.get('GOM_APP_UI')){
         getPartialTmpl();
     }

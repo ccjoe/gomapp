@@ -5,9 +5,6 @@ define(['base/ui/ui.list'], function(List) {
             page.render();
             this.showList();
         },
-        events: {
-            'click .create-list':'showList'
-        },
         showList: function(){
             var viewList = {
                 list: [{

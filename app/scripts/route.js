@@ -9,6 +9,7 @@ define([
     //'viewdoc/button_ctrl',
     'viewdoc/switch_ctrl',
     'viewdoc/switchall_ctrl',
+    'viewdoc/scroll_ctrl',
     'pluginsdoc/swipe_ctrl'
 ], function (main,
              viewdocList,
@@ -18,6 +19,7 @@ define([
              //viewdocButton,
              viewdocSwitch,
              viewdocSwitchAll,
+             viewdocScroll,
              pluginsdocSwipe) {
 
     //tmpl html FileName; ctrl js FileName
@@ -85,6 +87,15 @@ define([
                     tmplname: 'viewdoc/switchall',
                     ctrl: viewdocSwitchAll,
                     title: 'Slide综合示例'
+                }
+            },
+            '/scroll':{
+                ctrl: viewdocScroll,
+                title: 'Scroll',
+                '/xy':{
+                    tmplname: 'viewdoc/scroll-xy',
+                    ctrl: viewdocScroll,
+                    title: '水平及垂直Scroll',
                 }
             },
             '/button': {

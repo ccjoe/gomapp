@@ -8,6 +8,7 @@
         var defaults = {
             'swipeX': 0,     //x horizontal distance
             'swipeY': 0,     //y vertical distance
+            'swipeTime': 20, //事件的时间必须大于这个才能触发
             'direction': null
             //'degree': 30          //0为不限制，否则动作必须小于这个角度才能触发相应事件
         };
@@ -31,7 +32,8 @@
                 //console.log(Math.abs(point.swipeX), opts.swipeX, Math.abs(point.swipeY), opts.swipeY, (opts.direction ? point.direction === opts.direction : true));
                 return Math.abs(point.swipeX) >= opts.swipeX &&
                        Math.abs(point.swipeY) >= opts.swipeY &&
-                    (opts.direction ? point.direction === opts.direction : true);
+                    (opts.direction ? point.direction === opts.direction : true) &&
+                    point.swipeTime >= opts.swipeTime;
             },
             //方向检测
             getDirection: function (point) {
@@ -104,6 +106,9 @@
                 opts.moveCallback ? opts.moveCallback(point) : null;
             },
             endCallback: function (e) {
+                if (!doPoint.checkRange(point)) {
+                    return;
+                }
                 opts.endCallback ? opts.endCallback(point) : null;
             }
         };
@@ -124,6 +129,39 @@
         //'degree': 30          //0为不限制，否则动作必须小于这个角度才能触发相应事件
     };
 
+
+    /**
+     *
+     * @example
+     * $switchs.swipe({
+     *      swipeX: 0,
+     *      swipeY: 0,
+     *      direction: '',
+            startCallback: function(point){
+
+            },
+            moveCallback: function(point){
+
+            },
+            endCallback: function(point){
+
+            }
+        });
+     *
+     * point对象，在回调中表示滑动时的值，其中swipeX,swipeY, direction作为opt传入表示触发的条件
+     * {
+     *  startX: null,
+        startY: null,
+        startTime: null,
+        moveX: null,
+        moveY: null,
+        moveTime: null,
+        swipeX: null,
+        swipeY: null,
+        swipeTime: null,
+        direction: null
+       }
+     */
     ['swipe', 'swipeLeft', 'swipeRight', 'swipeTop', 'swipeBottom'].forEach(function (item) {
         var direct = /swipe(\w*)/.exec(item)[1].toLowerCase(), baseArgs = {};
 
