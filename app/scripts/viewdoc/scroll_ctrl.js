@@ -53,8 +53,8 @@ define(['base/ui/ui.list', 'base/ui/ui.scroll'], function(List, Scroll) {
             scrollX = new Scroll({
                  wrapper    : '.scroll-example2',    //滚动对象所在的容器
                  className  : '.scroll-content',      //滚动对象的className
-                 direction: 'vertical',             //水平与垂直
-                 //step        步长
+                 direction  : 'vertical',             //水平与垂直
+                 step       : 100, // 步长
                  //outer:       允许出界的范围
                  //outerFront  允许出界位置上面显示的html或文字
                 // outerEnd  允许出界位置下面显示的html或文字
