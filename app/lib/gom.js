@@ -87,7 +87,8 @@ define(['base/core/page', 'base/utils/url'], function(Page, Url){
             $("body").off().on("click", 'a', function(){
                 var $t = $(this),
                     href = $t.attr('href');
-                if(!href || !!~href.indexOf('#')) return; //无链接或hash跳转不处理
+
+                if(!href || !!~href.indexOf('#') || !href.indexOf('javascript:')) return; //无链接或不存在hash或存在javascript:跳转不处理
                 var hash =  href.substring(1);
                 History.pushState({hash: hash, prevHash: that.getPrevHash()}, $t.attr('title'), '?'+hash);
                 return false;

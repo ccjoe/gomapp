@@ -17,14 +17,16 @@ define(['base/core/view'], function(View) {
      *  @param {opts} 传入的opts参数，会覆盖static默认参数
      *  opts对象可传入的有如下对象，如果opts为string时，则表示为opts.content
      *  {  type: '',  //在具体实例中已定义，扩展时可自定义名称
-               btns: {
-                    yes: '确定',
-                    no:  '取消'
-                },
-                title: '',
-                content: '',   //content为str或html,如果为function则需要返回str或html
-                class: '',
-                mask: true
+           btns: {
+                yes: '确定',
+                no:  '取消'
+            },
+            title: '',
+            content: '',   //content为str或html,如果为function则需要返回str或html
+            class: '',
+            mask: true,
+            onYes: function(){},
+            onNo: function(){}
             }
      *  @return modal 弹出层实例
      *  @example
@@ -36,8 +38,8 @@ define(['base/core/view'], function(View) {
             opts.tmplname = 'ui.modal';
             opts.wrapper = opts.wrapper || '#modal';
             this._super(opts);
-            this.yes = opts.yes || noop;
-            this.no = opts.no || noop;
+            this.onYes = opts.data.onYes || noop;
+            this.onNo = opts.data.onNo || noop;
             this.mask = opts.data.mask;
         },
         //显示视图
@@ -74,7 +76,7 @@ define(['base/core/view'], function(View) {
         },
         /**
          * 判断显示与隐藏及相应动画
-         * @method Page#PUSH
+         * @method Modal#toggleModal
          * @param {string} inOrOut in|显+out|隐
          * @param {function} callback
          **/
@@ -136,16 +138,16 @@ define(['base/core/view'], function(View) {
             }, 3000);
         },
         events: {
-            'click .modal-overlay': 'onNo',
-            'click .modal-btn-yes': 'onYes',
-            'click .modal-btn-no': 'onNo'
+            'click .modal-overlay': '_onNo',
+            'click .modal-btn-yes': '_onYes',
+            'click .modal-btn-no': '_onNo'
         },
-        onYes: function(){
-            this.yes();
+        _onYes: function(){
+            this.onYes();
             this.toggleModal('Out');
         },
-        onNo: function(){
-            this.no();
+        _onNo: function(){
+            this.onNo();
             this.toggleModal('Out');
         }
     });
@@ -179,7 +181,7 @@ define(['base/core/view'], function(View) {
                 optsObj = opts;
             }
 
-            return   new Modal({data: $.extend({}, static, optsObj, {type: type})});
+            return new Modal({data: $.extend({}, static, optsObj, {type: type})});
         },
         /**
          * 显示警告框

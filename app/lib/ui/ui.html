@@ -29,7 +29,7 @@
 
         <li class="{{= item.isDivider?'table-view-divider':'table-view-cell' }}{{= item.collapse ? ' table-view-collapse' : '' }}">
             {{ if(item.isDivider){ }}{{=item.title}}{{ return; } }}
-            <a class="navigate-right" href="{{= item.hash }}">
+            <a class="navigate-right" href="{{= item.hash ? item.hash : 'javascript:' }}">
                 {{ if(item.badge !== void 0){ }}
                 <span class="badge">{{=item.badge}}</span>
                 {{ } }}
@@ -63,7 +63,7 @@
             </div>
             {{ }else{ }}
             <div class="modal-title">
-                {{if(data.type==='bottom' && data.btns.yes && data.btns.no){ }}<span>{{=data.btns.no}}</span>{{=data.title}}<span>{{=data.btns.yes}}</span>
+                {{if(data.type==='bottom' && data.btns.yes && data.btns.no){ }}<span class='btn btn-link modal-btn-no'>{{=data.btns.no}}</span>{{=data.title}}<span class='btn btn-link modal-btn-yes'>{{=data.btns.yes}}</span>
                 {{ }else{ }}
                     {{=data.title}}
                 {{ } }}

@@ -29,9 +29,11 @@
   line-height: 2em; }
 
 body {
-  min-width: 300px; }
+  min-width: 300px;
+  -webkit-tap-highlight-color: transparent;
+  outline: none; }
 
-.ui-modal, .modal-overlay, input, textarea, select, header, footer, section {
+.ui-modal, .modal-overlay, input, textarea, select, header, footer, section, button {
   outline: none;
   -webkit-tap-highlight-color: transparent; }
 
@@ -84,7 +86,6 @@ body {
   height: auto;
   margin-left: -135px;
   z-index: 13500;
-  text-align: center;
   border-radius: 13px;
   opacity: 0;
   color: #000;
@@ -225,6 +226,17 @@ body {
     padding: 0; }
   .modal-bottom .table-view {
     margin-bottom: 0; }
+  .modal-bottom .modal-title {
+    height: 30px;
+    line-height: 35px;
+    font-size: 16px; }
+    .modal-bottom .modal-title .btn-link {
+      font-size: 15px;
+      padding: 10px; }
+    .modal-bottom .modal-title .modal-btn-no {
+      float: left; }
+    .modal-bottom .modal-title .modal-btn-yes {
+      float: right; }
 
 .modal-popover {
   width: 150px; }

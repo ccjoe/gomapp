@@ -23,8 +23,14 @@ define(['base/utils/store'], function(store){
         );
     };
     //同步获取组件模板
+    var getPartialTmplStatus = 'init';  //初始
     var getPartialTmpl = function (callback){
+        if(getPartialTmplStatus === 'loading'){
+            return;
+        }
+        getPartialTmplStatus = 'loading';   //正请求
         $.ajax({url:'lib/ui/ui.html', dataType:'html', async: false, success: function (tmpl){
+            getPartialTmplStatus = 'finished';  //已完成
             var tmpls = $(tmpl).find("script"), tmplID;
             tmpls.prevObject.each(function(i, item){
                 tmplID = item.id;
