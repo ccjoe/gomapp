@@ -44,7 +44,7 @@ if ('addEventListener' in document) {
     }, false);
 }
 
-define(['base/core/page', 'base/utils/url'], function(Page, Url){
+define(['base/core/page', 'base/utils/url', 'base/utils/utils'], function(Page, Url, Utils){
     /**
      * Gom对象
      * @constructs Gom
@@ -60,8 +60,9 @@ define(['base/core/page', 'base/utils/url'], function(Page, Url){
             this.model = {};
             this.history = [];
         },
-        run: function(){       //Gom初始化
+        _run: function(){       //Gom初始化
             var that = this;
+
             var isHistoryApi = !!(window.history && history.pushState);
             if(!isHistoryApi){
                 return;
@@ -74,7 +75,13 @@ define(['base/core/page', 'base/utils/url'], function(Page, Url){
             });
             History.Adapter.trigger(window, 'statechange');
 
-            this.initHref();
+            that.initHref();
+        },
+        run: function(){
+            var that = this;
+            Utils.getPartialTmpl(function(){
+                that._run();
+            });
         },
         initHref: function(){
             //对所有链接进行html5处理
@@ -193,6 +200,7 @@ define(['base/core/page', 'base/utils/url'], function(Page, Url){
         },
 
         _routeByCRO: function(CRO){
+            var that = this;
             if(this.isRouteNotFound(CRO)){
                 return;
             }
@@ -201,13 +209,17 @@ define(['base/core/page', 'base/utils/url'], function(Page, Url){
             if(ctrl){
                 CRO.events = ctrl.events;   //将ctrl的事件设置到当前路由对象
             }
-            var page = this.setPage(CRO);   //初始页面并绑定事件
-            if(ctrl && ctrl.init){
-                page.hashs =  CRO.hashs;    //将hash对象传递到页面
-                ctrl.init(page);            //将传递到页面(ctrl)的所有信息;
-            }else{
-                page.render();
-            }
+
+            Utils.getViewTmpl(CRO.tmplname, function(tmpl){
+                CRO.tmpl = tmpl
+                var page = that.setPage(CRO);   //初始页面并绑定事件
+                if(ctrl && ctrl.init){
+                    page.hashs =  CRO.hashs;    //将hash对象传递到页面
+                    ctrl.init(page);            //将传递到页面(ctrl)的所有信息;
+                }else{
+                    page.render();
+                }
+            });
         },
         _manageHistory: function(hashPath){
             if(this.getLastHashByLastIndex(1) === hashPath){
