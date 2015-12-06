@@ -123,7 +123,7 @@ define(['base/utils/store'], function(store){
 
             if(type === 'view'){
                 $.ajax({url:'/views/'+this.tmplname+'.html', dataType:'html', async: false, success: function (tmpl){
-                    store.set(that.tmplname, tmpl);
+                    store.set(that.tmplname, tmpl, expires);
                     that.tmpl = tmpl;
                 }});
                 return;
@@ -169,7 +169,7 @@ define(['base/utils/store'], function(store){
 
                     that.onview(eventSrc.event, eventSrc.selector, function (e){
                         if(typeof eventListener === 'function'){
-                            eventListener(e, this, that);   //events对象值为函数直接量时，参列为(e, target, that)第三个参数为所在的执行环境that,即this
+                            eventListener(e, this, env);   //events对象值为函数直接量时，参列为(e, target, that)第三个参数为所在的执行环境env,即this
                             return false;
                         }
                         env[eventListener](e, this);    //events对象值为字符串时, 参列为(e, target){ //内部this指向执行环境 }

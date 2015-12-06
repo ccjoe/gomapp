@@ -11,6 +11,24 @@ define(['base/core/view'], function(View) {
         mask: true
     };
     var noop = function(){};
+    /**
+     * 此方法一般用于自定义弹出层组件
+     *  @construct Modal
+     *  @param {opts} 传入的opts参数，会覆盖static默认参数
+     *  opts对象可传入的有如下对象，如果opts为string时，则表示为opts.content
+     *  {  type: '',  //在具体实例中已定义，扩展时可自定义名称
+               btns: {
+                    yes: '确定',
+                    no:  '取消'
+                },
+                title: '',
+                content: '',   //content为str或html,如果为function则需要返回str或html
+                class: '',
+                mask: true
+            }
+     *  @return modal 弹出层实例
+     *  @example
+     */
     var Modal = View.extend({
         init: function (opts) {
             opts.data = $.extend({}, data, opts.data);
@@ -133,29 +151,70 @@ define(['base/core/view'], function(View) {
     });
 
     var ModalExtend = {
-        layout: function(static, opts){
-            return   new Modal({data: $.extend({}, static, opts)});
+        /**
+         * 此方法一般用于自定义弹出层组件
+         *  @method Modal.layout
+         *  @param {object} static 默认参数
+         *  @param {opts} 传入的opts参数，会覆盖static默认参数
+         *  @param {string} type 弹出层对象的名称
+         *  opts对象可传入的有如下对象，如果opts为string时，则表示为opts.content
+         *  {  type: '',  //在具体实例中已定义，扩展时可自定义名称
+               btns: {
+                    yes: '确定',
+                    no:  '取消'
+                },
+                title: '',
+                content: '',   //content为str或html,如果为function则需要返回str或html
+                class: '',
+                mask: true
+            }
+         *  @return modal 弹出层实例
+         *  @example
+         */
+        layout: function(static, opts, type){
+            var optsObj = {};
+            if(typeof opts === 'string'){
+                optsObj.content = opts;
+            }else{
+                optsObj = opts;
+            }
+
+            return   new Modal({data: $.extend({}, static, optsObj, {type: type})});
         },
+        /**
+         * 显示警告框
+         *  @method Modal.alert
+         *  @param {opts} 传入的opts参数，会覆盖static默认参数， 同Modal.layout的opts对象, 如果opts为string时，则表示为opts.content
+         *  @return modal 弹出层实例
+         */
         alert:function(opts){
             var alertStatic = {
-                type: 'alert',
                 title: opts.title || '警告:',
                 btns: {
                     yes: 'OK'
                 }
             };
-            return this.layout(alertStatic, opts).render();
+            return this.layout(alertStatic, opts, 'alert').render();
         },
+        /**
+         * 显示对话框
+         *  @method Modal.confirm
+         *  @param {opts} 传入的opts参数，会覆盖static默认参数， 同Modal.layout的opts对象, 如果opts为string时，则表示为opts.content
+         *  @return modal 弹出层实例
+         */
         confirm:function(opts){
             var confirmStatic = {
-                type: 'confirm',
                 title: opts.title || '请确认:',
                 btns: {
                     yes: '确定', no: '取消'
                 }
             };
-            return  this.layout(confirmStatic, opts).render();
+            return  this.layout(confirmStatic, opts, 'confirm').render();
         },
+        /**
+         * 显示loading
+         *  @method Modal.loading
+         */
         loading:function(){
             return new Modal({
                 data:{
@@ -166,30 +225,48 @@ define(['base/core/view'], function(View) {
                 }
             }).render();
         },
+        /**
+         * 显示对话框
+         *  @method Modal.center
+         *  @param {opts} 传入的opts参数，会覆盖static默认参数， 同Modal.layout的opts对象, 如果opts为string时，则表示为opts.content
+         *  @return modal 弹出层实例
+         */
+        center:function(opts){
+            var confirmStatic = {
+                title: opts.title || '',
+                btns: false
+            };
+            return  this.layout(confirmStatic, opts, 'center').render();
+        },
+        /**
+         * 显示 top layout
+         *  @method Modal.top
+         *  @param {opts} 传入的opts参数，会覆盖static默认参数， 同Modal.layout的opts对象, 如果opts为string时，则表示为opts.content
+         *  @return modal 弹出层实例
+         */
         top: function(opts){
             var bottomStatic = {
-                type: 'top',
                 title: opts.title || '',
                 btns: false,
-                content: {
-                    'list': 'asdfas'
-                }
             };
-            return this.layout(bottomStatic, opts).render();
+            return this.layout(bottomStatic, opts, 'top').render();
         },
-        //
+        /**
+         * 显示 bottom layout
+         *  @method Modal.bottom
+         *  @param {opts} 传入的opts参数，会覆盖static默认参数， 同Modal.layout的opts对象, 如果opts为string时，则表示为opts.content
+         *  @return modal 弹出层实例
+         */
         bottom: function(opts){
             //比如下面的时间选择器， ACTIONSHEET等
             var bottomStatic = {
-                type: 'bottom',
                 title: opts.title || '',
                 btns: {
                     no: '取消',
                     yes: '完成'
                 },
-                content: opts.content
             };
-            return this.layout(bottomStatic, opts).render();
+            return this.layout(bottomStatic, opts, 'bottom').render();
         },
         popover: function(opts){
             var tipsStatic = {
@@ -200,9 +277,10 @@ define(['base/core/view'], function(View) {
             return this.layout(tipsStatic, opts).render();
         },
         /**
+         * 显示不同类型的弹出提示
          * @param {string} content 显示的内容;
          * @param {string} toastType 显示类别，有 warn info error, 默认info;
-         * @return toast
+         * @return toast弹出层实例
          */
         toast: function(content, toastType){
             toastType = toastType || 'info';

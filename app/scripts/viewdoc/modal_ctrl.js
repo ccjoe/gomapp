@@ -9,6 +9,7 @@ define(['base/ui/ui.modal', 'base/ui/ui.list'], function(Modal, List) {
             'click .confirm': 'createConfirm',
             'click .alert': 'createAlert',
             'click .toast': 'createToast',
+            'click .center': 'createCenter',
             'click .bottom': 'createBottom',
             'click .top': 'createTop',
             'click .tips': 'createTips'
@@ -28,6 +29,9 @@ define(['base/ui/ui.modal', 'base/ui/ui.list'], function(Modal, List) {
             console.log('选择的是：'+toastType);
             var toast = Modal.toast('这是toast信息', toastType);
         },
+        createCenter: function(){
+            var toast = Modal.center({title: '中间弹出层', content: '骚年,举起你的双手，来创造一个对话框，OK?'});
+        },
         createBottom: function(){
             var viewList = {
                 list: [{
@@ -41,12 +45,11 @@ define(['base/ui/ui.modal', 'base/ui/ui.list'], function(Modal, List) {
             };
 
             var ListSet = new List({
-                data: viewList,
+                data: viewList
                 //wrapper: '#list2'
             });
             var cont = ListSet.render();
-            console.log(ListSet, cont, 'CONTENT');
-            var bottom = Modal.bottom({ content: cont});
+            var bottom = Modal.bottom({title: '请看列表', content: cont});
         },
         createTop: function(){
             var top = Modal.top({title:'这是标题'});

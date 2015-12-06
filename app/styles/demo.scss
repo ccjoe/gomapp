@@ -47,3 +47,15 @@ pre{
     height: 300px;
     margin: 0 auto;
 }
+
+.ui-scroll-horizontal{
+    .scroll-content{
+        width: 1500px;
+    }
+    p{
+        float: left;
+    }
+}
+.scroll-mdoal-example{
+    max-height: 300px;
+}

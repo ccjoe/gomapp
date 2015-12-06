@@ -92,10 +92,15 @@ define([
             '/scroll':{
                 ctrl: viewdocScroll,
                 title: 'Scroll',
-                '/xy':{
-                    tmplname: 'viewdoc/scroll-xy',
+                '/x':{
+                    tmplname: 'viewdoc/scroll-x',
                     ctrl: viewdocScroll,
-                    title: '水平及垂直Scroll',
+                    title: '水平Scroll',
+                },
+                '/y':{
+                    tmplname: 'viewdoc/scroll-y',
+                    ctrl: viewdocScroll,
+                    title: '垂直Scroll',
                 }
             },
             '/button': {

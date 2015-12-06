@@ -22,19 +22,19 @@ define(['base/ui/ui.slide'], function(Slide) {
                 this.textSlide('tab-bottom', 3);
             }
         },
-        //todo events文档,  events支持值为function直接量, 双向切换
+        //done events文档,  events支持值为function直接量, 双向切换
         events: {
-            'click .slide-change-vertical': function(e, targe){
+            'click .slide-change-vertical': function(e, targe, that){
                 ctrl.textSlide('slide-vertical');
             },
-            'click .slide-change-horizontal': function(e, targe){
-                ctrl.textSlide('slide-horizontal');
+            'click .slide-change-horizontal': function(e, targe, that){
+                that.textSlide('slide-horizontal');
             },
-            'click .slide-change-tabtop': function(){
-                ctrl.textSlide('tab-top');
+            'click .slide-change-tabtop': function(e, targe, that){
+                that.textSlide('tab-top');
             },
-            'click .slide-change-tabbottom': function(){
-                ctrl.textSlide('tab-bottom');
+            'click .slide-change-tabbottom': function(e, targe, that){
+                that.textSlide('tab-bottom');
             }
         },
         textSlide: function(direction, index){

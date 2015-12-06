@@ -4,7 +4,6 @@ define(['base/ui/ui.header'], function(Header) {
     return {
         //会被框架自动调用
         init: function(page){
-            var that = this;
             page.render();
         },
         events: {

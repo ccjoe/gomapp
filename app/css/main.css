@@ -223,6 +223,8 @@ body {
   bottom: 0; }
   .modal-bottom .modal-inner {
     padding: 0; }
+  .modal-bottom .table-view {
+    margin-bottom: 0; }
 
 .modal-popover {
   width: 150px; }
@@ -729,6 +731,14 @@ pre {
 .scroll-example2 {
   height: 300px;
   margin: 0 auto; }
+
+.ui-scroll-horizontal .scroll-content {
+  width: 1500px; }
+.ui-scroll-horizontal p {
+  float: left; }
+
+.scroll-mdoal-example {
+  max-height: 300px; }
 
 body {
   background: #fafafa;

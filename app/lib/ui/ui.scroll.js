@@ -7,30 +7,31 @@ define(function() {
     /**
      * @construct Scroll
      * @param {object} opts
-     * opts.wrapper     滚动对象所在的容器
-     * opts.className   className 滚动对象的className
-     * opts.step        步长，滚动的结果一定是以此为单位, 滚屏网站时可以一屏一步长,
+     * opts.wrapper     require 滚动对象所在的容器
+     * opts.className   require className 滚动对象的className
+     * opts.step        options 步长 默认0 不计步长，滚动的结果一定是以此为单位, 滚屏网站时可以一屏一步长,
      *                  非滚动选择组件(time, district..)一般不用此属性,否则滚动以步长计不会具体到点
-     * opts.outer       允许出界的范围
-     * opts.outerFront  允许出界位置上面显示的html或文字
+     * opts.outer       options 允许出界的范围
+     * opts.outerFront  options 允许出界位置上面显示的html或文字
      //* opts.outerEnd    允许出界位置下面显示的html或文字
-     * opts.direction   水平与垂直
-     * opts.onScroll    每次滚动时回调
-     * opts.endScroll   每次滚动停回调
-     * opts.onTop       滚动到上时
-     * opts.onBottom    滚动到下时
-     //* opts.scrollBar   是否显示滚动条
+     * opts.direction   options vertical/horizontal 默认为垂直 水平与垂直
+     * opts.onScroll    options 每次滚动时回调
+     * opts.endScroll   options 每次滚动停回调
+     * opts.onTop       options 滚动到上时
+     * opts.onBottom    options 滚动到下时
+     //* opts.scrollBar options 是否显示滚动条
      */
     var Scroll = Class.extend({
         init: function (opts) {
+            opts.direction = opts.direction || 'vertical';
             var defalutsThis = {
                 $wrapper : $(opts.wrapper),
                 $scroll : $(opts.className),
                 step    : opts.step || 0,
                 outer   : opts.outer ||150,
-                outerFront: opts.outerFront || '更在更新中...',
-                outerEnd:  opts.outerEnd || '已加载完毕...',
-                isx     : opts.direction !== 'vertical',
+                outerFront: opts.outerFront,
+                outerEnd:  opts.outerEnd,
+                isX     : opts.direction !== 'vertical',
                 onScroll  : opts.onScroll || function(){},
                 endScroll : opts.endScroll || function(){},
                 onTop : opts.onTop || function(){},
@@ -44,10 +45,15 @@ define(function() {
           this.bindScroll();
         },
         bindScroll: function(){
-            var that = this, $wrapper = this.$wrapper;
-            $wrapper.prepend('<div class="ui-scroll-front">'+this.outerFront+'</div>');
-            $wrapper.append('<div class="ui-scroll-end">'+this.outerEnd+'</div>');
-            $wrapper.addClass('ui-scroll').swipe({
+            var that = this, $wrapper = this.$wrapper, direct = this.isX?'horizontal':'vertical';
+            console.log(direct, 'direct');
+            if(this.outerFront){
+                $wrapper.prepend('<div class="ui-scroll-front">'+this.outerFront+'</div>');
+            }
+            if(this.outerEnd){
+             $wrapper.append('<div class="ui-scroll-end">'+this.outerEnd+'</div>');
+            }
+            $wrapper.addClass('ui-scroll ui-scroll-'+direct).swipe({
                 //swipeY: 30,
                 moveCallback: function(point){
                     that._setScrollTrans(point, true);
@@ -57,13 +63,13 @@ define(function() {
                 }
             })
         },
-        //滑动区域总高度
-        getScrollHeight: function(){
-            return this.$scroll.height();
+        //滑动区域尺寸，纵向滚动获取总高度，横向滚动获取总宽
+        getScrollSize: function(){
+            return !this.isX ? this.$scroll.height() : this.$scroll.width();
         },
         //容器高度
-        getWrapperHeight: function() {
-            return this.$wrapper.height();
+        getWrapperSize: function() {
+            return !this.isX ? this.$wrapper.height() : this.$wrapper.width();
         },
         //滚动到 num, elem, top, bottom
         /**
@@ -76,7 +82,7 @@ define(function() {
             if(where === 'top'){
                 val = 0;
             }else if(where === 'bottom'){
-                val = this.getWrapperHeight() - this.getScrollHeight();
+                val = this.getWrapperSize() - this.getScrollSize();
             }
             if(toType === 'number'){
                 val = where;
@@ -99,8 +105,9 @@ define(function() {
                 var vals = this._getTransStep(val);
                 console.log(vals, '步长信息');
                 val = vals.val;
+                this.$scroll.data('swipe-steps', vals.stepNum);
             }
-            this.$scroll.data('swipe-steps', vals.stepNum);
+
             this.$scroll.data('swipe-offset', val);
             this.$scroll.fx(this._scrollCount(val));
         },
@@ -125,7 +132,7 @@ define(function() {
                 distance += swipeOffset;
             }
             //限制区域
-            var maxTransDis = this.getScrollHeight() - this.getWrapperHeight();
+            var maxTransDis = this.getScrollSize() - this.getWrapperSize();
             var maxOuter    = moveing ? this.outer : 0,
                 minRange = 0 + maxOuter,
                 maxRange = maxTransDis + maxOuter;
