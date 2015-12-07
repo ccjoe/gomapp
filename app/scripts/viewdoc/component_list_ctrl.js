@@ -24,7 +24,13 @@ define(['base/ui/ui.list'], function(List) {
             switch:{
                 title: 'switch',
                 hash: '?viewdoc/switch',
-                desc: '实现横向纵向滚动,图片文本等slide效果,swipe的实现,tab 等',
+                desc: '实现横向纵向滚动切换,图片文本等slide效果,swipe的实现,tab 等',
+                icon: 'icon-pages'
+            },
+            scroll:{
+                title: 'scroll',
+                hash: '?viewdoc/scroll',
+                desc: '实现横向纵向滚动,图片文本scroll效果等',
                 icon: 'icon-pages'
             },
             button:{

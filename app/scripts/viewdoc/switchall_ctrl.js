@@ -2,31 +2,48 @@ define(['base/ui/ui.slide'], function(Slide) {
     'use strict';
      var ctrl = {
         init: function(page){
-            var that = this;
             page.render();
-            this.textSlide();
-        },
-        //todo events文档,  events支持值为function直接量, 双向切换
-        events: {
-            'click .slide-change-vertical': function(e, targe){
-                ctrl.textSlide('slide-vertical');
-            },
-            'click .slide-change-horizontal': function(e, targe){
-                ctrl.textSlide('slide-horizontal');
-            },
-            'click .slide-change-tabtop': function(){
-                ctrl.textSlide('tab-top');
-            },
-            'click .slide-change-tabbottom': function(){
-                ctrl.textSlide('tab-bottom');
+            console.log(page, '页面能获取到的所有数据在此对象上');
+            var hashs = page.hashs, hashlast = hashs[hashs.length-1];
+            console.log(hashlast, 'hashlast');
+            if(hashlast === 'all'){
+                this.textSlide('slide-vertical');
+            }
+
+            if(hashlast === 'slide'){
+                this.textSlide('slide-horizontal');
+            }
+
+            if(hashlast === 'tab'){
+                this.textSlide('tab-top');
+            }
+
+            if(hashlast === 'ajax'){
+                this.textSlide('tab-bottom', 3);
             }
         },
-        textSlide: function(direction){
+        //done events文档,  events支持值为function直接量, 双向切换
+        events: {
+            'click .slide-change-vertical': function(e, targe, that){
+                ctrl.textSlide('slide-vertical');
+            },
+            'click .slide-change-horizontal': function(e, targe, that){
+                that.textSlide('slide-horizontal');
+            },
+            'click .slide-change-tabtop': function(e, targe, that){
+                that.textSlide('tab-top');
+            },
+            'click .slide-change-tabbottom': function(e, targe, that){
+                that.textSlide('tab-bottom');
+            }
+        },
+        textSlide: function(direction, index){
             direction =  direction || 'slide-horizontal';
             var slide = new Slide({
-                wrapper: '.slide-example',
+                wrapper: $('.content').last(),
                 data: {
                     type: direction,    //vertical horizontal
+                    initIndex: index || 0,
                     list:[{
                         title: '街景',
                         icon: 'icon-home',
@@ -39,11 +56,10 @@ define(['base/ui/ui.slide'], function(Slide) {
                         content: '<img src="./images/demo/slide2.jpeg"><p class="slide-guide">点击切换为"TabTop滚动", <button class="btn btn-positive slide-change-tabtop">Tab滚动</button></p>、'
                     },{ title: '巴黎',
                         icon: 'icon-gear',
-                        content: '<img src="./images/demo/slide2.jpeg"><p class="slide-guide">点击切换为"TabBottom滚动", <button class="btn btn-positive slide-change-tabbottom">Tab滚动</button></p>、'
+                        src: '/views/viewdoc/switch-item.html'
                     }]
                 }
             }).render();
-            console.log(slide, 'slide');
         }
     };
 

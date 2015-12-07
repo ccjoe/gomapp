@@ -4,20 +4,20 @@ define(['base/core/service'], function(Service) {
     //Service ajax拦截器操作
     new Service({
         req:function(e, xhr, options){
-            console.log(e, xhr, options, 'def request inject');
+            //console.log(e, xhr, options, 'def request inject');
             //if(!!~options.url.indexOf('http://xproduct.ctrip.me:3003')) return false;
         },
         res: function(e, xhr, options){
-            console.log(e, xhr, options, 'def response inject');
+            //console.log(e, xhr, options, 'def response inject');
         }
     });
 
     var listModel = new Service({
        url: 'http://xproduct.ctrip.me:3003/api/mall/receipts'
     });
-    listModel.fetch({userId:123}).done(function(data){
-        console.log(data, 'data');
-    });
+    //listModel.fetch({userId:123}).done(function(data){
+    //    console.log(data, 'data');
+    //});
 
     return {
         init: function(page){

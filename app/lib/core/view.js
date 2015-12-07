@@ -6,6 +6,7 @@ define(['base/utils/store'], function(store){
         escape      : /\{\{\-(.+?)\}\}/g
     };
 
+    var expires = 1000*60*5; //5min 过期时间，后面将从config.js配置里获取;
     //重、写_.underscore方式，去支持include语法
     var template = function (str, data) {
         // match "<% include template-id %>"
@@ -22,19 +23,30 @@ define(['base/utils/store'], function(store){
         );
     };
     //同步获取组件模板
+    var getPartialTmplStatus = 'init';  //初始
     var getPartialTmpl = function (callback){
+        if(getPartialTmplStatus === 'loading'){
+            return;
+        }
+        getPartialTmplStatus = 'loading';   //正请求
         $.ajax({url:'lib/ui/ui.html', dataType:'html', async: false, success: function (tmpl){
+            getPartialTmplStatus = 'finished';  //已完成
             var tmpls = $(tmpl).find("script"), tmplID;
             tmpls.prevObject.each(function(i, item){
                 tmplID = item.id;
                 if(!!tmplID){
-                    store.set(tmplID, $(item).html());
+                    store.set(tmplID, $(item).html(), expires);
                 }
             });
+            store.set('GOM_APP_UI', 1, expires);
             callback ? callback() : null;
         }});
     };
-    getPartialTmpl();
+    console.log(store.get('GOM_APP_UI'), 'GOM_APP_UI IS ISEXIST');
+    if(!store.get('GOM_APP_UI')){
+        getPartialTmpl();
+    }
+
     /**
      * View对象
      * @namespace
@@ -117,7 +129,7 @@ define(['base/utils/store'], function(store){
 
             if(type === 'view'){
                 $.ajax({url:'/views/'+this.tmplname+'.html', dataType:'html', async: false, success: function (tmpl){
-                    store.set(that.tmplname, tmpl);
+                    store.set(that.tmplname, tmpl, expires);
                     that.tmpl = tmpl;
                 }});
                 return;
@@ -163,7 +175,7 @@ define(['base/utils/store'], function(store){
 
                     that.onview(eventSrc.event, eventSrc.selector, function (e){
                         if(typeof eventListener === 'function'){
-                            eventListener(e, this, that);   //events对象值为函数直接量时，参列为(e, target, that)第三个参数为所在的执行环境that,即this
+                            eventListener(e, this, env);   //events对象值为函数直接量时，参列为(e, target, that)第三个参数为所在的执行环境env,即this
                             return false;
                         }
                         env[eventListener](e, this);    //events对象值为字符串时, 参列为(e, target){ //内部this指向执行环境 }

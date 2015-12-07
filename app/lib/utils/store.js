@@ -70,7 +70,7 @@
             var now = new Date().getTime(),
                 data = parseval(storage.getItem(key));
             if(!data) return null;
-            if(data.expire !== void 0 || data.expire <= now){
+            if(data.expire !== void 0 && now >= data.expire){
                 this.del(key);
                 return null;
             }

@@ -1,3 +1,24 @@
+/* === Scroll === */
+.ui-scroll{
+    overflow: hidden;
+    > div{
+        -webkit-backface-visibility: hidden;
+        -webkit-perspective:1000;
+    }
+    .ui-scroll-front, .ui-scroll-end{
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        background-color: #aaa;
+        display: none;
+    }
+    .ui-scroll-front{
+        top:0;
+    }
+    .ui-scroll-end{
+        bottom:0;
+    }
+}
 /* === Swiper === */
 .slide-container {
     margin:0 auto;
@@ -23,8 +44,8 @@
 }
 .slide-wrapper {
     position:relative;
-    width: 100%;
     height: 100%;
+    width: auto;
     z-index: 1;
     display: -webkit-box;
     display: -moz-box;
@@ -32,23 +53,11 @@
     display: -webkit-flex;
     display: flex;
 
-    -webkit-transition-property:-webkit-transform;
-    -moz-transition-property:-moz-transform;
-    -o-transition-property:-o-transform;
-    -ms-transition-property:-ms-transform;
-    transition-property:transform;
-
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
     box-sizing: content-box;
 }
-.slide-container-android .slide-slide, .slide-wrapper {
-    -webkit-transform:translate3d(0px,0,0);
-    -moz-transform:translate3d(0px,0,0);
-    -o-transform:translate(0px,0px);
-    -ms-transform:translate3d(0px,0,0);
-    transform:translate3d(0px,0,0);
-}
+
 .slide-container-multirow > .slide-wrapper {
     -webkit-box-lines: multiple;
     -moz-box-lines: multiple;
@@ -72,6 +81,9 @@
     height: 100%;
     position: relative;
     display: block;
+    img{
+        width: 100%;
+    }
 }
 /* Auto Height */
 .slide-container-autoheight, .slide-container-autoheight .slide-slide {
@@ -185,6 +197,9 @@
     }
 }
 .slide-container-horizontal {
+    .switch-item{
+        float: left;
+    }
     > .slide-pagination {
         bottom: 10px;
         left: 0;
@@ -194,7 +209,8 @@
         }
     }
 }
-/* 3D Container */
+/*
+/!* 3D Container *!/
 .slide-container-3d {
     -webkit-perspective: 1200px;
     -moz-perspective: 1200px;
@@ -216,43 +232,43 @@
         z-index: 10;
     }
     .slide-slide-shadow-left {
-        background-image: -webkit-gradient(linear, left top, right top, from(rgba(0,0,0,0.5)), to(rgba(0,0,0,0))); /* Safari 4+, Chrome */
-        background-image: -webkit-linear-gradient(right, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Chrome 10+, Safari 5.1+, iOS 5+ */
-        background-image:    -moz-linear-gradient(right, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Firefox 3.6-15 */
-        background-image:      -o-linear-gradient(right, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Opera 11.10-12.00 */
-        background-image:         linear-gradient(to left, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Firefox 16+, IE10, Opera 12.50+ */
+        background-image: -webkit-gradient(linear, left top, right top, from(rgba(0,0,0,0.5)), to(rgba(0,0,0,0))); /!* Safari 4+, Chrome *!/
+        background-image: -webkit-linear-gradient(right, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Chrome 10+, Safari 5.1+, iOS 5+ *!/
+        background-image:    -moz-linear-gradient(right, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Firefox 3.6-15 *!/
+        background-image:      -o-linear-gradient(right, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Opera 11.10-12.00 *!/
+        background-image:         linear-gradient(to left, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Firefox 16+, IE10, Opera 12.50+ *!/
     }
     .slide-slide-shadow-right {
-        background-image: -webkit-gradient(linear, right top, left top, from(rgba(0,0,0,0.5)), to(rgba(0,0,0,0))); /* Safari 4+, Chrome */
-        background-image: -webkit-linear-gradient(left, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Chrome 10+, Safari 5.1+, iOS 5+ */
-        background-image:    -moz-linear-gradient(left, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Firefox 3.6-15 */
-        background-image:      -o-linear-gradient(left, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Opera 11.10-12.00 */
-        background-image:         linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Firefox 16+, IE10, Opera 12.50+ */
+        background-image: -webkit-gradient(linear, right top, left top, from(rgba(0,0,0,0.5)), to(rgba(0,0,0,0))); /!* Safari 4+, Chrome *!/
+        background-image: -webkit-linear-gradient(left, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Chrome 10+, Safari 5.1+, iOS 5+ *!/
+        background-image:    -moz-linear-gradient(left, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Firefox 3.6-15 *!/
+        background-image:      -o-linear-gradient(left, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Opera 11.10-12.00 *!/
+        background-image:         linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Firefox 16+, IE10, Opera 12.50+ *!/
     }
     .slide-slide-shadow-top {
-        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,0.5)), to(rgba(0,0,0,0))); /* Safari 4+, Chrome */
-        background-image: -webkit-linear-gradient(bottom, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Chrome 10+, Safari 5.1+, iOS 5+ */
-        background-image:    -moz-linear-gradient(bottom, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Firefox 3.6-15 */
-        background-image:      -o-linear-gradient(bottom, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Opera 11.10-12.00 */
-        background-image:         linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Firefox 16+, IE10, Opera 12.50+ */
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,0.5)), to(rgba(0,0,0,0))); /!* Safari 4+, Chrome *!/
+        background-image: -webkit-linear-gradient(bottom, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Chrome 10+, Safari 5.1+, iOS 5+ *!/
+        background-image:    -moz-linear-gradient(bottom, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Firefox 3.6-15 *!/
+        background-image:      -o-linear-gradient(bottom, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Opera 11.10-12.00 *!/
+        background-image:         linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Firefox 16+, IE10, Opera 12.50+ *!/
     }
     .slide-slide-shadow-bottom {
-        background-image: -webkit-gradient(linear, left bottom, left top, from(rgba(0,0,0,0.5)), to(rgba(0,0,0,0))); /* Safari 4+, Chrome */
-        background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Chrome 10+, Safari 5.1+, iOS 5+ */
-        background-image:    -moz-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Firefox 3.6-15 */
-        background-image:      -o-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Opera 11.10-12.00 */
-        background-image:         linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Firefox 16+, IE10, Opera 12.50+ */
+        background-image: -webkit-gradient(linear, left bottom, left top, from(rgba(0,0,0,0.5)), to(rgba(0,0,0,0))); /!* Safari 4+, Chrome *!/
+        background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Chrome 10+, Safari 5.1+, iOS 5+ *!/
+        background-image:    -moz-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Firefox 3.6-15 *!/
+        background-image:      -o-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Opera 11.10-12.00 *!/
+        background-image:         linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0)); /!* Firefox 16+, IE10, Opera 12.50+ *!/
     }
 }
-/* Coverflow */
+/!* Coverflow *!/
 .slide-container-coverflow {
     .slide-wrapper {
-        /* Windows 8 IE 10 fix */
+        /!* Windows 8 IE 10 fix *!/
         -ms-perspective:1200px;
     }
 
 }
-/* Fade */
+/!* Fade *!/
 .slide-container-fade {
     &.slide-container-free-mode {
         .control-content {
@@ -275,7 +291,7 @@
         }
     }
 }
-/* Cube */
+/!* Cube *!/
 .slide-container-cube {
     overflow: visible;
     .control-content {
@@ -323,7 +339,7 @@
         z-index: 0;
     }
 }
-/* Scrollbar */
+/!* Scrollbar *!/
 .slide-scrollbar {
     border-radius: 10px;
     position: relative;
@@ -357,7 +373,7 @@
 }
 .slide-scrollbar-cursor-drag {
     cursor: move;
-}
+}*/
 /* Preloader */
 .slide-slide .preloader {
     width: 42px;
