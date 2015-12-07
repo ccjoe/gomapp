@@ -47,7 +47,7 @@ var path = require('path');
 var _ = require('underscore');
 
 var TEMPLATE_EXT_REGEX = /\.(html|tmpl)$/;
-var TEMPLATE_BASE_PATH = __dirname + '/app/lib/ui/uitmpl/';
+var TEMPLATE_BASE_PATH = __dirname + '/app/lib/ui/ui.tmpl/';
 
 function compileTemplateSourceToAMD(template) {
     return 'define(function() { return ' + _.template(template).source.replace(/[\r\n\t]+/gm, '') + ' });';

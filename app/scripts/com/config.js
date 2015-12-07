@@ -8,7 +8,7 @@ define(function() {
             data: []                             //数据
         },
         storeViewTmpl: true,                     //缓存模板
-        storeViewExpire: 24,                     //缓存时间(小时)
+        expires: 24,                     //缓存时间(小时)
         returnClass: '.icon-left-nav',
         selector: {                              //站点ID配置
             viewport: '#viewport',               //页面Viewport

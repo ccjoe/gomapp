@@ -44,7 +44,7 @@ if ('addEventListener' in document) {
     }, false);
 }
 
-define(['base/core/page', 'base/utils/url'], function(Page, Url){
+define(['base/core/page', 'base/utils/url', 'base/utils/store'], function(Page, Url, Store){
     /**
      * Gom对象
      * @constructs Gom
@@ -53,6 +53,8 @@ define(['base/core/page', 'base/utils/url'], function(Page, Url){
      * @example
      * new Gom(config, route); 传入配置文件与路由文件
      */
+    //var expires = 1000*60*5; //5min 过期时间，后面将从config.js配置里获取;
+
     var Gom = Class.extend({
         init: function (config, route) {
             this.config = config || {};
@@ -97,7 +99,17 @@ define(['base/core/page', 'base/utils/url'], function(Page, Url){
                 return false;
             });
         },
-
+        getViewTmpl: function(tmplname, callback){
+            var that = this, view = Store.get('tmplname');
+            if(!!view){
+                callback?callback(view):null;
+                return;
+            }
+            $.ajax({url:'/views/'+tmplname+'.html', dataType:'html', success: function (tmpl){
+                Store.set(tmplname, tmpl, that.config.expires);
+                callback?callback(tmpl):null;
+            }});
+        },
         getPrevHash: function(){
             return location.search.substring(1);
         },
@@ -193,6 +205,7 @@ define(['base/core/page', 'base/utils/url'], function(Page, Url){
         },
 
         _routeByCRO: function(CRO){
+            var that = this;
             if(this.isRouteNotFound(CRO)){
                 return;
             }
@@ -201,13 +214,26 @@ define(['base/core/page', 'base/utils/url'], function(Page, Url){
             if(ctrl){
                 CRO.events = ctrl.events;   //将ctrl的事件设置到当前路由对象
             }
-            var page = this.setPage(CRO);   //初始页面并绑定事件
-            if(ctrl && ctrl.init){
-                page.hashs =  CRO.hashs;    //将hash对象传递到页面
-                ctrl.init(page);            //将传递到页面(ctrl)的所有信息;
-            }else{
-                page.render();
+
+            var pageInit = function(){
+                var page = that.setPage(CRO);   //初始页面并绑定事件
+                if(ctrl && ctrl.init){
+                    page.hashs =  CRO.hashs;    //将hash对象传递到页面
+                    ctrl.init(page);            //将传递到页面(ctrl)的所有信息;
+                }else{
+                    page.render();
+                }
+            };
+
+            if(!CRO.tmplname){
+                pageInit();
+                return;
             }
+
+            this.getViewTmpl(CRO.tmplname, function(tmpl){
+                CRO.tmpl = tmpl;
+                pageInit();
+            });
         },
         _manageHistory: function(hashPath){
             if(this.getLastHashByLastIndex(1) === hashPath){

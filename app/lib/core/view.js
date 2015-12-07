@@ -1,4 +1,4 @@
-define(['base/utils/store'], function(store){
+define(['base/utils/store', 'base/ui/ui.tmpl/ui'], function(Store, UItmpl){
     //模板引擎 dot => underscore, doT拥有此功能且性能高
     _.templateSettings = {
         evaluate    : /\{\{(.+?)\}\}/g,
@@ -6,7 +6,6 @@ define(['base/utils/store'], function(store){
         escape      : /\{\{\-(.+?)\}\}/g
     };
 
-    var expires = 1000*60*5; //5min 过期时间，后面将从config.js配置里获取;
     //重、写_.underscore方式，去支持include语法
     var template = function (str, data) {
         // match "<% include template-id %>"
@@ -22,30 +21,18 @@ define(['base/utils/store'], function(store){
             data
         );
     };
-    //同步获取组件模板
-    var getPartialTmplStatus = 'init';  //初始
-    var getPartialTmpl = function (callback){
-        if(getPartialTmplStatus === 'loading'){
-            return;
-        }
-        getPartialTmplStatus = 'loading';   //正请求
-        $.ajax({url:'lib/ui/ui.html', dataType:'html', async: false, success: function (tmpl){
-            getPartialTmplStatus = 'finished';  //已完成
-            var tmpls = $(tmpl).find("script"), tmplID;
-            tmpls.prevObject.each(function(i, item){
-                tmplID = item.id;
-                if(!!tmplID){
-                    store.set(tmplID, $(item).html(), expires);
-                }
-            });
-            store.set('GOM_APP_UI', 1, expires);
-            callback ? callback() : null;
-        }});
+
+    //根据tmplID获取模板;
+    var parseTmpl = function(tmplID){
+        var tmpls = $(UItmpl()).find("script"), iTmplID, iTmplStr, tmpl;
+        tmpls.prevObject.each(function(i, item){
+            iTmplID = item.id; iTmplStr = $(item).html();
+            if(!!iTmplID && tmplID === iTmplID){
+                tmpl = iTmplStr;
+            }
+        });
+        return tmpl;
     };
-    console.log(store.get('GOM_APP_UI'), 'GOM_APP_UI IS ISEXIST');
-    if(!store.get('GOM_APP_UI')){
-        getPartialTmpl();
-    }
 
     /**
      * View对象
@@ -56,12 +43,12 @@ define(['base/utils/store'], function(store){
      */
     var View = Class.extend({
         init:function(opts){
-            this.tmplname   = opts.tmplname  || '';  //模板名称, view的话在route里面配置，partial的话
-            this.tmpl = '';                          //模板html,有模板名称则从通过名称取到tmpl;
-            this.data   = opts.data || {};
-            this.events = opts.events || {};          // 对象上的events对象仅适用于此对象的wrapper元素内的事件绑定
             this.wrapper = $(opts.wrapper);
-            this.replace = opts.replace || false;                    //是否替换原标签
+            this.tmplname   = opts.tmplname  || '';  //模板名称, view的话在route里面配置，partial的话
+            this.tmpl = opts.tmpl || '';             //模板html,有模板名称则从通过名称取到tmpl;
+            this.data   = opts.data || {};
+            this.replace = opts.replace || false;    //是否替换原标签
+            this.events = opts.events || {};         // 对象上的events对象仅适用于此对象的wrapper元素内的事件绑定
             this.construct(opts);
         },
         //new View()时即执行的对象
@@ -74,7 +61,6 @@ define(['base/utils/store'], function(store){
 
         //根据STORE与AJAX条件渲染视图,供View.extend的Page UI内部调用, 有wrapper时直接插入到页面，否则返回HTMLFragment,但是能返回的前提是，view是同步的
         render: function(){
-            this.getTmpl('partial');
             var frag = this.getHTMLFragment();
             if(this.wrapper){
                 this.replace ? this.wrapper.replaceWith(frag) : this.wrapper.html(frag);
@@ -82,7 +68,7 @@ define(['base/utils/store'], function(store){
             this.show();
             return this.wrapper.length ? this : frag;
         },
-
+        //供继承对应重写
         show: function (){
             //this.wrapper.removeClass('hide');
         },
@@ -98,49 +84,20 @@ define(['base/utils/store'], function(store){
         destory: function(){
             this.wrapper.empty();
         },
-        //获取带模板数据的virtual dom
-        getHTMLFragment: function(){
+        //获取带模板数据的virtual dom, 获取模板 partial or view ,默认partial
+        getHTMLFragment: function(viewOrPartial){
+            this.getHTMLTmpl(viewOrPartial);
             if(!this.tmpl) return;
             return this.data ? template(this.tmpl)(this) : template(this.tmpl);
         },
 
-        //根据是否存在STORE与AJAX条件获取获取模板
-        getTmpl: function(type){
-            var hasStoreView = this.getStoreTmpl();
-            if(hasStoreView){
-                return;
-            }
-            this.getAjaxTmpl(type);
+        //获取模板 partial or view ,默认partial，underscore template;
+        getHTMLTmpl: function(viewOrPartial){
+            var tmpl = (viewOrPartial === 'view') ? this.tmpl : parseTmpl(this.tmplname);
+            this.tmpl = tmpl;
+            return tmpl;
         },
-        //获取已存储的STORE模板
-        getStoreTmpl: function(tmplkey){
-            tmplkey = tmplkey || this.tmplname;
-            var tmpl = store.get(tmplkey);
-            if(tmpl){
-                this.tmpl = tmpl;
-                return tmpl;
-            }
-            return false;
-        },
-        //根据type获取组件或页面模板
-        getAjaxTmpl: function(type){
-            var that = this,
-                type = type || 'view';
 
-            if(type === 'view'){
-                $.ajax({url:'/views/'+this.tmplname+'.html', dataType:'html', async: false, success: function (tmpl){
-                    store.set(that.tmplname, tmpl, expires);
-                    that.tmpl = tmpl;
-                }});
-                return;
-            }
-            //如果是获取组件模板，则先整体获取，再通过store获取;
-            if(type === 'partial'){
-                getPartialTmpl(function(){
-                    that.getStoreTmpl();
-                });
-            }
-        },
         //给组件或页面绑定事件，采用了事件代理的方式
         onview: function(eventType, selector, listener){
             this.wrapper.on(eventType, selector, listener);
@@ -185,7 +142,6 @@ define(['base/utils/store'], function(store){
             }
             //如此的话， events触发的listener的this指向 发生动作的元素， e，对原生event对象， 第二个参数this为发生的对象，
             // eventListener里的this指向that,
-
 
             function getEventSrc(eve){
                 var ret = /(\w+)+\s+(.+)/.exec(eve);

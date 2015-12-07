@@ -34,12 +34,11 @@ define(['base/core/view', 'base/ui/ui'], function(View, UI){
                 return;
             }
             //指定了this.tmplname时获取页面模板
-            this.getTmpl('view');
             this.show();
         },
 
         show: function(){
-            this.push(this.getHTMLFragment(), !this.isback ? 'swipe-left':'swipe-right');
+            this.push(this.getHTMLFragment('view'), !this.isback ? 'swipe-left':'swipe-right');
             //this._parseEvent();
             if (this.title) {
                 this.setHeader();

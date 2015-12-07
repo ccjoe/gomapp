@@ -46,11 +46,11 @@ define(['base/ui/ui.modal'], function(Modal){
     };
 
     $(document).on('ajaxBeforeSend', function(e, xhr, options){
-        loading = Modal.loading();
+        //loading = Modal.loading();
         var req = modelInject.request(e, xhr, options);
         if(req === false) return false;  //阻击发出请求
     }).on('ajaxComplete', function(e, xhr, options){
-        loading.toggleModal('Out');
+        //loading.toggleModal('Out');
         modelInject.response(e, xhr, options);
     });
 

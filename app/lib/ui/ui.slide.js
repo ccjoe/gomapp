@@ -160,7 +160,7 @@ define(['base/core/view', 'base/utils/store'], function(View, Store) {
         getIndexAsync: function(index, next){
             var indexData = this.getIndexData(index),
                 indexSrc = indexData?indexData.src:null,
-                indexStore = this.getStoreTmpl(indexSrc);
+                indexStore =  Store.get(indexSrc);
 
             var getContent = function(tmpl){
                 return !indexData.data ? tmpl : _.template(tmpl)(indexData.data);
