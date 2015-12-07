@@ -6,6 +6,7 @@ var $ = require('gulp-load-plugins')();
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
 
+/*--------------------- SASS ----------------*/
 var sass = require('gulp-ruby-sass');
 gulp.task('styles', function () {
   return sass('./app/styles/main.scss')
@@ -31,7 +32,7 @@ gulp.task('styles', function () {
 //     .pipe(reload({stream: true}));
 // });
 
-
+/*--------------------- JS ----------------*/
 gulp.task('jshint', function () {
   return gulp.src('app/scripts/**/*.js')
     .pipe(reload({stream: true, once: true}))
@@ -40,6 +41,33 @@ gulp.task('jshint', function () {
     // .pipe($.if(!browserSync.active, $.jshint.reporter('fail')));
 });
 
+/*-------------Compiler template ------------*/
+var fs = require('fs');
+var path = require('path');
+var _ = require('underscore');
+
+var TEMPLATE_EXT_REGEX = /\.(html|tmpl)$/;
+var TEMPLATE_BASE_PATH = __dirname + '/app/lib/ui/uitmpl/';
+
+function compileTemplateSourceToAMD(template) {
+    return 'define(function() { return ' + _.template(template).source.replace(/[\r\n\t]+/gm, '') + ' });';
+}
+
+function compileUnderScore(){
+    _.each(fs.readdirSync(TEMPLATE_BASE_PATH), function (file) {
+        if (!TEMPLATE_EXT_REGEX.test(file)) {
+            return;
+        }
+        var inputFile = TEMPLATE_BASE_PATH + path.sep + file;
+        var outputFile = TEMPLATE_BASE_PATH + path.sep + file.split('.').slice(0, -1) + '.js';
+        fs.writeFileSync(outputFile, compileTemplateSourceToAMD(fs.readFileSync(inputFile).toString('utf-8')));
+    });
+}
+gulp.task('preCompiler', function () {
+    compileUnderScore();
+});
+
+/*--------------------- HTML ----------------*/
 gulp.task('html', ['styles'], function () {
   var assets = $.useref.assets({searchPath: ['.tmp', 'app', '.']});
 
@@ -53,6 +81,7 @@ gulp.task('html', ['styles'], function () {
     .pipe(gulp.dest('dist'));
 });
 
+/*-------------------- IMAGES ----------------*/
 gulp.task('images', function () {
   return gulp.src('app/images/**/*')
     .pipe($.cache($.imagemin({
@@ -65,6 +94,7 @@ gulp.task('images', function () {
     .pipe(gulp.dest('dist/images'));
 });
 
+/*-------------------- FONTS -----------------*/
 gulp.task('fonts', function () {
   return gulp.src(require('main-bower-files')({
     filter: '**/*.{eot,svg,ttf,woff,woff2}'
@@ -73,6 +103,7 @@ gulp.task('fonts', function () {
     .pipe(gulp.dest('dist/fonts'));
 });
 
+/*-------------------- EXTRAS -----------------*/
 gulp.task('extras', function () {
   return gulp.src([
     'app/*.*',
@@ -82,6 +113,7 @@ gulp.task('extras', function () {
   }).pipe(gulp.dest('dist'));
 });
 
+/*--------------------- SERVER ----------------*/
 gulp.task('clean', require('del').bind(null, ['.tmp', 'dist']));
 gulp.task('serve', ['styles', 'fonts'], function () {
   browserSync({
@@ -112,26 +144,27 @@ gulp.task('serve', ['styles', 'fonts'], function () {
 });
 
 // inject bower components
+/*--------------------- DEV ----------------*/
 gulp.task('wiredep', function () {
   var wiredep = require('wiredep').stream;
 
   gulp.src('app/styles/*.scss')
     .pipe(wiredep({
       ignorePath: /^(\.\.\/)+/
-    }))
-    .pipe(gulp.dest('app/styles'));
+    })).pipe(gulp.dest('app/styles'));
 
   gulp.src('app/*.html')
     .pipe(wiredep({
       ignorePath: /^(\.\.\/)*\.\./
-    }))
-    .pipe(gulp.dest('app'));
+    })).pipe(gulp.dest('app'));
 });
 
-gulp.task('build', ['jshint', 'html', 'images', 'fonts', 'extras'], function () {
+/*--------------------- BUILD ----------------*/
+gulp.task('build', ['jshint', 'html', 'images', 'fonts', 'extras', 'preCompiler'], function () {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
+/*------------------ DEFAULT ------------------*/
 gulp.task('default', ['clean'], function () {
   gulp.start('build');
 });
