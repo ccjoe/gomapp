@@ -1,4 +1,4 @@
-define(['base/ui/ui.modal', 'base/ui/ui.scroll', 'base/ui/ui.list'], function(Modal, Scroll, List) {
+define(['./ui.modal', './ui.scroll', './ui.list'], function(Modal, Scroll, List) {
     //为多级联动或是仅多级选择
     /**
      * @construct CascadeScroll

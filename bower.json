@@ -2,12 +2,11 @@
     "name": "gom",
     "private": true,
     "dependencies": {
-        "requirejs": "~2.1.15",
+        "fastclick": "1.0.6",
         "underscore": "~1.7.0",
         "zepto-full": "~1.1.2",
-        "history.js": "~1.8.0",
-        "ratchet": "~2.0.2",
-        "fastclick": "1.0.6"
+        "requirejs": "~2.1.15",
+        "history.js": "~1.8.0"
     },
     "comment": {
         "underscore.string": "~3.0.3",

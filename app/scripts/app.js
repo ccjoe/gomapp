@@ -2,7 +2,7 @@
 require.config({
     baseUrl: '../scripts',
     paths: {
-        'base': '../lib'
+        'base': '../lib'    //框架路径地址
     }
 });
 
