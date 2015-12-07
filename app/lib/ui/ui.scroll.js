@@ -13,13 +13,28 @@ define(function() {
      *                  非滚动选择组件(time, district..)一般不用此属性,否则滚动以步长计不会具体到点
      * opts.outer       options 允许出界的范围
      * opts.outerFront  options 允许出界位置上面显示的html或文字
+     * opts.speed 1     0与1之间  速度控制，默认1，在time选择器时设置小更容易选择，在页面滚动设置为1较好。
      //* opts.outerEnd    允许出界位置下面显示的html或文字
      * opts.direction   options vertical/horizontal 默认为垂直 水平与垂直
-     * opts.onScroll    options 每次滚动时回调
-     * opts.endScroll   options 每次滚动停回调
-     * opts.onTop       options 滚动到上时
-     * opts.onBottom    options 滚动到下时
+     * opts.onScroll    options 每次滚动时回调 回调里的this指向本实例
+     * opts.endScroll   options 每次滚动停回调 回调里的this指向本实例
+     * opts.onTop       options 滚动到上时 回调里的this指向本实例
+     * opts.onBottom    options 滚动到下时 回调里的this指向本实例
      //* opts.scrollBar options 是否显示滚动条
+     * @example
+     * new Scroll({
+             wrapper    : '.scroll-example2',    //滚动对象所在的容器
+             className  : '.scroll-content',      //滚动对象的className
+             direction  : 'vertical', //'vertical',             //水平与垂直
+             step       : 0, // 不设置步长
+             //outer:       允许出界的范围
+             outerFront : '允许出界位置上面显示的html或文字',
+             outerEnd   : '允许出界位置下面显示的html或文字',
+             onScroll: function(point){ },    //每次滚动时回调
+             endScroll: function(point){ console.log('单次滚动结束'); }, //   每次滚动停回调
+             onTop: function(){ console.log('滚动到最上面，滚动停止时触发')},       //滚动到上时
+             onBottom:  function(){ console.log('滚动到最下面，滚动停止时触发')}   // 滚动到下时
+        });
      */
     var Scroll = Class.extend({
         init: function (opts) {
@@ -28,6 +43,7 @@ define(function() {
                 $wrapper : $(opts.wrapper),
                 $scroll : $(opts.className),
                 step    : opts.step || 0,
+                speed   : opts.speed || 1,
                 outer   : opts.outer ||150,
                 outerFront: opts.outerFront,
                 outerEnd:  opts.outerEnd,
@@ -109,7 +125,7 @@ define(function() {
             }
 
             this.$scroll.data('swipe-offset', val);
-            this.$scroll.fx(this._scrollCount(val));
+            this.$scroll.fx(this._scrollCount(val));  //, 'normal', 'easeOutQuint'
         },
         //滚动时回调（moving为true为事件中回调，false为事件结束时回调）
         _setScrollTrans: function(point, moveing){
@@ -117,10 +133,10 @@ define(function() {
             var transVal = this._getTransVal(distance, point.swipeTime, moveing);
             var transStr = this._scrollCount(transVal);
             if(moveing){
-                this.$scroll.css(transStr); //, 200, 'easeOutQuint'
+                this.$scroll.css(transStr);
                 this.onScroll(point);
             }else{
-                this._scrollFxTo(transVal); //, 200, 'easeOutQuint'
+                this._scrollFxTo(transVal);
                 this.endScroll(point);
             }
         },
@@ -178,11 +194,11 @@ define(function() {
 
         //根据swipe时间计算滚动速度
         _getRatio: function(swipeTime){
-            var ratio;
-            if(swipeTime > 1000){
+            var ratio, speedval = this.speed*1000;
+            if(swipeTime > speedval){
                 ratio = 1;
             }else{
-                ratio = 1000/swipeTime;
+                ratio = speedval/swipeTime;
                 ratio = ratio > 30 ? 30 : ratio;
             }
             console.log(swipeTime, ratio, 'swipeRatio');

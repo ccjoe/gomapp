@@ -62,6 +62,7 @@ $actionsPopoverHairline: rgba(0,0,0,0.2);
     }
     +.modal-text {
         margin-top: 5px;
+        position: relative;
     }
 }
 .modal-buttons {
@@ -192,6 +193,7 @@ $actionsPopoverHairline: rgba(0,0,0,0.2);
 .modal-bottom{
     top: auto!important;
     bottom:0;
+    max-height: 200px;
     .modal-inner{
         padding: 0;
     }
@@ -212,6 +214,9 @@ $actionsPopoverHairline: rgba(0,0,0,0.2);
         .modal-btn-yes{
             float: right;
         }
+    }
+    .modal-title + .modal-text{
+        height: 165px;
     }
 }
 

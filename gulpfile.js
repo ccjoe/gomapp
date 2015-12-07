@@ -132,13 +132,13 @@ gulp.task('serve', ['styles', 'fonts'], function () {
   gulp.watch([
     'app/*.html',
     'app/lib/**/*.*',
-    'app/lib/**/*.*',
+    'app/styles/*.*',
     'app/views/**/*',
     'app/images/**/*',
     '.tmp/fonts/**/*'
   ]).on('change', reload);
 
-  gulp.watch('app/styles/**/*.scss', ['styles']);
+  gulp.watch('app/styles/*.scss', ['styles']);
   gulp.watch('app/fonts/**/*', ['fonts']);
   gulp.watch('bower.json', ['wiredep', 'fonts']);
 });

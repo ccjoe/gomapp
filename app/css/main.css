@@ -106,7 +106,8 @@ body {
   html.ios-gt-8 .modal-title {
     font-weight: 600; }
   .modal-title + .modal-text {
-    margin-top: 5px; }
+    margin-top: 5px;
+    position: relative; }
 
 .modal-buttons {
   height: 44px;
@@ -221,7 +222,8 @@ body {
 
 .modal-bottom {
   top: auto !important;
-  bottom: 0; }
+  bottom: 0;
+  max-height: 200px; }
   .modal-bottom .modal-inner {
     padding: 0; }
   .modal-bottom .table-view {
@@ -237,6 +239,8 @@ body {
       float: left; }
     .modal-bottom .modal-title .modal-btn-yes {
       float: right; }
+  .modal-bottom .modal-title + .modal-text {
+    height: 165px; }
 
 .modal-popover {
   width: 150px; }
@@ -702,6 +706,42 @@ body {
 
 .tab-container .control-content img {
   width: 100%; }
+
+.ui-scroll-select {
+  display: flex;
+  height: 100%; }
+  .ui-scroll-select .ui-scroll-select-item {
+    flex: 1; }
+
+.ss-cell-yard {
+  position: absolute;
+  top: 66px;
+  height: 33px;
+  width: 100%;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  background-color: #fff; }
+
+.ss-cell {
+  flex: 1;
+  padding: 66px 0; }
+  .ss-cell .table-view {
+    background: none; }
+  .ss-cell .table-view-cell {
+    padding: 0;
+    height: 33px;
+    line-height: 33px;
+    text-align: center;
+    background-image: none; }
+    .ss-cell .table-view-cell a {
+      margin: 0; }
+    .ss-cell .table-view-cell.active {
+      font-weight: bold;
+      color: #007aff; }
+    .ss-cell .table-view-cell > a:not(.btn) {
+      padding: 0; }
+    .ss-cell .table-view-cell .navigate-right:after, .ss-cell .table-view-cell .push-right:after {
+      display: none; }
 
 .switch-container {
   width: 100%;

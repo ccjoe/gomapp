@@ -95,13 +95,13 @@ define(['base/core/view'], function(View) {
                 opacity: 0.2, transform: 'scale(1.5)'
             }).fx({
                 opacity: 1, scale: 1
-            }, 300, 'easeOutBack');
+            }, 300, 'easeOutCirc');
         },
         scaleOutModal: function(){
             var that = this;
             this.getModal().fx({
                 opacity: 0, scale: 0.2
-            }, 300, 'easeInBack', function(){
+            }, 300, 'easeOutCirc', function(){
                 that.wrapper.hide();
             });
         },
@@ -111,13 +111,13 @@ define(['base/core/view'], function(View) {
         slideInModal: function(pos){
             var fxprops = {opacity: 1};
                 fxprops[pos] = 0;
-            this.getModal().fx(fxprops, 300, 'easeOutBack');
+            this.getModal().fx(fxprops, 300, 'easeOutCirc');
         },
         slideOutModal: function(pos){
             var that = this;
             var fxprops = {opacity: 0};
                 fxprops[pos] = -this.getModal().height();
-            this.getModal().fx(fxprops, 300, 'easeOutBack', function(){
+            this.getModal().fx(fxprops, 300, 'easeOutCirc', function(){
                 that.wrapper.hide();
             });
         },

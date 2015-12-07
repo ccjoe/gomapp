@@ -1,6 +1,5 @@
-define(['base/ui/ui.list', 'base/ui/ui.scroll', 'base/ui/ui.modal'], function(List, Scroll, Modal) {
+define(['base/ui/ui.list', 'base/ui/ui.scroll', 'base/ui/ui.modal', 'base/ui/ui.select'], function(List, Scroll, Modal, Select) {
     'use strict';
-    var scrollXY;
     return {
         init: function(page){
             page.render();
@@ -13,24 +12,26 @@ define(['base/ui/ui.list', 'base/ui/ui.scroll', 'base/ui/ui.modal'], function(Li
                     this.showScrollX();
                 }else if(lastHash === 'y'){
                     this.showScrollY();
+                }else if(lastHash === 'bottom'){
+                    this.showTimeSelect();
                 }
             }
         },
         events:{
             'click .btn-top': function(e, current, that){
-                scrollXY.scrollTo('top');
+                that.scrollY.scrollTo('top');
             },
             'click .btn-bottom': function(e, current, that){
-                scrollXY.scrollTo('bottom');
+                that.scrollY.scrollTo('bottom');
             },
             'click .btn-num': function(e, current, that){
-                scrollXY.scrollTo(-300);
+                that.scrollY.scrollTo(-300);
             },
             'click .btn-elem': function(e, current, that){
-                scrollXY.scrollTo($('.here'));
+                that.scrollY.scrollTo($('.here'));
             },
             'click a[href="?viewdoc/scroll/modal"]': function(e, current, that){
-                that.showModalScroll();
+                that.scrollY.showModalScroll();
             }
         },
         showList: function(){
@@ -59,7 +60,7 @@ define(['base/ui/ui.list', 'base/ui/ui.scroll', 'base/ui/ui.modal'], function(Li
             ListSet.render();
         },
         showScrollY: function(){
-            scrollXY = new Scroll({
+            this.scrollY = new Scroll({
                  wrapper    : '.scroll-example2',    //滚动对象所在的容器
                  className  : '.scroll-content',      //滚动对象的className
                  direction  : 'vertical', //'vertical',             //水平与垂直
@@ -74,18 +75,18 @@ define(['base/ui/ui.list', 'base/ui/ui.scroll', 'base/ui/ui.modal'], function(Li
             });
         },
         showScrollX: function(){
-            scrollXY = new Scroll({
+            var scrollX = new Scroll({
                  wrapper    : '.scroll-example2',    //滚动对象所在的容器
                  className  : '.scroll-content',      //滚动对象的className
-                 direction  : 'horizontal', //'vertical',             //水平与垂直
+                 direction  : 'horizontal', //'vertical', //水平与垂直
                  step       : $('.scroll-example2').width(), // 步长
                  outer      : 50,  //允许出界的范围
                  //outerFront  允许出界位置上面显示的html或文字
                 // outerEnd  允许出界位置下面显示的html或文字
                  onScroll: function(point){ },    //每次滚动时回调
-                 endScroll: function(point){ console.log('单次滚动结束'); }, //   每次滚动停回调
+                 endScroll: function(point){ console.log('单次滚动结束'); },          //每次滚动停回调
                  onTop: function(){ console.log('滚动到最上面，滚动停止时触发')},       //滚动到上时
-                 onBottom:  function(){ console.log('滚动到最下面，滚动停止时触发')}   // 滚动到下时
+                 onBottom:  function(){ console.log('滚动到最下面，滚动停止时触发')}    //滚动到下时
             });
         },
         showModalScroll: function(){
@@ -112,6 +113,20 @@ define(['base/ui/ui.list', 'base/ui/ui.scroll', 'base/ui/ui.modal'], function(Li
                 className  : '.scroll-mdaol-content',      //滚动对象的className
             });
 
+        },
+
+        /*时间选择器，html5 时间选择器在iphone上原生即为实现后的效果,最好是判断环境决定是否调用*/
+        showTimeSelect: function(){
+            var num = ['01','02','03','04','05','06','07','08','09'];
+            new Select({
+                title: '时间选择器',
+                cascade: false,
+                level: 3,
+                data: {'1':['上午','下午'],'2': num.concat(_.range(10,13)), '3': num.concat(_.range(10,61))},
+                onYes: function(val){
+                    console.log('选择的值为：' + val);
+                }
+            })
         }
     };
 });
