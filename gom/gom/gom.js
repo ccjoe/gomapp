@@ -44,7 +44,8 @@ if ('addEventListener' in document) {
     }, false);
 }
 
-define(['base/core/page', 'base/utils/url', 'base/utils/store'], function(Page, Url, Store){
+define(['./core/page', './utils/url', './utils/store', './core/service'], function(Page, Url, Store, Service){
+    console.log($, '$');
     /**
      * Gom对象
      * @constructs Gom

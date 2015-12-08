@@ -1,4 +1,5 @@
-define(['base/core/view', 'base/utils/store'], function(View, Store) {
+define(['../core/view', '../utils/store','../utils/fx'], function(View, Store) {
+    //console.log($, fx, '$$$$');
     var defaults = {
         type: 'slide-horizontal',   //slide-vertical/slide-horizontal/tab-top/tab-bottom
         swipeX: 60,

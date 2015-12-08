@@ -1,4 +1,4 @@
-define(['base/ui/ui.modal'], function(Modal){
+define(['../ui/ui.modal'], function(Modal){
     var loading;
     //要达到的设定有：
     //支持实际场景不跨域开发跨域时的配置 devCrossDomain: true(CROS)
@@ -46,11 +46,11 @@ define(['base/ui/ui.modal'], function(Modal){
     };
 
     $(document).on('ajaxBeforeSend', function(e, xhr, options){
-        //loading = Modal.loading();
+        loading = Modal.loading();
         var req = modelInject.request(e, xhr, options);
         if(req === false) return false;  //阻击发出请求
     }).on('ajaxComplete', function(e, xhr, options){
-        //loading.toggleModal('Out');
+        loading.toggleModal('Out');
         modelInject.response(e, xhr, options);
     });
 

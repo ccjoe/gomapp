@@ -1,4 +1,4 @@
-define(['base/core/view'], function(View) {
+define(['../core/view'], function(View) {
     var defaultBtn = {
         type: '',    //primary, positive, negative, link
         outline: false, //true/false

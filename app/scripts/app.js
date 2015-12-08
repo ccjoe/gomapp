@@ -2,10 +2,15 @@
 require.config({
     baseUrl: '../scripts',
     paths: {
-        'base': '../lib'    //框架路径地址
+        'gom': '../../gom/gom',      //src版本(../../gom/gom)与build版本(../../gom/build/gom)切换
+        'zepto': '../bower_components/zepto-full/zepto',
+        'fastclick': '../bower_components/fastclick/lib/fastclick',
+        'underscore': '../bower_components/underscore/underscore',
+        'zepto.history': '../bower_components/history.js/scripts/bundled/html5/zepto.history'
     }
 });
 
-require(['base/gom', 'com/config', 'route'], function(Gom, config, route){
+
+require(['gom/gom', 'com/config', 'route'], function(Gom, config, route){
     new Gom(config, route).run();
 });

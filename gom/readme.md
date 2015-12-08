@@ -5,3 +5,7 @@ TODO LIST
 可定制ui组件，build时可获取最优化版本
 Build Dist版本
 完善文档及发布
+
+--------------------
+build gom 
+node r.js -o r-config.js

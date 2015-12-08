@@ -1,4 +1,4 @@
-define(['base/ui/ui.slide'], function(Slide) {
+define(['gom/ui/ui.slide'], function(Slide) {
     'use strict';
      var ctrl = {
         init: function(page){

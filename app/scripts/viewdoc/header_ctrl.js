@@ -1,4 +1,4 @@
-define(['base/ui/ui.header'], function(Header) {
+define(['gom/ui/ui.header'], function(Header) {
     'use strict';
     var page = {};
     return {

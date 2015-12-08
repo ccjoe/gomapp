@@ -1,4 +1,4 @@
-define(['base/core/view', 'base/ui/ui'], function(View, UI){
+define(['./view', '../ui/ui'], function(View, UI){
     /**
      * page.js相关
      * 1. 页面转场相关

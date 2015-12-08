@@ -1,4 +1,4 @@
-define(['base/core/view'], function(View) {
+define(['../core/view','../utils/fx'], function(View) {
     var data = {
         type: 'loading', //alert, confirm, topup, top, bottom,
         btns: {

@@ -1,4 +1,4 @@
-define(['base/core/view'], function(View) {
+define(['../core/view'], function(View) {
     /**
      * @default
      * @prop left, right

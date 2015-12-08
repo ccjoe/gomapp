@@ -1,4 +1,4 @@
-define(['base/core/view'], function(View) {
+define(['../core/view'], function(View) {
     var defaultView = {
         media: '', // 'icon'
         card: false, //false

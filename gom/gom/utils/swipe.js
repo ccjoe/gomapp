@@ -3,7 +3,7 @@
  * @author Joe Liu
  * @email icareu.joe@gmail.com
  */
-(function(){
+define(function(){
     function swipe($elem, opts) {
         var defaults = {
             'swipeX': 0,     //x horizontal distance
@@ -180,7 +180,7 @@
         };
     });
 
-})();
+});
 
 
 

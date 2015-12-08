@@ -4,15 +4,7 @@
  * @author Joe Liu
  * @email icareu.joe@gmail.com
  */
-(function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        define(factory);            // AMD. Register as an anonymous module.
-    } else if (typeof module === 'object' && module.exports) {
-        module.exports = factory(require());     // Node. Does not work with strict CommonJS, but only CommonJS-like environments that support module.exports, like Node.
-    } else {
-        root.returnExports = factory(root); // Browser globals (root is window)
-    }
-}(this, function () {
+define(function () {
     var re = {
         url: /((http|https):\/\/)?((\w+\.)+\w+)?(:\d+)?((\/\w+)+)?\/?\??((\w+=\w+&?)+)?#?(.+)?/g,
         kv: /(\w+)=([^&#]+)/g,
@@ -154,4 +146,4 @@
         getHashPath: getHashPath,
         getHTML5Hash: getHTML5Hash
     };
-}));
+});

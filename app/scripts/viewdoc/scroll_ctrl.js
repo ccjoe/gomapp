@@ -1,4 +1,4 @@
-define(['base/ui/ui.list', 'base/ui/ui.scroll', 'base/ui/ui.modal', 'base/ui/ui.select'], function(List, Scroll, Modal, Select) {
+define(['gom/ui/ui.list', 'gom/ui/ui.scroll', 'gom/ui/ui.modal', 'gom/ui/ui.select'], function(List, Scroll, Modal, Select) {
     'use strict';
     return {
         init: function(page){
@@ -31,7 +31,7 @@ define(['base/ui/ui.list', 'base/ui/ui.scroll', 'base/ui/ui.modal', 'base/ui/ui.
                 that.scrollY.scrollTo($('.here'));
             },
             'click a[href="?viewdoc/scroll/modal"]': function(e, current, that){
-                that.scrollY.showModalScroll();
+                that.showModalScroll();
             }
         },
         showList: function(){

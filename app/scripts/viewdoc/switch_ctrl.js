@@ -1,4 +1,4 @@
-define(['base/ui/ui.list'], function(List) {
+define(['gom/ui/ui.list'], function(List) {
     'use strict';
     return {
         init: function(page){
