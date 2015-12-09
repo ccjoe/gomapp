@@ -1,4 +1,4 @@
-define(['../utils/store', '../ui/ui.tmpl/ui'], function(Store, UItmpl){
+define(['Store', 'UITmpl'], function(Store, UItmpl){
     //模板引擎 dot => underscore, doT拥有此功能且性能高
     _.templateSettings = {
         evaluate    : /\{\{(.+?)\}\}/g,

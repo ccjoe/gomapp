@@ -1,5 +1,7 @@
-define(['gom/ui/ui.list'], function(List) {
+define(['UI'], function(UI) {
     'use strict';
+
+    var List = UI.List;
     return {
         init: function(page){
             page.render();

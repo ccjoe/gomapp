@@ -1,4 +1,4 @@
-define(['gom/ui/ui.list'], function(List) {
+define(['UI'], function(UI) {
     'use strict';
 
     var viewList = {
@@ -73,7 +73,7 @@ define(['gom/ui/ui.list'], function(List) {
             page.data = viewList;
             page.render();
 
-            new List({
+            new UI.List({
                 data: viewList,
                 wrapper: '.component-list'
             }).render();

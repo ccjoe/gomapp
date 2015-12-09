@@ -2,11 +2,11 @@
 require.config({
     baseUrl: '../scripts',
     paths: {
-        'gom': '../../gom/src'      //src版本(../../gom/src)与build版本(../../gom/build)切换
+        //'gom': '../../gom/src'      //src版本(../../gom/src)与build版本(../../gom/build)切换
     }
 });
 
 
-require(['gom/gom', 'com/config', 'route'], function(Gom, config, route){
-    new Gom.App(config, route).run();
+require(['App', 'com/config', 'route'], function(App, config, route){
+    new App(config, route).run();
 });

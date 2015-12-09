@@ -39,7 +39,7 @@ gulp.task('gom-preCompiler', function () {
 var sass = require('gulp-ruby-sass');
 var minifyCss = require('gulp-minify-css');
 gulp.task('gom-scss', function () {
-    return sass(GOM_PATH+'src/style/gom.scss')
+    return sass(GOM_PATH+'src/styles/gom.scss')
         .pipe(minifyCss())
         .pipe(gulp.dest(GOM_PATH+'build/css/'));
 });

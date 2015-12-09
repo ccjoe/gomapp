@@ -1,5 +1,9 @@
-define(['gom/ui/ui.list', 'gom/ui/ui.scroll', 'gom/ui/ui.modal', 'gom/ui/ui.select'], function(List, Scroll, Modal, Select) {
+define(['UI'], function(UI) {
     'use strict';
+    var Modal = UI.Modal;
+    var List = UI.List;
+    var Scroll = UI.Scroll;
+    var Select = UI.Select;
     return {
         init: function(page){
             page.render();

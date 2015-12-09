@@ -1,5 +1,6 @@
-define(['gom/ui/ui.list', 'gom/ui/ui.sides'], function(List, Sides) {
+define(['UI'], function(UI, List, Sides) {
     'use strict';
+    //console.log(UI, 'UI');
     var data = '上面的列表是组件渲染方式，这里的文本数据是页面渲染的部分, GoM分页面渲染和ui组件渲染，其都继承于View对象,都有data属性，通过定义组织data，然后调用render方法可以实现不同的渲染方式';
 
     var viewList = {
@@ -40,7 +41,7 @@ define(['gom/ui/ui.list', 'gom/ui/ui.sides'], function(List, Sides) {
             icon: 'gear'
         }]
     };
-    var ListSet = new List({
+    var ListSet = new UI.List({
         data: viewList
         //wrapper: '#indexList'     //有wrapper时直接渲染，否则返回fragmentHTML
     }).render();
@@ -67,7 +68,7 @@ define(['gom/ui/ui.list', 'gom/ui/ui.sides'], function(List, Sides) {
         setSides: function(pos){
             var sidesDesc = $('#sidesDesc').html(); //页面上的内容只有page.render后才能获取到, 所以在main外是获取不到的
 
-            this.side = new Sides({data:{position: pos}}).render();
+            this.side = new UI.Sides({data:{position: pos}}).render();
             this.side.content = sidesDesc + ListSet;
             this.side.setContent();
             var that = this;

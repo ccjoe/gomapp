@@ -1,5 +1,6 @@
-define(['gom/ui/ui.slide'], function(Slide) {
+define(['UI'], function(UI) {
     'use strict';
+    var Slide = UI.Slide;
      var ctrl = {
         init: function(page){
             page.render();

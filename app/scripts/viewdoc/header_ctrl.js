@@ -1,4 +1,4 @@
-define(['gom/ui/ui.header'], function(Header) {
+define(['UI'], function(UI) {
     'use strict';
     var page = {};
     return {
@@ -12,7 +12,7 @@ define(['gom/ui/ui.header'], function(Header) {
         },
 
         createHeader:function(){
-            var header = new Header({
+            var header = new UI.Header({
                 data: {
                     title: '新头部',
                     subtitle: 'from 2015/11/11'

@@ -1,4 +1,4 @@
-define(['../ui/ui.modal'], function(Modal){
+define(['Modal'], function(Modal){
     var loading;
     //要达到的设定有：
     //支持实际场景不跨域开发跨域时的配置 devCrossDomain: true(CROS)

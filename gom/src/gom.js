@@ -36,13 +36,32 @@
     };
 })();
 
-//require.config({
-//    paths: {
-//        'gom': './gom'
-//    }
-//});
-
-define(['./core/service', './core/page', './core/view', './ui/ui', './app'], function(Service, Page, View, UI, App){
+var gomPath = $('#gom')[0].src.match(/(.+)gom\.js/)[1];
+console.log(gomPath, 'gomPath');
+require.config({
+    paths:{
+        Gom:    gomPath + 'gom',
+        App:    gomPath + 'app',
+        UI :    gomPath + 'ui/ui',
+        Button: gomPath + 'ui/ui.button',
+        Header: gomPath + 'ui/ui.header',
+        List:   gomPath + 'ui/ui.list',
+        Modal:  gomPath + 'ui/ui.modal',
+        Sides:  gomPath + 'ui/ui.sides',
+        Scroll: gomPath + 'ui/ui.scroll',
+        Slide:  gomPath + 'ui/ui.slide',
+        Select: gomPath + 'ui/ui.select',
+        View:   gomPath + 'core/view',
+        Page:   gomPath + 'core/page',
+        Service:gomPath + 'core/service',
+        Store:  gomPath + 'utils/store',
+        Url:    gomPath + 'utils/url',
+        Fx:     gomPath + 'utils/fx',
+        Swipe:  gomPath + 'utils/swipe',
+        UITmpl: gomPath + 'ui/ui.tmpl/ui'
+    }
+});
+define('Gom', ['Service', 'Page', 'View', 'UI', 'App'], function(Service, Page, View, UI, App){
     /**
      * Gom对象
      * @constructs Gom
@@ -64,6 +83,6 @@ define(['./core/service', './core/page', './core/view', './ui/ui', './app'], fun
         UI:     UI,
         App:    App
     };
-
+    console.log(Module, 'Module');
     return Module;
 });

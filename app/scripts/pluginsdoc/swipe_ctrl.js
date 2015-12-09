@@ -1,4 +1,4 @@
-define(['gom/core/service'], function(Service) {
+define(['Service'], function(Service) {
     'use strict';
 
     //Service ajax拦截器操作

@@ -4,7 +4,7 @@
  * MIT Licensed.
  */
 //@todo config ref by everywhere
-define(['./core/page', './utils/url', './utils/store', './core/service'], function(Page, Url, Store, Service){
+define(['Page', 'Url', 'Store'], function(Page, Url, Store){
     /**
      * App对象
      * @constructs App

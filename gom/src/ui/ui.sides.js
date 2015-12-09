@@ -1,4 +1,4 @@
-define(['../core/view','../utils/fx'], function(View) {
+define(['View','Fx'], function(View) {
     /**
      * @default
      * @prop position left, right

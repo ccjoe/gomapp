@@ -1,4 +1,6 @@
-define(['gom/ui/ui.modal', 'gom/ui/ui.list'], function(Modal, List) {
+    define(['UI'], function(UI) {
+        var Modal = UI.Modal;
+        var List = UI.List;
     'use strict';
     return {
         init: function(page){

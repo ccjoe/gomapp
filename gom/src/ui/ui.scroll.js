@@ -1,5 +1,5 @@
 //引入插件时没有参数，因为插件在框架里全局运行， 这就要求框架引入依赖的zepto需在框架之前
-define(['../utils/swipe', '../utils/fx'], function() {
+define(['Swipe', 'Fx'], function() {
     //水平或垂直滚动的面板，just it;
     var vendor = (/webkit/i).test(navigator.appVersion) ? 'webkit' :
         (/firefox/i).test(navigator.userAgent) ? 'Moz' :
