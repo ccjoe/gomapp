@@ -43,7 +43,10 @@ $actionsPopoverHairline: rgba(0,0,0,0.2);
     opacity: 0;
     color:#000;
     overflow: hidden;
-    @include backface-visibility;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    -o-backface-visibility: hidden;
 }
 
 .modal-inner {

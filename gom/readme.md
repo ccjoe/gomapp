@@ -9,3 +9,4 @@ Build Dist版本
 --------------------
 build gom 
 node r.js -o r-config.js
+node r.js -o cssIn=gom/style/main.scss out=build/css/gom.css optimizeCss=standard

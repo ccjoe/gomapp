@@ -3,67 +3,26 @@
  * By John Resig http://ejohn.org/
  * MIT Licensed.
  */
-
 //@todo config ref by everywhere
-(function(){
-    var initializing = false, fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
-    this.Class = function(){};
-    Class.extend = function(prop) {
-        var _super = this.prototype;
-        initializing = true;
-        var prototype = new this();
-        initializing = false;
-        for (var name in prop) {
-            prototype[name] = typeof prop[name] == "function" &&
-            typeof _super[name] == "function" && fnTest.test(prop[name]) ?
-                (function(name, fn){
-                    return function() {
-                        var tmp = this._super;
-                        this._super = _super[name];
-                        var ret = fn.apply(this, arguments);
-                        this._super = tmp;
-                        return ret;
-                    };
-                })(name, prop[name]) :
-                prop[name];
-        }
-        function Class() {
-            if ( !initializing && this.init )
-                this.init.apply(this, arguments);
-        }
-        Class.prototype = prototype;
-        Class.prototype.constructor = Class;
-        Class.extend = arguments.callee;
-        return Class;
-    };
-})();
-
-if ('addEventListener' in document) {
-    document.addEventListener('DOMContentLoaded', function() {
-        FastClick.attach(document.body);
-    }, false);
-}
-
 define(['./core/page', './utils/url', './utils/store', './core/service'], function(Page, Url, Store, Service){
-    console.log($, '$');
     /**
-     * Gom对象
-     * @constructs Gom
+     * App对象
+     * @constructs App
      * @param {object} config
-     * @return {Object} Gom
+     * @return {Object} App
      * @example
-     * new Gom(config, route); 传入配置文件与路由文件
+     * new App(config, route); 传入配置文件与路由文件
      */
     //var expires = 1000*60*5; //5min 过期时间，后面将从config.js配置里获取;
 
-    var Gom = Class.extend({
+    var App = Class.extend({
         init: function (config, route) {
             this.config = config || {};
             this.route = route || {};
             this.model = {};
             this.history = [];
         },
-        run: function(){       //Gom初始化
+        run: function(){       //App初始化
             var that = this;
             var isHistoryApi = !!(window.history && history.pushState);
             if(!isHistoryApi){
@@ -80,6 +39,11 @@ define(['./core/page', './utils/url', './utils/store', './core/service'], functi
             this.initHref();
         },
         initHref: function(){
+            if ('addEventListener' in document) {
+                document.addEventListener('DOMContentLoaded', function() {
+                    FastClick.attach(document.body);
+                }, false);
+            }
             //对所有链接进行html5处理
             //@todo 需要处理为智能判断Url与绝对、相应地址
             //? 站内链接跳转
@@ -125,7 +89,7 @@ define(['./core/page', './utils/url', './utils/store', './core/service'], functi
         /**
          * 根据完整hash获取页面对象(即具体路由指向的路由表对象)
          * 路由查找规则，根据hash路径数据长度查找CRO对应对象，在每个长度的index找不到则查找'/:var'， 在最后index有‘/’则查找'/';
-         * @method Gom#getCRO
+         * @method App#getCRO
          * @return {object} CRO (Current Router Object)返回具体路由指向的路由表对象
          * @example ?module/list  ?module/123
          */
@@ -170,7 +134,7 @@ define(['./core/page', './utils/url', './utils/store', './core/service'], functi
         },
         /**
          * 根据完整hash路由或CRO对象到页面，封装了_routeByHash 与 _routeByCRO实现
-         * @method Gom#goto
+         * @method App#goto
          * @example module/list  module/123
          * * ? 站内链接跳转
          * # 站内组件或hash跳转(仅页面内)
@@ -196,7 +160,7 @@ define(['./core/page', './utils/url', './utils/store', './core/service'], functi
 
         /**
          * 根据完整hash路由到页面
-         * @method Gom#_routeByHash
+         * @method App#_routeByHash
          * @example module/list  module/123
          */
         _routeByHash: function (hashPath) {
@@ -268,7 +232,5 @@ define(['./core/page', './utils/url', './utils/store', './core/service'], functi
             return false;
         }
     });
-    Gom.version =  '1.0.0';
-    Gom.isWebApp = /http(s)?:\/\//.test(location.protocol);
-    return Gom;
+    return App;
 });

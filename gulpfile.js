@@ -6,48 +6,16 @@ var $ = require('gulp-load-plugins')();
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
 
-/*--------------------- SASS ----------------*/
-var sass = require('gulp-ruby-sass');
-gulp.task('styles', function () {
-  return sass('./app/styles/main.scss')
-    .pipe(gulp.dest('./app/css/'));
-     //.pipe();
-});
 
-//node-sass can't run on window
-// gulp.task('styles', function () {
-//   return gulp.src('app/styles/main.scss')
-//     .pipe($.sourcemaps.init())
-//     .pipe($.sass({
-//       outputStyle: 'nested', // libsass doesn't support expanded yet
-//       precision: 10,
-//       includePaths: ['.'],
-//       onError: console.error.bind(console, 'Sass error:')
-//     }))
-//     .pipe($.postcss([
-//       require('autoprefixer-core')({browsers: ['last 1 version']})
-//     ]))
-//     .pipe($.sourcemaps.write())
-//     .pipe(gulp.dest('.tmp/styles'))
-//     .pipe(reload({stream: true}));
-// });
-
-/*--------------------- JS ----------------*/
-gulp.task('jshint', function () {
-  return gulp.src('app/scripts/**/*.js')
-    .pipe(reload({stream: true, once: true}))
-    .pipe($.jshint())
-    .pipe($.jshint.reporter('jshint-stylish'))
-    // .pipe($.if(!browserSync.active, $.jshint.reporter('fail')));
-});
-
-/*-------------Compiler template ------------*/
+/*----------------------GOM Frame Build BEGIN-------------------------*/
+/*------------- Compiler template ------------*/
 var fs = require('fs');
 var path = require('path');
 var _ = require('underscore');
 
+var GOM_PATH = __dirname + '/gom/';
 var TEMPLATE_EXT_REGEX = /\.(html|tmpl)$/;
-var TEMPLATE_BASE_PATH = __dirname + '/gom/gom/ui/ui.tmpl/';
+var TEMPLATE_BASE_PATH =GOM_PATH + 'src/ui/ui.tmpl/';
 
 function compileTemplateSourceToAMD(template) {
     return 'define(function() { return ' + _.template(template).source.replace(/[\r\n\t]+/gm, '') + ' });';
@@ -63,20 +31,80 @@ function compileUnderScore(){
         fs.writeFileSync(outputFile, compileTemplateSourceToAMD(fs.readFileSync(inputFile).toString('utf-8')));
     });
 }
-gulp.task('preCompiler', function () {
+gulp.task('gom-preCompiler', function () {
     compileUnderScore();
 });
 
+/*------------- Compiler CSS ------------*/
+var sass = require('gulp-ruby-sass');
+var minifyCss = require('gulp-minify-css');
+gulp.task('gom-scss', function () {
+    return sass(GOM_PATH+'src/style/gom.scss')
+        .pipe(minifyCss())
+        .pipe(gulp.dest(GOM_PATH+'build/css/'));
+});
+
+/*------------- Denpency Lib ------------*/
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
+gulp.task('gom-lib', function() {
+    return gulp.src([GOM_PATH+'src/3rd/zepto.js', GOM_PATH+'src/3rd/!(zepto.js)*.js'])
+        .pipe(uglify())
+        .pipe(concat('base.js'))
+        .pipe(gulp.dest(GOM_PATH+'build/'));
+});
+
+
+/*------------- RequireJs  ------------*/
+var requirejsOptimize = require('gulp-requirejs-optimize');
+gulp.task('gom-scripts', function () {
+    return gulp.src(GOM_PATH+'src/gom.js')
+        .pipe(requirejsOptimize({}))
+        .pipe(gulp.dest(GOM_PATH+'build/'));
+});
+
+/*-------------- FONTS -----------------*/
+//, 'gom-fonts'
+/*gulp.task('gom-fonts', function () {
+    return gulp.src(GOM_PATH+'fonts/').concat(GOM_PATH+'app/fonts/!**!/!*')
+        .pipe(gulp.dest('.tmp/fonts'))
+        .pipe(gulp.dest(GOM_PATH+'build/fonts'));
+});*/
+
+gulp.task('gom', ['gom-preCompiler', 'gom-scss', 'gom-lib'], function () {
+    gulp.start('gom-scripts');
+});
+
+/*----------------------GOM Frame Build END-------------------------*/
+
+/*--------------------APP EXAMPLE BUILD BEGIN-----------------------*/
+/*--------------------- SASS ----------------*/
+var sass = require('gulp-ruby-sass');
+gulp.task('styles', function () {
+  return sass('./app/styles/main.scss')
+    .pipe(gulp.dest('./app/css/'));
+});
+
+/*--------------------- JS ----------------*/
+gulp.task('jshint', function () {
+  return gulp.src('app/scripts/**/*.js')
+    .pipe(reload({stream: true, once: true}))
+    .pipe($.jshint())
+    .pipe($.jshint.reporter('jshint-stylish'))
+    // .pipe($.if(!browserSync.active, $.jshint.reporter('fail')));
+});
+
 /*--------------------- HTML ----------------*/
+//remove useref;
 gulp.task('html', ['styles'], function () {
-  var assets = $.useref.assets({searchPath: ['.tmp', 'app', '.']});
+  //var assets = $.useref.assets({searchPath: ['.tmp', 'app', '.']});
 
   return gulp.src('app/*.html')
-    .pipe(assets)
-    .pipe($.if('*.js', $.uglify()))
-    .pipe($.if('*.css', $.csso()))
-    .pipe(assets.restore())
-    .pipe($.useref())
+    //.pipe(assets)
+    //.pipe($.if('*.js', $.uglify()))
+    //.pipe($.if('*.css', $.csso()))
+    //.pipe(assets.restore())
+    //.pipe($.useref())
     .pipe($.if('*.html', $.minifyHtml({conditionals: true, loose: true})))
     .pipe(gulp.dest('dist'));
 });
@@ -112,6 +140,7 @@ gulp.task('extras', function () {
     dot: true
   }).pipe(gulp.dest('dist'));
 });
+/*--------------------APP EXAMPLE BUILD END-----------------------*/
 
 /*--------------------- SERVER ----------------*/
 gulp.task('clean', require('del').bind(null, ['.tmp', 'dist']));
@@ -161,7 +190,8 @@ gulp.task('wiredep', function () {
 });
 
 /*--------------------- BUILD ----------------*/
-gulp.task('build', ['jshint', 'html', 'images', 'fonts', 'extras', 'preCompiler'], function () {
+//'jshint',
+gulp.task('build', [ 'html', 'images', 'fonts', 'extras', 'gom'], function () {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
