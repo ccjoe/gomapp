@@ -1,22 +1,32 @@
 ({
-    appDir: './',
-    baseUrl: './',
+    baseUrl: './src',
     dir: './build',
+    paths: {
+        App:   'app',
+        UI :   'ui/ui',
+        Button:'ui/ui.button',
+        Header:'ui/ui.header',
+        List:  'ui/ui.list',
+        Modal: 'ui/ui.modal',
+        Sides: 'ui/ui.sides',
+        Scroll:'ui/ui.scroll',
+        Slide: 'ui/ui.slide',
+        Select:'ui/ui.select',
+        View:  'core/view',
+        Page:  'core/page',
+        Service:'core/service',
+        Store: 'utils/store',
+        Url:   'utils/url',
+        Fx:    'utils/fx',
+        Swipe: 'utils/swipe',
+        UITmpl:'ui/ui.tmpl/ui'
+    },
     modules: [
         {
-            name: 'gom/gom'
+            name: 'Gom'
         }
     ],
-    fileExclusionRegExp: /^(r|r-config)\.js|build|readme.md$/,
+    fileExclusionRegExp: /^(r|r-config)\.js|build|styles|3rd|readme.md$/,
     optimizeCss: 'standard',
-    removeCombined: true,
-    //cssIn: 'gom/style/main',
-    //out: 'build/gom/gom.css',
-    //依赖，暂时依赖，1去掉zepto.history, 去掉fastclick
-    path: {
-        'fastclick': '/bower_components/fastclick/lib/fastclick',
-        'underscore': '../../bower_components/underscore/underscore',
-        'zepto': '../../bower_components/zepto-full/zepto',
-        'zepto.history': '../../bower_components/history.js/scripts/bundled/html5/zepto.history'
-    }
+    removeCombined: true
 })

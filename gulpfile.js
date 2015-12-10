@@ -56,11 +56,12 @@ gulp.task('gom-lib', function() {
 
 
 /*------------- RequireJs  ------------*/
-var requirejsOptimize = require('gulp-requirejs-optimize');
+var exec = require('child_process').exec;
 gulp.task('gom-scripts', function () {
-    return gulp.src(GOM_PATH+'src/gom.js')
-        .pipe(requirejsOptimize({}))
-        .pipe(gulp.dest(GOM_PATH+'build/'));
+    exec('node ./gom/r.js -o ./gom/r-config.js', function (err, stdout, stderr) {
+        console.log(stdout);
+        console.log(stderr);
+    });
 });
 
 /*-------------- FONTS -----------------*/
@@ -71,8 +72,9 @@ gulp.task('gom-scripts', function () {
         .pipe(gulp.dest(GOM_PATH+'build/fonts'));
 });*/
 
-gulp.task('gom', ['gom-preCompiler', 'gom-scss', 'gom-lib'], function () {
-    gulp.start('gom-scripts');
+gulp.task('gom', ['gom-preCompiler', 'gom-scripts'], function () {
+    gulp.start('gom-scss');
+    gulp.start('gom-lib');
 });
 
 /*----------------------GOM Frame Build END-------------------------*/
