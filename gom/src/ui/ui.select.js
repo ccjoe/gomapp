@@ -1,6 +1,7 @@
 define(['Modal', 'Scroll', 'List'], function(Modal, Scroll, List) {
-    //为多级联动或是仅多级选择
+
     /**
+     * 多级联动或是仅多级选择组件
      * @construct CascadeScroll
      * @param {object} opts
      * opts.title {string}  title
