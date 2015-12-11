@@ -4,11 +4,6 @@ define(['UI'], function(UI) {
     var viewList = {
         media: 'icon', // 'icon'
         list:{
-            header: {
-                title: 'header头部设置',
-                hash: '?viewdoc/header',
-                icon: 'icon-pages'
-            },
             list: {
                 title: '列表设置',
                 hash: '?viewdoc/list',
@@ -50,6 +45,11 @@ define(['UI'], function(UI) {
                 content: '[icon] <br/> 在组件中data下有icon属性的，其值仅需要为icon-iconname作为class值',
                 hash: '?viewdoc/icon',
                 icon: 'icon-right'
+            },text:{
+                title: 'text及排版',
+                content: '[h1-h6] <br/> 文字及排版相关描述',
+                hash: '?viewdoc/text',
+                icon: 'icon-code'
             },
             swipe:{
                 title: 'swipe插件',
@@ -57,9 +57,15 @@ define(['UI'], function(UI) {
                 hash: '?pluginsdoc/swipe',
                 icon: 'icon icon-star-filled'
             },
+            header: {
+                title: 'header头部设置',
+                hash: '?viewdoc/header',
+                icon: 'icon-check'
+            },
             footer:{
                 title: 'footer设置',
-                hash: '?viewdoc/footer'
+                hash: '?viewdoc/footer',
+                icon: 'icon-check'
             }
         }
     };

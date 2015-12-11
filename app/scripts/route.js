@@ -117,6 +117,10 @@ define([
             '/icon': {
                 tmplname: 'viewdoc/icon',
                 title: 'icon及相关class'
+            },
+            '/text': {
+                tmplname: 'viewdoc/text',
+                title: '文字及排版'
             }
         },
         '/pluginsdoc':{
