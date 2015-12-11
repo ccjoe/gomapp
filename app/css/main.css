@@ -83,3 +83,15 @@ pre {
 xmp {
   font-size: 12px;
   line-height: 1.2em; }
+
+.icon-demo {
+  background-color: #fff; }
+  .icon-demo .icon {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    background-color: #eee;
+    color: #007aff;
+    margin: 10px;
+    border-radius: 10px; }

@@ -105,10 +105,18 @@ define([
                     title: '垂直Scroll',
                 }
             },
+            '/form'  : {
+                tmplname: 'viewdoc/form',
+                title: 'form表单相关'
+            },
             '/button': {
                 tmplname: 'viewdoc/button',
                 title: '按钮Button文档',
                 //ctrl: viewdocButton,    //纯静态页面可以不用ctrl初始化
+            },
+            '/icon': {
+                tmplname: 'viewdoc/icon',
+                title: 'icon及相关class'
             }
         },
         '/pluginsdoc':{
