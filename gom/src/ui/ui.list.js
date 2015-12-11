@@ -5,12 +5,12 @@ define(['View'], function(View) {
         list: [{
             img: '',
             title: '',
-            desc: '',
+            content: '',
             badge: ''
         },{
             img: '',
             title: '',
-            desc: '',
+            content: '',
             badge: '',
             isDivider: true,
             collapse: true

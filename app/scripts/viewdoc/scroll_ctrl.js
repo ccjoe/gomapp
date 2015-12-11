@@ -48,11 +48,11 @@ define(['UI'], function(UI) {
                     hash: '?viewdoc/scroll/y'
                 },{
                     title: '弹层滚动',
-                    desc: '弹出的区域滚动',
+                    content: '弹出的区域滚动',
                     hash: '?viewdoc/scroll/modal'
                 },{
                     title: '弹层底部滚动',
-                    desc: '指定src的slide子项示例, 将通过ajax获取模板',
+                    content: '指定src的slide子项示例, 将通过ajax获取模板',
                     hash: '?viewdoc/scroll/bottom'
                 }]
             };

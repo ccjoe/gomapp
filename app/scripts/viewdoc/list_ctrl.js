@@ -16,7 +16,7 @@ define(['UI'], function(UI) {
                 list: [{
                     img: 'http://placehold.it/42x42',
                     title: '列表示例',
-                    desc: '列表通过data传入属性实现不同的配置,  通过 data.media可以为img, icon;这个列表data.media为img; data.card为true时显示为创建列表的显示的卡片式',
+                    content: '列表通过data传入属性实现不同的配置,  通过 data.media可以为img, icon;这个列表data.media为img; data.card为true时显示为创建列表的显示的卡片式',
                     badge: '12'
                 },{
                     title: '可点击收缩的标题',
@@ -25,7 +25,7 @@ define(['UI'], function(UI) {
                 },{
                     img: '',
                     title: '可收缩的item',
-                    desc: 'data.list的item单项上通过collapse为true可点击收缩',
+                    content: 'data.list的item单项上通过collapse为true可点击收缩',
                     badge: '10',
                 }],
             };
@@ -43,7 +43,7 @@ define(['UI'], function(UI) {
                 list: [{
                     icon: 'icon-trash',
                     title: 'icon-trash 单项',
-                    desc: '此例的icon.media为icon,通过配置icon的className可实现配置，此Item上为 icon-trash',
+                    content: '此例的icon.media为icon,通过配置icon的className可实现配置，此Item上为 icon-trash',
                     badge: '12'
                 },{
                     img: 'icon-gear',
@@ -53,7 +53,7 @@ define(['UI'], function(UI) {
                 },{
                     icon: 'icon-pages',
                     title: 'badge的说明',
-                    desc: '右侧的为badge,可配置',
+                    content: '右侧的为badge,可配置',
                     badge: '10',
                 }],
             };

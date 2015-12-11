@@ -11,18 +11,18 @@ define(['UI'], function(UI, List, Sides) {
             collapse: true
         },{
             title: '组件及插件(UI)',
-            desc: 'UI组件及插件文档【VIEW】',
+            content: 'UI组件及插件文档【VIEW】',
             hash: '?viewdoc',
             badge: 5,
             img: '/images/v.png'
         },{
             title: '页面Page与Ctrl相关',
-            desc: '页面文档及相关【VIEW,CTRL】',
+            content: '页面文档及相关【VIEW,CTRL】',
             hash: '?pagedoc',
             img: '/images/c.png'
         },{
             title: '模型Model类',
-            desc: '与服务端交互相关封装【MODEL】',
+            content: '与服务端交互相关封装【MODEL】',
             hash: '?modeldoc',
             img: '/images/m.png'
         },{
@@ -31,12 +31,12 @@ define(['UI'], function(UI, List, Sides) {
             collapse: true
         }, {
             title: '404',
-            desc: '404页面',
+            content: '404页面',
             hash: '?404',
             icon: 'gear'
         },{
             title: '500',
-            desc: '500页面',
+            content: '500页面',
             hash: '?500',
             icon: 'gear'
         }]

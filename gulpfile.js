@@ -175,7 +175,7 @@ gulp.task('serve', ['styles', 'fonts'], function () {
     //监听框架变化并作相应处理
     gulp.watch('app/src/ui/ui.tmpl/*.html', ['gom']);
     gulp.watch('gom/src/styles/*.scss', ['gom-scss']);
-    gulp.watch('gom/src/**/*.js', ['gom']);
+    //gulp.watch('gom/src/**/*.js', ['gom']);
     //监听APP变化并作相应处理
     gulp.watch('app/styles/*.scss', ['styles']);
     gulp.watch('app/fonts/**/*', ['fonts']);

@@ -10,7 +10,8 @@ define([
     'viewdoc/switch_ctrl',
     'viewdoc/switchall_ctrl',
     'viewdoc/scroll_ctrl',
-    'pluginsdoc/swipe_ctrl'
+    'pluginsdoc/swipe_ctrl',
+    'modeldoc/index_ctrl'
 ], function (main,
              viewdocList,
              viewdocHeader,
@@ -20,7 +21,8 @@ define([
              viewdocSwitch,
              viewdocSwitchAll,
              viewdocScroll,
-             pluginsdocSwipe) {
+             pluginsdocSwipe,
+             modeldocIndex) {
 
     //tmpl html FileName; ctrl js FileName
     var router = {
@@ -125,8 +127,10 @@ define([
             tmplname: '/pagedoc/index',
             title: 'Page对象及Ctrl说明'
         },
-        '/modal': {
-            tmplname: '/pages/modal'
+        '/modeldoc': {
+            tmplname: '/modeldoc/index',
+            ctrl: modeldocIndex,
+            title: 'Model对象'
         },
         //HTTP 状态
         '/404': {

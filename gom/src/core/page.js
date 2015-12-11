@@ -51,14 +51,30 @@ define(['View', 'UI'], function(View, UI){
         //渲染页面后自动实例化组件，去支持声明式初始UI组件, 组件式的内容作为title, data-opts作为参数对象
         //声明式初始UI组件初始隐藏，解析后显示.
         initWidgetUI: function(){
-            var $t, uitype, that = this;
+            var $t, uitype, uiopts, uititle, $items, hasItemsLen, that = this;
             $('body').find('[data-ui-widget]').each(function(i, it){
                 $t = $(it);
                 uitype = $t.data('ui-widget');
+                uiopts = $t.data('opts');
 
+                $items = $t.find('item');
+                hasItemsLen = $items.length;
+                //判断是否是列表类组件对象，简言之：获取title 或 列表时的title与content
+                if(hasItemsLen){
+                    uititle = [];
+                    for(var t=0; t<hasItemsLen; t++){
+                        uititle[t] = {};
+                        uititle[t]['title'] = $items.eq(t).attr('title');
+                        uititle[t]['content'] = $items.eq(t).html();
+                    }
+                    uititle.list = uititle;
+                }else{
+                    uititle = {};
+                    uititle.title = $t.text();
+                }
                 that.widgets[i] = new UI[uitype]({
                     wrapper: $t,
-                    data: $.extend({}, $t.data('opts'), {title: $t.text()})
+                    data: $.extend({}, uiopts, uititle)
                 });
                 that.widgets[i].render();
                 $t.data('widget', that.widgets[i]);
