@@ -1,7 +1,8 @@
 {
     "name": "gom",
     "private": true,
-    "dependencies": {
+    "dependencies": {},
+    "comments": {
         "fastclick": "1.0.6",
         "underscore": "~1.7.0",
         "zepto-full": "~1.1.2",

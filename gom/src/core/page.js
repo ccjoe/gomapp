@@ -38,14 +38,17 @@ define(['View', 'UI'], function(View, UI){
         },
 
         show: function(){
-            this.push(this.getHTMLFragment('view'), !this.isback ? 'swipe-left':'swipe-right');
+            var isback = this.isback;
+            var effect = (isback === null) ? null : (!isback ? 'swipe-left':'swipe-right');
+
+            this.push(this.getHTMLFragment('view'), effect);
             //this._parseEvent();
             if (this.title) {
                 this.setHeader();
             }
             this.initWidgetUI();
         },
-        //渲染页面后自动实例化组件，去支持声明式初始UI组件
+        //渲染页面后自动实例化组件，去支持声明式初始UI组件, 组件式的内容作为title, data-opts作为参数对象
         initWidgetUI: function(){
             var $t, uitype, that = this;
             $('body').find('[data-ui-widget]').each(function(i, it){

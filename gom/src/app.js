@@ -4,7 +4,7 @@
  * MIT Licensed.
  */
 //@todo config ref by everywhere
-define(['Page', 'Url', 'Store'], function(Page, Url, Store){
+define(['Page', 'Modal', 'Url', 'Store'], function(Page, Modal, Url, Store){
     /**
      * App对象
      * @constructs App
@@ -28,7 +28,7 @@ define(['Page', 'Url', 'Store'], function(Page, Url, Store){
             if(!isHistoryApi){
                 return;
             }
-
+            Modal.loading();
             History.Adapter.bind(window, 'statechange', function(e){
                 var state = History.getState();
                 state.data.hash = state.data.hash || '/';
@@ -204,6 +204,7 @@ define(['Page', 'Url', 'Store'], function(Page, Url, Store){
             if(this.getLastHashByLastIndex(1) === hashPath){
                 return;
             }
+
             var history = this.history;
             history.push(hashPath);
             if(history.length > 10){
@@ -216,11 +217,20 @@ define(['Page', 'Url', 'Store'], function(Page, Url, Store){
             var history = this.history;
             return history[history.length-index];
         },
+        /**
+         * 查询到跳转是否为前进或是后退或是首次进入
+         * @method App#isBack
+         * @return {boolean} true:后退, false:前进, null:首次进入;
+         */
         isBack: function(){
-            var oldHashArr = Url.getHashPath(this.getLastHashByLastIndex(2), true),
-                newHashArr = Url.getHashPath(this.getLastHashByLastIndex(1), true);
-            console.log(_.compact(oldHashArr), _.compact(newHashArr),   'IS GO OR BACK');
-            return _.compact(newHashArr).length < _.compact(oldHashArr).length;
+            var lastest = this.getLastHashByLastIndex(1),
+                laster  = this.getLastHashByLastIndex(2);
+
+            var oldHashArr = Url.getHashPath(laster, true),
+                newHashArr = Url.getHashPath(lastest, true),
+                isExistOld = _.compact(oldHashArr).length;
+
+            return laster ? _.compact(newHashArr).length < isExistOld : null;
         },
         //判断是否存在CRO而404
         isRouteNotFound: function(CRO){

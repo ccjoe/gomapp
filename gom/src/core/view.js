@@ -34,6 +34,20 @@ define(['Store', 'UITmpl'], function(Store, UItmpl){
         return tmpl;
     };
 
+    //toElem继承elem所有属性但排除组件定义属性, class会叠加，其它会替换，组件定义的相关属性不会继承
+    var inheritAttrs = function(elem, toElem){
+        var attributes = elem.prop("attributes"),
+            $toElem = $(toElem);
+        $.each(attributes, function() {
+            if(this.name === 'class'){
+                $toElem.attr(this.name, this.value + ' '+ $toElem.attr('class'));
+            }else if(this.name !== 'data-opts' && this.name !== 'data-ui-widget'){
+                $toElem.attr(this.name, this.value);
+            }
+        });
+        return $toElem;
+    };
+
     /**
      * View对象
      * @namespace
@@ -60,13 +74,21 @@ define(['Store', 'UITmpl'], function(Store, UItmpl){
         },
 
         //根据STORE与AJAX条件渲染视图,供View.extend的Page UI内部调用, 有wrapper时直接插入到页面，否则返回HTMLFragment,但是能返回的前提是，view是同步的
+        //replace时保留其上的属性
         render: function(){
-            var frag = this.getHTMLFragment();
-            if(this.wrapper){
-                this.replace ? this.wrapper.replaceWith(frag) : this.wrapper.html(frag);
+            var wrap = this.wrapper;
+            var frag = this.getHTMLFragment(), $frag;
+            if(wrap){
+                if(this.replace){
+                    $frag = inheritAttrs(wrap, frag);
+                    wrap.replaceWith($frag);
+                }else{
+                    wrap.html(frag)
+                }
+
             }
             this.show();
-            return this.wrapper.length ? this : frag;
+            return wrap.length ? this : frag;
         },
         //供继承对应重写
         show: function (){

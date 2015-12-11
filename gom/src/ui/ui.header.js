@@ -31,8 +31,12 @@ define(['View'], function(View) {
             this.update();
         },
         events: {
-            'click .icon-left-nav': 'goBack'
+            'click .icon-left-nav': 'goBack',
+            //'click .icon-bars': 'showSides'
         },
+        //showSides: function(){
+        //    new UI.Sides({data:{position: 'left'}}).render();
+        //},
         goBack: function(){
             History.go(-1);
             return;

@@ -173,7 +173,7 @@ gulp.task('serve', ['styles', 'fonts'], function () {
 
   gulp.watch('app/styles/*.scss', ['styles']);
   gulp.watch('app/fonts/**/*', ['fonts']);
-  gulp.watch('bower.json', ['wiredep', 'fonts']);
+  //gulp.watch('bower.json', ['wiredep', 'fonts']);
 });
 
 // inject bower components
