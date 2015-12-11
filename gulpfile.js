@@ -16,6 +16,7 @@ var _ = require('underscore');
 var GOM_PATH = __dirname + '/gom/';
 var TEMPLATE_EXT_REGEX = /\.(html|tmpl)$/;
 var TEMPLATE_BASE_PATH =GOM_PATH + 'src/ui/ui.tmpl/';
+var TEMPLATE_OUT_PATH =GOM_PATH + 'src/ui/';
 
 function compileTemplateSourceToAMD(template) {
     return 'define(function() { return ' + _.template(template).source.replace(/[\r\n\t]+/gm, '') + ' });';
@@ -26,8 +27,8 @@ function compileUnderScore(){
         if (!TEMPLATE_EXT_REGEX.test(file)) {
             return;
         }
-        var inputFile = TEMPLATE_BASE_PATH + path.sep + file;
-        var outputFile = TEMPLATE_BASE_PATH + path.sep + file.split('.').slice(0, -1) + '.js';
+        var inputFile  = TEMPLATE_BASE_PATH + path.sep + file;
+        var outputFile = TEMPLATE_OUT_PATH + path.sep + file.split('.').slice(0, -1).join('.') + '.js';
         fs.writeFileSync(outputFile, compileTemplateSourceToAMD(fs.readFileSync(inputFile).toString('utf-8')));
     });
 }

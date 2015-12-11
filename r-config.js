@@ -5,19 +5,10 @@
     modules: [
         {
             name: 'app',
-            exclude: ['../../gom/gom']
-        }
-        ,{
-            name: '../../gom/gom'
+            exclude: ['Gom']
         }
     ],
     fileExclusionRegExp: /^(r|build)\.js$/,
     optimizeCss: 'standard',
-    removeCombined: true,
-    path: {                     // RequireJS 2.0 中可以配置数组，顺序映射，当前面模块资源未成功加载时可顺序加载后续资源
-        'fastclick': '/bower_components/fastclick/lib/fastclick',
-        'underscore': '../../bower_components/underscore/underscore',
-        'zepto': '../../bower_components/zepto-full/zepto',
-        'zepto.history': '../../bower_components/history.js/scripts/bundled/html5/zepto.history'
-    }
+    removeCombined: true
 })

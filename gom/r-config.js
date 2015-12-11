@@ -19,14 +19,14 @@
         Url:   'utils/url',
         Fx:    'utils/fx',
         Swipe: 'utils/swipe',
-        UITmpl:'ui/ui.tmpl/ui'
+        UITmpl:'ui/ui.tmpl'
     },
     modules: [
         {
             name: 'Gom'
         }
     ],
-    fileExclusionRegExp: /^(r|r-config)\.js|build|styles|3rd|readme.md$/,
+    fileExclusionRegExp: /^(r|r-config)\.js|build|styles|3rd|ui\.tmpl\.html|readme.md$/,
     optimizeCss: 'standard',
     removeCombined: true
 })

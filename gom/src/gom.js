@@ -58,7 +58,7 @@ require.config({
         Url:    gomPath + 'utils/url',
         Fx:     gomPath + 'utils/fx',
         Swipe:  gomPath + 'utils/swipe',
-        UITmpl: gomPath + 'ui/ui.tmpl/ui'
+        UITmpl: gomPath + 'ui/ui.tmpl'
     }
 });
 define('Gom', ['Service', 'Page', 'View', 'UI', 'App'], function(Service, Page, View, UI, App){

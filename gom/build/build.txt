@@ -2,7 +2,7 @@
 Gom.js
 ----------------
 utils/store.js
-ui/ui.tmpl/ui.js
+ui/ui.tmpl.js
 core/view.js
 utils/fx.js
 ui/ui.modal.js
