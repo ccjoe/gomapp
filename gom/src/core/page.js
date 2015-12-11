@@ -49,6 +49,7 @@ define(['View', 'UI'], function(View, UI){
             this.initWidgetUI();
         },
         //渲染页面后自动实例化组件，去支持声明式初始UI组件, 组件式的内容作为title, data-opts作为参数对象
+        //声明式初始UI组件初始隐藏，解析后显示.
         initWidgetUI: function(){
             var $t, uitype, that = this;
             $('body').find('[data-ui-widget]').each(function(i, it){
@@ -61,6 +62,7 @@ define(['View', 'UI'], function(View, UI){
                 });
                 that.widgets[i].render();
                 $t.data('widget', that.widgets[i]);
+                $t.removeAttr('data-ui-widget');
             });
         },
         /**
