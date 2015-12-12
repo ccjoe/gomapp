@@ -28,10 +28,10 @@ define(['UI'], function(UI) {
                 content: '[scroll, time-select, date-select]<br/>实现横向纵向滚动,图片文本scroll效果等',
                 icon: 'icon-pages'
             },
-            form:{
+            forms:{
                 title: 'form各组件',
                 content: '[select]<br/>包含form各组件',
-                hash: '?viewdoc/form',
+                hash: '?viewdoc/forms',
                 icon: 'icon-compose'
             },
             button:{

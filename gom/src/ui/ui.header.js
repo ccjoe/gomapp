@@ -6,7 +6,7 @@ define(['View'], function(View) {
      * @prop type可以为 icon button link,
      * @prop icon: 为icon时有此属性
      */
-    var defaultHeader = {
+    var defaults = {
         left:{
             type: 'icon'   //options button,link
         },
@@ -19,7 +19,7 @@ define(['View'], function(View) {
     };
     var Header = View.extend({
         init: function (opts) {
-            opts.data = _.extend({}, defaultHeader, opts.data);
+            opts.data = _.extend({}, defaults, opts.data);
             opts.tmplname = 'ui.header';
             opts.wrapper = opts.wrapper || opts.config.selector.header;
             $.extend(opts, this);   //将List实例混合到opts上， 去父对象上执行

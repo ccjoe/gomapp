@@ -176,7 +176,7 @@ define(function(){
                 var itemArgs = $.extend({}, baseArgs, opts, {direction: direct});
                 swipe($(this), itemArgs);
             });
-            return true;
+            return this;
         };
     });
 

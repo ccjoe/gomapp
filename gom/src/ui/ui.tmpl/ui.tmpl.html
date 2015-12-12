@@ -92,13 +92,6 @@
 <div class="sides sides-{{= data.position }}"></div>
 </script>
 
-
-<script id="ui.toggle" type="text/template">
-<div class="toggle active">
-    <div class="toggle-handle"></div>
-</div>
-</script>
-
 <script id="ui.switch" type="text/template">
 {{ var switchType = /(^\w+)-?(\w+)?/.exec(data.type), isSlide = switchType[1]==='slide', position = switchType[2];}}
 <div class="switch-container slide-container {{= isSlide ? 'slide-container-'+position : 'tab-container slide-container-horizontal'}}">

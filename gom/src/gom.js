@@ -43,6 +43,7 @@ require.config({
         Gom:    gomPath + 'gom',
         App:    gomPath + 'app',
         UI :    gomPath + 'ui/ui',
+        Toggle :gomPath + 'ui/ui.Toggle',
         Button: gomPath + 'ui/ui.button',
         Header: gomPath + 'ui/ui.header',
         List:   gomPath + 'ui/ui.list',

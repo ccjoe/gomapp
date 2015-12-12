@@ -67,3 +67,22 @@
     background: #007aff;
     content: ' ';
 }
+
+.input-row {
+    .input{
+        float: right;
+        width: 65%;
+        padding-left: 0;
+        margin-bottom: 0;
+        border: 0;
+        background: none;
+        box-shadow: none;
+    }
+    select{
+        padding: 10px 15px!important;
+    }
+    .toggle{
+        width: 50px;
+        border: 2px solid #e6e6e6;
+    }
+}

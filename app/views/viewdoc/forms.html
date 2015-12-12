@@ -29,22 +29,36 @@
             <div class="range-slider"><input type="range" min="60" max="99" value="80" step="1"></div>
         </div>
         <div class="input-row">
-            <label>时间</label>
+            <label>日期</label>
             <input type="date" placeholder="Birth day" value="2015-08-30" class="">
+        </div>
+        <div class="input-row">
+            <label>时间</label>
+            <div class="input" data-ui-widget="Select" data-opts='{"title": "时间选择器","modal": false, "cascade": false,
+            "level": 2, "yardNo": 1, "list": {"1":["上午","下午"], "2":["1点","2点","3点","4点","5点","6点","7点","8点","9点","10点","11点","12点"]}}'>
+
+            </div>
+        </div>
+        <div class="input-row">
+            <label>性别</label>
+            <select class="input">
+                <option>Male</option>
+                <option>Female</option>
+            </select>
+        </div>
+        <div class="input-row">
+            <label>测试</label>
+            <div class="input" data-ui-widget="Toggle"></div>
         </div>
 
         <ul class="table-view">
             <li class="table-view-cell">
-                公母
-                <div class="toggle">
-                    <div class="toggle-handle"></div>
-                </div>
+                公母(声明式定义togger):
+                <div data-ui-widget="Toggle"></div>
             </li>
             <li class="table-view-cell">
-                性取向
-                <div class="toggle active">
-                    <div class="toggle-handle"></div>
-                </div>
+                性取向(函数式定义togger):
+                <div class="toggle-wrapper active"></div>
             </li>
         </ul>
     </form>

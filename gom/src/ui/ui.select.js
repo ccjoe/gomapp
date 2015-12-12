@@ -1,20 +1,26 @@
-define(['Modal', 'Scroll', 'List'], function(Modal, Scroll, List) {
+define(['View', 'Modal', 'Scroll', 'List'], function(View, Modal, Scroll, List) {
 
     /**
      * 多级联动或是仅多级选择组件
      * @construct CascadeScroll
      * @param {object} opts
-     * opts.title {string}  title
-     * opts.level {number} 1 级数
-     * opts.cascade {boolean} true/false 是否级联 （级联表示每级之间有显示联系，无级联如时间选择， 有级联如日期选择）
-     * opts.className 自定义的class
-     * opts.data = {'1': [], '2': []};
-     * opts.onYes(select val);
-     * opts.onNo();
+     * opts.wrapper {selecot} 当非model弹出时需要此属性，组件将插入到此wrapper
+     * opts.data包含以下属性：
+            title {string}  title
+            level {number} 1 级数
+            modal {boolean} 底部弹出选择
+            cascade {boolean} true/false 是否级联 （级联表示每级之间有显示联系，无级联如时间选择， 有级联如日期选择）
+            className 自定义的class
+            yardNo {number} 准绳处于第几行,默认第三行(则可见总共五行)
+            list = {'1': [], '2': []};
+            onYes(select val);
+            onNo();
      * @example
      * 实例一个时间选择器
      * new Select({
+            wrapper:
             title: '时间选择器',
+            modal: true,    //显示
             cascade: false,
             level: 3,
             data: {'1':['上午','下午'],'2': _.range(1,13), '3': _.range(1,61)},
@@ -23,48 +29,66 @@ define(['Modal', 'Scroll', 'List'], function(Modal, Scroll, List) {
             }
         })
      **/
-    var Select = Class.extend({
+    var defaults = {
+        title: '请选择',
+        yardNo: 3,
+        modal: true,
+    };
+    var Select = View.extend({
         init: function(opts){
-            this.className = opts.className || '';
+            var data = opts.data = _.extend({}, defaults, opts.data);
+            data.modal = (data.modal === void 0) ? true : data.modal;
+            data.className = data.className || '';
             $.extend(this, opts);
-            this.construct();
+            this.tmpl = this.makeScrollCtn();
+            this._super(opts);
         },
-        construct: function(){
-            var that = this;
-            Modal.bottom({title: this.title, content: this.makeScrollCtn(),
-                onYes: function(){
-                    var val = that.getSelect();
-                    that.onYes ? that.onYes(val) : null;
-                },
-                onNo: function(){
-                    that.onNo ? that.onNo() : null;
-                }});
-
+        show: function(){
+            var that = this; data = this.data;
+            console.log(this.modal, 'thismodal');
+            if(data.modal){
+                Modal.bottom({title: data.title, content: this.makeScrollCtn(),
+                    onYes: function(){
+                        var val = that.getSelect();
+                        data.onYes ? data.onYes(val) : null;
+                    },
+                    onNo: function(){
+                        data.onNo ? data.onNo() : null;
+                    }});
+            }else{
+                if(!this.wrapper){
+                    console.error('当select没有指向为modal显示时，需要指定wrapper属性作为组件根元素');
+                    return;
+                }
+                $(this.wrapper).addClass('gom-ui-select').html(this.makeScrollCtn());
+            }
             this.setScroll();
             this.initSelect();
         },
         getScrollRoot: function(){
-            return this.className ? $('.'+this.className) : $('.ui-scroll-select');
+            return this.data.className ? $('.'+this.data.className) : $('.ui-scroll-select');
         },
         initSelect: function(){
             var $wrapper = this.getScrollRoot();
-            for(var l=1; l<=this.level; l++) {
+            for(var l=1; l<=this.data.level; l++) {
                 $wrapper.find('.ss-cell-'+l).find('li.table-view-cell').eq(0).addClass('active');
             }
         },
         //生成scroll-select所有的 htmlFragment;
         makeScrollCtn: function(){
-            var level = this.level, scrollCtn='', levelDom = '';
+            var level = this.data.level, scrollCtn='', levelDom = '';
+            var initPadding = (this.data.yardNo-1)*33;
             for(var l=1; l<=level; l++){
                 levelDom = this.setListCont(l);
-                scrollCtn += '<div class="ui-scroll-select-item ui-scroll-select-' +l+'"><div class="ss-cell ss-cell-'+ l +'">'+levelDom+'</div></div>';
+                scrollCtn += '<div class="ui-scroll-select-item ui-scroll-select-' +l+'"><div style="padding: '+ initPadding +'px 0;" class="ss-cell ss-cell-'+ l +'">'+levelDom+'</div></div>';
             }
-            var selectYard = '<div class="ss-cell-yard"></div>';
-            return selectYard + '<div class="ui-scroll-select ' + this.className + '">'+scrollCtn+'</div>';
+            var selectYard = '<div class="ss-cell-yard" style="top: '+ initPadding +'px"></div>';
+            return selectYard + '<div class="ui-scroll-select ' + this.data.className + '">'+scrollCtn+'</div>';
         },
+
         //根据level生成列表 htmlFragment
         setListCont: function(level){
-            var levelData = this.data[level], levelDataExt = [];
+            var levelData = this.data.list[level], levelDataExt = [];
             for(var i=0; i<levelData.length; i++){
                 levelDataExt[i] = {};
                 levelDataExt[i].title = levelData[i];
@@ -83,13 +107,14 @@ define(['Modal', 'Scroll', 'List'], function(Modal, Scroll, List) {
         },
 
         setScroll: function(){
-            for(var l=1; l<=this.level; l++){
+            for(var l=1; l<=this.data.level; l++){
                 new Scroll({
                     step: 33,
                     speed: 0.5,
                     wrapper    : '.ui-scroll-select-'+l,    //滚动对象所在的容器
                     className  : '.ss-cell-'+l,      //滚动对象的className
                     endScroll: function(point){
+                        console.log(point, 'point');
                         var step = this.getSteps();
                         this.$scroll.find('li.table-view-cell').removeClass('active').eq(step).addClass('active');
                     }
@@ -103,7 +128,7 @@ define(['Modal', 'Scroll', 'List'], function(Modal, Scroll, List) {
          */
         getSelect: function(){
             var $domRoot = this.getScrollRoot(), val, valArr = [];
-            for(var l=1; l<=this.level; l++) {
+            for(var l=1; l<=this.data.level; l++) {
                 val = $.trim($domRoot.find('.ss-cell-'+l).find('li.table-view-cell.active').text());
                 valArr.push(val);
             }

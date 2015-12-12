@@ -120,17 +120,20 @@ define(['UI'], function(UI) {
         },
 
         /*时间选择器，html5 时间选择器在iphone上原生即为实现后的效果,最好是判断环境决定是否调用*/
-        showTimeSelect: function(){
+        showTimeSelect: function(isModal){
+            isModal = isModal || false;
             var num = ['01','02','03','04','05','06','07','08','09'];
-            new Select({
+            new Select({data: {
                 title: '时间选择器',
                 cascade: false,
+                //modal:isModal,
+                //wrapper: $('.content').last(),
                 level: 3,
-                data: {'1':['上午','下午'],'2': num.concat(_.range(10,13)), '3': num.concat(_.range(10,61))},
+                list: {'1':['上午','下午'],'2': num.concat(_.range(10,13)), '3': num.concat(_.range(10,61))},
                 onYes: function(val){
-                    console.log('选择的值为：' + val);
+                    Modal.toast('选择的值为：' + val);
                 }
-            })
+            }}).render();
         }
     };
 });

@@ -28,7 +28,7 @@ define(['Page', 'Modal', 'Url', 'Store'], function(Page, Modal, Url, Store){
             if(!isHistoryApi){
                 return;
             }
-            Modal.loading();
+            //Modal.loading();
             History.Adapter.bind(window, 'statechange', function(e){
                 var state = History.getState();
                 state.data.hash = state.data.hash || '/';

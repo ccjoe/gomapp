@@ -10,6 +10,7 @@ define([
     'viewdoc/switch_ctrl',
     'viewdoc/switchall_ctrl',
     'viewdoc/scroll_ctrl',
+    'viewdoc/forms_ctrl',
     'pluginsdoc/swipe_ctrl',
     'modeldoc/index_ctrl'
 ], function (main,
@@ -21,24 +22,25 @@ define([
              viewdocSwitch,
              viewdocSwitchAll,
              viewdocScroll,
+             viewdocForms,
              pluginsdocSwipe,
              modeldocIndex) {
 
     //tmpl html FileName; ctrl js FileName
     var router = {
-        // '/sample': {
-        //     tmpl : 'sample'    //optional(tmpl与ctrl必须指定一个) 页面调用的模块名称 template
-        //     ctrl : sample optional 页面对应的ctrl的路径 ctrl
-        //     title: 'SAMPLE'    //optional 页面标题
-        //     data : {}          //optional 页面需要的数据（一般不会直接写入，由ajax动态写入）
-        //     params: {}         //页面间相互传递数据时设置此对象
-        //     wrapper: '#sample' //optional 页面需要插入的DOM位置
-        //     seo: {
-        //          title:        //上面title是显示在页面上的，这个设置是<title>标签里的值
-        //          keyword:,
-        //          descption:
-        //     }
-        // },
+         //'/sample': {
+         //    tmpl : 'sample'    //optional(tmpl与ctrl必须指定一个) 页面调用的模块名称 template
+         //    ctrl : sample optional 页面对应的ctrl的路径 ctrl
+         //    title: 'SAMPLE'    //optional 页面标题
+         //    data : {}          //optional 页面需要的数据（一般不会直接写入，由ajax动态写入）
+         //    params: {}         //页面间相互传递数据时设置此对象
+         //    wrapper: '#sample' //optional 页面需要插入的DOM位置
+         //    seo: {
+         //         title:        //上面title是显示在页面上的，这个设置是<title>标签里的值
+         //         keyword:,
+         //         descption:
+         //    }
+         //},
         '/': {
             tmplname: 'app',
             ctrl: main,
@@ -105,8 +107,9 @@ define([
                     title: '垂直Scroll',
                 }
             },
-            '/form'  : {
-                tmplname: 'viewdoc/form',
+            '/forms'  : {
+                tmplname: 'viewdoc/forms',
+                ctrl: viewdocForms,
                 title: 'form表单相关'
             },
             '/button': {

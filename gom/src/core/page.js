@@ -48,7 +48,7 @@ define(['View', 'UI'], function(View, UI){
             }
             this.initWidgetUI();
         },
-        //渲染页面后自动实例化组件，去支持声明式初始UI组件, 组件式的内容作为title, data-opts作为参数对象
+        //渲染页面后自动实例化组件，去支持声明式初始UI组件, 组件式的内容作为title, data-opts作为参数对象, 若有重复，以data-opts为主
         //声明式初始UI组件初始隐藏，解析后显示.
         initWidgetUI: function(){
             var $t, uitype, uiopts, uititle, $items, hasItemsLen, that = this;
@@ -72,10 +72,14 @@ define(['View', 'UI'], function(View, UI){
                     uititle = {};
                     uititle.title = $t.text();
                 }
-                that.widgets[i] = new UI[uitype]({
-                    wrapper: $t,
-                    data: $.extend({}, uiopts, uititle)
-                });
+                try{
+                    that.widgets[i] = new UI[uitype]({
+                        wrapper: $t,
+                        data: $.extend({},  uititle, uiopts)
+                    });
+                }catch(e){
+                    console.warn(uitype + '组件定义错误，UI对象上不存在此组件！');
+                }
                 that.widgets[i].render();
                 $t.data('widget', that.widgets[i]);
                 $t.removeAttr('data-ui-widget');

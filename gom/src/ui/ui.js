@@ -7,6 +7,7 @@ define(function(require){
         Sides:  require('Sides'),
         Scroll:  require('Scroll'),
         Slide:  require('Slide'),
-        Select: require('Select')
+        Select: require('Select'),
+        Toggle: require('Toggle')
     }
 });

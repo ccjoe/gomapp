@@ -15,7 +15,7 @@ define(['Swipe', 'Fx'], function() {
      * opts.outer       options 允许出界的范围
      * opts.outerFront  options 允许出界位置上面显示的html或文字
      * opts.speed 1     0与1之间  速度控制，默认1，在time选择器时设置小更容易选择，在页面滚动设置为1较好。
-     //* opts.outerEnd    允许出界位置下面显示的html或文字
+     * opts.outerEnd    允许出界位置下面显示的html或文字
      * opts.direction   options vertical/horizontal 默认为垂直 水平与垂直
      * opts.onScroll    options 每次滚动时回调 回调里的this指向本实例
      * opts.endScroll   options 每次滚动停回调 回调里的this指向本实例
@@ -28,7 +28,7 @@ define(['Swipe', 'Fx'], function() {
              className  : '.scroll-content',      //滚动对象的className
              direction  : 'vertical', //'vertical',             //水平与垂直
              step       : 0, // 不设置步长
-             //outer:       允许出界的范围
+             outer:       允许出界的范围
              outerFront : '允许出界位置上面显示的html或文字',
              outerEnd   : '允许出界位置下面显示的html或文字',
              onScroll: function(point){ },    //每次滚动时回调
@@ -153,7 +153,7 @@ define(['Swipe', 'Fx'], function() {
             var maxOuter    = moveing ? this.outer : 0,
                 minRange = 0 + maxOuter,
                 maxRange = maxTransDis + maxOuter;
-            //console.log(distance, minRange, maxTransDis, maxRange);
+            console.log(this.getScrollSize(), this.getWrapperSize(), distance, minRange, maxTransDis, maxRange, '滑动内容大小, 容器大小, 滑动距离, 最小范围, 最大位移， 最大范围');
             var absDis = Math.abs(distance), pxDis = distance + 'px';
             //在顶端越界拉时
             if(0 < distance &&  distance <= minRange){
@@ -186,6 +186,7 @@ define(['Swipe', 'Fx'], function() {
 
         //计算当前滚动到的并限制步长结果的值,返回步长数与与滚动步长的值
         _getTransStep: function(val){
+            console.log(val, 'val');
             var step = this.step, stepNum = Math.round(val/step);
             return {
                 stepNum: Math.abs(stepNum),

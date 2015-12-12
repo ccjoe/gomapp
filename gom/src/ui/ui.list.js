@@ -1,5 +1,5 @@
 define(['View'], function(View) {
-    var defaultView = {
+    var defaults = {
         media: '', // 'icon'
         card: false, //false
         list: [{
@@ -14,7 +14,7 @@ define(['View'], function(View) {
             badge: '',
             isDivider: true,
             collapse: true
-        }],
+        }]
     };
 
     $.fn.nextAll = function(selector){

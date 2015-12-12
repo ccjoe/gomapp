@@ -82,6 +82,7 @@ define(['Store', 'UITmpl'], function(Store, UItmpl){
                 if(this.replace){
                     $frag = inheritAttrs(wrap, frag);
                     wrap.replaceWith($frag);
+                    this.wrapper = $frag;   //会this.wrapper指向替代后的位置
                 }else{
                     wrap.html(frag)
                 }
@@ -115,6 +116,9 @@ define(['Store', 'UITmpl'], function(Store, UItmpl){
 
         //获取模板 partial or view ,默认partial，underscore template;
         getHTMLTmpl: function(viewOrPartial){
+            if(this.tmpl){
+                return this.tmpl;
+            }
             var tmpl = (viewOrPartial === 'view') ? this.tmpl : parseTmpl(this.tmplname);
             this.tmpl = tmpl;
             return tmpl;
