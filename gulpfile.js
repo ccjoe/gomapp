@@ -73,9 +73,17 @@ gulp.task('gom-scripts', function () {
  .pipe(gulp.dest(GOM_PATH+'build/fonts'));
  });*/
 
+/*------------- Documents  ------------*/
+var jsdoc = require("gulp-jsdoc");
+gulp.task('gom-docs', function () {
+    return gulp.src(['./gom/src/core/page.js', '!./gom/src/3rd/*.js'])
+        .pipe(jsdoc( './gom/docs'));
+})
+
 gulp.task('gom', ['gom-preCompiler', 'gom-scripts'], function () {
     gulp.start('gom-scss');
     gulp.start('gom-lib');
+    gulp.start('gom-docs');
 });
 
 /*----------------------GOM Frame Build END-------------------------*/

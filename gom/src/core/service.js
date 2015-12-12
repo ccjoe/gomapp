@@ -112,8 +112,6 @@ define(['Modal'], function(Modal){
         },
         /**
          * 同步获取本地模板
-         * @private service#tmpl()
-         * @return promise
          */
         tmpl: function(){
             return this.ajax({dataType:'html', async: false})
