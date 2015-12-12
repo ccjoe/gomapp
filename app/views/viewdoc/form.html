@@ -1,40 +1,52 @@
 <div class="content">
-    <p>表单</p>
-    <form>
+    <p class="content-padded">表单</p>
+    <form class="content-padded">
         <input type="text" placeholder="Full name">
         <input type="search" placeholder="Search">
         <textarea rows="5"></textarea>
         <button class="btn btn-positive btn-block">Choose existing</button>
     </form>
 
-    <p>带输入组的表单</p>
+    <p class="content-padded">带输入组的表单</p>
     <form class="input-group">
-        <input type="text" placeholder="Full name">
+        <input type="text" placeholder="用户名">
         <input type="email" placeholder="Email">
-        <input type="text" placeholder="Username">
+        <input type="date" placeholder="Birth day" value="2015-08-30" class="">
     </form>
 
-    <p>带输入组和标签的表单</p>
+    <p class="content-padded">带输入组和标签的表单</p>
     <form class="input-group">
-        <div class="input-row">
-            <label>Full name</label>
-            <input type="text" placeholder="Mister Ratchet">
-        </div>
         <div class="input-row">
             <label>Email</label>
-            <input type="email" placeholder="ratchetframework@gmail.com">
+            <input type="email" placeholder="icareu.joe@gmail.com">
         </div>
         <div class="input-row">
-            <label>Username</label>
-            <input type="text" placeholder="goRatchet">
+            <label>用户名</label>
+            <input type="text" placeholder="Joe">
         </div>
+        <div class="input-row">
+            <label>年代</label>
+            <div class="range-slider"><input type="range" min="60" max="99" value="80" step="1"></div>
+        </div>
+        <div class="input-row">
+            <label>时间</label>
+            <input type="date" placeholder="Birth day" value="2015-08-30" class="">
+        </div>
+
+        <ul class="table-view">
+            <li class="table-view-cell">
+                公母
+                <div class="toggle">
+                    <div class="toggle-handle"></div>
+                </div>
+            </li>
+            <li class="table-view-cell">
+                性取向
+                <div class="toggle active">
+                    <div class="toggle-handle"></div>
+                </div>
+            </li>
+        </ul>
     </form>
 
-    <p>开关按钮</p>
-    <div class="toggle active">
-        <div class="toggle-handle"></div>
-    </div>
-    <div class="toggle">
-        <div class="toggle-handle"></div>
-    </div>
 </div>
