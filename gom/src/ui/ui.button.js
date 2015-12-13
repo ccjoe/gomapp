@@ -9,7 +9,7 @@ define(['View'], function(View) {
     /**
      * @class Gom.UI.Button
      * @alias Button
-     * @extends {View}
+     * @extends {Gom.View}
      */
     var Button = View.extend({
         init: function (opts) {

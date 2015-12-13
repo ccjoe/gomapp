@@ -92,7 +92,7 @@ define(['Swipe', 'Fx'], function() {
         //滚动到 num, elem, top, bottom
         /**
          * 滚动到...
-         * @method scroll#scrollTo
+         * @method Gom.UI.Scroll#scrollTo
          * @param {object} where 可以为具体的数字，元素, top, bottom字符串
          */
         scrollTo: function(where){
@@ -111,7 +111,7 @@ define(['Swipe', 'Fx'], function() {
         },
         /**
          * 设置了step时获取滚动了多少步长
-         * @method scroll#getSteps
+         * @method Gom.UI.Scroll#getSteps
          * @return  {number} 步长数
          */
         getSteps: function(){

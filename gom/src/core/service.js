@@ -94,7 +94,7 @@ define(['Modal'], function(Modal){
         },
         /**
          * 一般用于post保存数据
-         * @method service#save
+         * @method Gom.Service#save
          * @param {object} params 保存的数据
          * @return promise
          */
@@ -103,7 +103,7 @@ define(['Modal'], function(Modal){
         },
         /**
          * 一般用于get获取数据
-         * @method service#fetch
+         * @method Gom.Service#fetch
          * @param {object|*} ids id集合或id等
          * @return promise
          */
@@ -111,18 +111,19 @@ define(['Modal'], function(Modal){
             return this.ajax(ids);
         },
         /**
+         * @method Gom.Service#tmpl
          * 同步获取本地模板
          */
         tmpl: function(){
             return this.ajax({dataType:'html', async: false})
         },
         /**
-         *@method service#get
+         *@method Gom.Service#get
          * @see  http://zeptojs.com/#$.get
          */
         get: $.get,
         /**
-         * @method service#post
+         * @method Gom.Service#post
          * @see  http://zeptojs.com/#$.post
          */
         post: $.post,

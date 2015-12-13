@@ -2,6 +2,12 @@
 	"tags": {
 		"allowUnknownTags" : true
 	},
+    "source": {
+//        "includePattern": ".+\\.js(doc|x)?$",
+        "exclude": [
+            "gom/src/3rd"
+        ]
+    },
 	"plugins": ["plugins/markdown"],
 	"templates": {
 		"cleverLinks": true,

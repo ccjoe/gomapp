@@ -12,8 +12,8 @@ define(['Page', 'Modal', 'Url', 'Store'], function(Page, Modal, Url, Store){
      * @param {object} config -App配置选项config,
      * @param {route} route   -App配置选项router,
      * @return {app}
-     * @example
-     * new App(config, route).run(); 传入配置文件与路由文件
+     * @example 传入配置文件与路由文件
+     * new App(config, route).run();
      */
 
     var App = Class.extend({
@@ -161,6 +161,7 @@ define(['Page', 'Modal', 'Url', 'Store'], function(Page, Modal, Url, Store){
 
         /**
          * 根据完整hash路由到页面
+         * @private
          * @method App#_routeByHash
          * @example module/list  module/123
          */
@@ -169,7 +170,11 @@ define(['Page', 'Modal', 'Url', 'Store'], function(Page, Modal, Url, Store){
             var CRO = this.getCRO(hashPath);
             this._routeByCRO(CRO);
         },
-
+        /**
+         * @private
+         * @param CRO
+         * @private
+         */
         _routeByCRO: function(CRO){
             var that = this;
             if(this.isRouteNotFound(CRO)){
@@ -221,7 +226,7 @@ define(['Page', 'Modal', 'Url', 'Store'], function(Page, Modal, Url, Store){
         /**
          * 查询到跳转是否为前进或是后退或是首次进入
          * @method App#isBack
-         * @return {boolean} true:后退, false:前进, null:首次进入;
+         * @return {boolean|null} true:后退, false:前进, null:首次进入;
          */
         isBack: function(){
             var lastest = this.getLastHashByLastIndex(1),

@@ -15,7 +15,7 @@ define(['View','Fx'], function(View) {
      * 此方法一般用于自定义弹出层组件
      *  @class Gom.UI.Modal
      *  @alias Modal
-     *  @extend {View}
+     *  @extends {Gom.View}
      *  @param {opts} opts 传入的opts参数，会覆盖static默认参数
      *  opts对象可传入的有如下对象，如果opts为string时，则表示为opts.content
      *  {  type: '',  //在具体实例中已定义，扩展时可自定义名称
@@ -30,7 +30,6 @@ define(['View','Fx'], function(View) {
             onYes: function(){},
             onNo: function(){}
             }
-     *  @return {modal} 弹出层实例
      *  @example 实例
      */
     var Modal = View.extend({
@@ -65,7 +64,8 @@ define(['View','Fx'], function(View) {
             return this.getType().indexOf('toast')!==-1;
         },
         /**
-         *@return {string} top|bottom, false时为非modal top|bottom
+         * @private
+         * @return {string} top|bottom, false时为非modal top|bottom
          */
         isTopBot: function(){
             var type =  this.getType();
@@ -78,7 +78,7 @@ define(['View','Fx'], function(View) {
         },
         /**
          * 判断显示与隐藏及相应动画
-         * @method Modal#toggleModal
+         * @method Gom.UI.Modal#toggleModal
          * @param {string} inOrOut in|显+out|隐
          * @param {function} callback
          **/
@@ -107,9 +107,6 @@ define(['View','Fx'], function(View) {
                 that.wrapper.hide();
             });
         },
-        /**
-         *@param {string} pos top|bottom
-         */
         slideInModal: function(pos){
             var fxprops = {opacity: 1};
                 fxprops[pos] = 0;
@@ -157,7 +154,7 @@ define(['View','Fx'], function(View) {
     var ModalExtend = {
         /**
          * 此方法一般用于自定义弹出层组件
-         *  @method Modal.layout
+         *  @method Gom.UI.Modal.layout
          *  @param {object} static 默认参数
          *  @param {opts} opts 传入的opts参数，会覆盖static默认参数
          *  @param {string} type 弹出层对象的名称
@@ -187,7 +184,7 @@ define(['View','Fx'], function(View) {
         },
         /**
          * 显示警告框
-         *  @method Modal.alert
+         *  @method Gom.UI.Modal.alert
          *  @param {opts} opts 传入的opts参数，会覆盖static默认参数， 同Modal.layout的opts对象, 如果opts为string时，则表示为opts.content
          *  @return {modal} 弹出层实例
          */
@@ -202,7 +199,7 @@ define(['View','Fx'], function(View) {
         },
         /**
          * 显示对话框
-         *  @method Modal.confirm
+         *  @method Gom.UI.Modal.confirm
          *  @param {opts} opts 传入的opts参数，会覆盖static默认参数， 同Modal.layout的opts对象, 如果opts为string时，则表示为opts.content
          *  @return {modal} 弹出层实例
          */
@@ -217,7 +214,7 @@ define(['View','Fx'], function(View) {
         },
         /**
          * 显示loading
-         *  @method Modal.loading
+         *  @method Gom.UI.Modal.loading
          */
         loading:function(){
             return new Modal({
@@ -231,7 +228,7 @@ define(['View','Fx'], function(View) {
         },
         /**
          * 显示对话框
-         *  @method Modal.center
+         *  @method Gom.UI.Modal.center
          *  @param {opts} opts 传入的opts参数，会覆盖static默认参数， 同Modal.layout的opts对象, 如果opts为string时，则表示为opts.content
          *  @return {modal} 弹出层实例
          */
@@ -244,7 +241,7 @@ define(['View','Fx'], function(View) {
         },
         /**
          * 显示 top layout
-         *  @method Modal.top
+         *  @method Gom.UI.Modal.top
          *  @param {opts} opts 传入的opts参数，会覆盖static默认参数， 同Modal.layout的opts对象, 如果opts为string时，则表示为opts.content
          *  @return {modal} 弹出层实例
          */
@@ -257,7 +254,7 @@ define(['View','Fx'], function(View) {
         },
         /**
          * 显示 bottom layout
-         *  @method Modal.bottom
+         *  @method Gom.UI.Modal.bottom
          *  @param {opts} opts 传入的opts参数，会覆盖static默认参数， 同Modal.layout的opts对象, 如果opts为string时，则表示为opts.content
          *  @return {modal} 弹出层实例
          */

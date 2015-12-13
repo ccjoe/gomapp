@@ -1,5 +1,6 @@
 define(function(require){
     /**
+     * 所有UI组件的集合, 引入组件可以通过注入UI模块,引用某一个组件可以通过UI.ComponentsName 或是 直接引入ComponentName(如Button)
      * @class Gom.UI
      * @alias UI
      */

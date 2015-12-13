@@ -10,7 +10,7 @@ define(['View','Fx'], function(View) {
     };
     /**
      * @class Sides
-     * @extend {View}
+     * @extend {Gom.View}
      */
     var Sides = View.extend({
         init: function (opts) {

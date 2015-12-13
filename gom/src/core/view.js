@@ -52,6 +52,16 @@ define(['Store', 'UITmpl'], function(Store, UItmpl){
      * View对象 - 抽象类，供所有UI组件和Page对象继承
      * @class Gom.View
      * @alias View
+     * @param {object} opts 参列
+     * @param {object} opts.events  在UI组件或页面Ctrl里可以直接定义events对象，为组件或页面里需要的元素注册事件与监听
+     * events: {
+             *   'click,touch selector1,selector2': 'listenerName1',
+             *   'touch .selecor': 'listenerName2',
+             *   'touch .selecor2': function(){}
+             * }
+     * 监听可以为二种类型，string指向的function或function直接量
+     * 监听为string有二个参数 (e, target), e为事件对象， target为触发事件的元素，其中listener内this指向所在的环境即env
+     * 监听为function直接量有三个参数 (e, target, that), that指向所在的环境即env对象
      * @example View.extend(); 见相关组件的实现
      */
     var View = Class.extend({
@@ -61,19 +71,6 @@ define(['Store', 'UITmpl'], function(Store, UItmpl){
             this.tmpl = opts.tmpl || '';             //模板html,有模板名称则从通过名称取到tmpl;
             this.data   = opts.data || {};
             this.replace = opts.replace || false;    //是否替换原标签
-            /**
-             * 在UI组件或页面Ctrl里可以直接定义events对象，为组件或页面里需要的元素注册事件与监听
-             * @prop events
-             * @example events定义示例：
-             * events: {
-             *   'click,touch selector1,selector2': 'listenerName1',
-             *   'touch .selecor': 'listenerName2',
-             *   'touch .selecor2': function(){}
-             * }
-             * 监听可以为二种类型，string指向的function或function直接量
-             * 监听为string有二个参数 (e, target), e为事件对象， target为触发事件的元素，其中listener内this指向所在的环境即env
-             * 监听为function直接量有三个参数 (e, target, that), that指向所在的环境即env对象
-             */
             this.events = opts.events || {};         // 对象上的events对象仅适用于此对象的wrapper元素内的事件绑定
             this.construct(opts);
         },
@@ -84,8 +81,8 @@ define(['Store', 'UITmpl'], function(Store, UItmpl){
         },
         /**
          * 渲染页面或组件或其它视图,一般组件需要手动调用此方式显示组件
-         * @method View#render
-         * @returns {View|htmlFragment} 传入wrapper时返回View对象,显示组件在wrapper里，不传则返回View的htmlFragment(Html片断)
+         * @method Gom.View#render
+         * @returns {View|string} 传入wrapper时返回View对象,显示组件在wrapper里，不传则返回View的htmlFragment(Html片断)
          */
         render: function(){
             var wrap = this.wrapper;
@@ -105,14 +102,14 @@ define(['Store', 'UITmpl'], function(Store, UItmpl){
         },
         /**
          * View.render后的回调, 一般用于组件实例里供继承View时重写此方法，在render组件后UI业务处理
-         * @method View#show
+         * @method Gom.View#show
          */
         show: function (){
             //this.wrapper.removeClass('hide');
         },
         /**
          * 更新视图
-         * @method View#update
+         * @method Gom.View#update
          * @param {object} data  -传入数据对象或数据某一属性，更新相应数据到UI
          */
         update: function(data){
@@ -123,14 +120,14 @@ define(['Store', 'UITmpl'], function(Store, UItmpl){
         },
         /**
          * 销毁视图
-         * @method View#destory
+         * @method Gom.View#destory
          */
         destory: function(){
             this.wrapper.empty();
         },
         /**
          * 获取带模板数据的virtual dom
-         * @method View#getHTMLFragment
+         * @method Gom.View#getHTMLFragment
          * @param {string} [viewOrPartial=partial] -其值为 'partial' or 'view'
          * @return {tmpl}
          */
@@ -142,7 +139,7 @@ define(['Store', 'UITmpl'], function(Store, UItmpl){
 
         /**
          * 获取 partial模板(组件模板) or view模板(页面模板)
-         * @method View#getHTMLTmpl
+         * @method Gom.View#getHTMLTmpl
          * @param {string} [viewOrPartial=partial] -其值为 'partial' or 'view'
          * @returns {*|string|tmpl}
          */
@@ -161,6 +158,7 @@ define(['Store', 'UITmpl'], function(Store, UItmpl){
 
         /**
          * 给组件或页面上selector指向的元素绑定事件代理，事件代理在组件根元素
+         * @method Gom.View#onview
          * @param {Event} eventType
          * @param {selector} selector
          * @param {eventCallback} listener - 事件监听回调
@@ -172,6 +170,7 @@ define(['Store', 'UITmpl'], function(Store, UItmpl){
         },
         /**
          * 给组件或页面上selector指向的元素取消绑定事件代理
+         * @method Gom.View#offview
          * @param {Event} eventType
          * @param {selector} selector
          * @param {eventCallback} listener - 事件监听回调
@@ -182,6 +181,7 @@ define(['Store', 'UITmpl'], function(Store, UItmpl){
             return this;
         },
         /**
+         * @method Gom.View#refreshEvent
          * @todo 当没有wrapper时，render返回fragmentHTML,没有绑定事件，当fragmentHTML插入document后，可以调用此方法绑定固有事件
          */
         refreshEvent: function(){
@@ -189,6 +189,8 @@ define(['Store', 'UITmpl'], function(Store, UItmpl){
         //    //this._parseEvent(this);
         },
         /**
+         * @private
+         * @method Gom.View#_parseEvent
          * @param {object} env env为事件绑定时的listener所在的执行环境,为ctrl或View, UI-widget
          * events: {
          *   'click,touch selector1,selector2': 'function',
@@ -218,7 +220,6 @@ define(['Store', 'UITmpl'], function(Store, UItmpl){
             }
             //如此的话， events触发的listener的this指向 发生动作的元素， e，对原生event对象， 第二个参数this为发生的对象，
             // eventListener里的this指向that,
-
             function getEventSrc(eve){
                 var ret = /(\w+)+\s+(.+)/.exec(eve);
                 return {

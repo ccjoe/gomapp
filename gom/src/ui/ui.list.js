@@ -29,7 +29,7 @@ define(['View'], function(View) {
     /**
      * @class Gom.UI.List
      * @alias List
-     * @extends {View}
+     * @extends {Gom.View}
      */
     var List = View.extend({
         init: function (opts) {

@@ -22,7 +22,7 @@ define(['View', 'Store','Fx'], function(View, Store) {
      * Slide 滑动相关组件
      * @class Gom.UI.Slide
      * @alias Slide
-     * @extend {View}
+     * @extends {Gom.View}
      * @example 实例
      * var slide = new Slide({
             wrapper: '.slide-example',

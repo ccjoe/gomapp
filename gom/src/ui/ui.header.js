@@ -23,7 +23,7 @@ define(['View'], function(View) {
     /**
      * @class Gom.UI.Header
      * @alias Header
-     * @extends {View}
+     * @extends {Gom.View}
      */
     var Header = View.extend({
         init: function (opts) {
