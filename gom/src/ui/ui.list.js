@@ -27,7 +27,8 @@ define(['View'], function(View) {
         return $a;
     };
     /**
-     * @class List
+     * @class Gom.UI.List
+     * @alias List
      * @extends {View}
      */
     var List = View.extend({

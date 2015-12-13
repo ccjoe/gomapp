@@ -6,9 +6,10 @@ define(['View', 'UI'], function(View, UI){
      * 3. 支持声明式组件写法
      * 4. 页面SEO相关的设置
      * @extends {View}
-     * @class
+     * @class Gom.Page
+     * @alias Page
      * @param {object} opts={参数列表}
-     * @example
+     * @example Page
      **/
 
     var Page = View.extend({

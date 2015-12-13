@@ -13,7 +13,8 @@ define(['View','Fx'], function(View) {
     var noop = function(){};
     /**
      * 此方法一般用于自定义弹出层组件
-     *  @class Modal
+     *  @class Gom.UI.Modal
+     *  @alias Modal
      *  @extend {View}
      *  @param {opts} opts 传入的opts参数，会覆盖static默认参数
      *  opts对象可传入的有如下对象，如果opts为string时，则表示为opts.content

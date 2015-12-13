@@ -7,7 +7,8 @@
 define(['Page', 'Modal', 'Url', 'Store'], function(Page, Modal, Url, Store){
     /**
      * App对象
-     * @class App
+     * @class Gom.App
+     * @alias App
      * @param {object} config -App配置选项config,
      * @param {route} route   -App配置选项router,
      * @return {app}

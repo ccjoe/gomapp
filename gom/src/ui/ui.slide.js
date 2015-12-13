@@ -20,7 +20,8 @@ define(['View', 'Store','Fx'], function(View, Store) {
     var has3d = 'WebKitCSSMatrix' in window && 'm11' in new WebKitCSSMatrix();
     /**
      * Slide 滑动相关组件
-     * @class Slide
+     * @class Gom.UI.Slide
+     * @alias Slide
      * @extend {View}
      * @example 实例
      * var slide = new Slide({

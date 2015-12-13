@@ -50,7 +50,8 @@ define(['Store', 'UITmpl'], function(Store, UItmpl){
 
     /**
      * View对象 - 抽象类，供所有UI组件和Page对象继承
-     * @class View
+     * @class Gom.View
+     * @alias View
      * @example View.extend(); 见相关组件的实现
      */
     var View = Class.extend({
@@ -181,8 +182,7 @@ define(['Store', 'UITmpl'], function(Store, UItmpl){
             return this;
         },
         /**
-         * 当没有wrapper时，render返回fragmentHTML,没有绑定事件，当fragmentHTML插入document后，可以调用此方法绑定固有事件
-         * @todo
+         * @todo 当没有wrapper时，render返回fragmentHTML,没有绑定事件，当fragmentHTML插入document后，可以调用此方法绑定固有事件
          */
         refreshEvent: function(){
         //    //this.wrapper =  //@todo如何找到 fragmentHTML 被插入的多个位置并重新绑定事件

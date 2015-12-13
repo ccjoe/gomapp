@@ -2,7 +2,8 @@ define(['View', 'Modal', 'Scroll', 'List'], function(View, Modal, Scroll, List) 
 
     /**
      * 多级联动或是仅多级选择组件
-     * @class Select
+     * @class Gom.UI.Select
+     * @alias Select
      * @extend {View}
      * @param {object} opts 参列
      * opts.wrapper {selecot} 当非model弹出时需要此属性，组件将插入到此wrapper

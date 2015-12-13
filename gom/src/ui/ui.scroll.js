@@ -6,7 +6,8 @@ define(['Swipe', 'Fx'], function() {
             'opera' in window ? 'O' : '';
     var has3d = 'WebKitCSSMatrix' in window && 'm11' in new WebKitCSSMatrix();
     /**
-     * @class Scroll
+     * @class Gom.UI.Scroll
+     * @alias Scroll
      * @param {object} opts 参列
      * opts.wrapper     require 滚动对象所在的容器
      * opts.className   require className 滚动对象的className

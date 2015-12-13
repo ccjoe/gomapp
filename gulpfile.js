@@ -74,15 +74,19 @@ gulp.task('gom-scripts', function () {
  });*/
 
 /*------------- Documents  ------------*/
+var docs_exec = require('child_process').exec;
+gulp.task('gom-docs', function(){
+   docs_exec('jsdoc -t ./node_modules/minami -c "./docs-conf.json" -r ./gom/src/')
+});
 //'./gom/src/core/*.js', './gom/src/ui/*.js', './gom/src/utils/*.js',
-var jsdoc = require("gulp-jsdoc");
-gulp.task('gom-docs', function () {
-    return gulp.src(['./gom/src/**/*.js', '!./gom/src/3rd/*.js'])
-        .pipe(jsdoc( './gom/docs'), {
-            path: '../corajs/jaguarjs-jsdoc/conf.json',
-            anyTemplateSpecificParameter: 'whatever'
-        });
-})
+//var jsdoc = require("gulp-jsdoc");
+//gulp.task('gom-docs', function () {
+//    return gulp.src(['./gom/src/**/*.js', '!./gom/src/3rd/*.js'])
+//        .pipe(jsdoc( './gom/docs'), {
+//            path: '../corajs/jaguarjs-jsdoc/conf.json',
+//            anyTemplateSpecificParameter: 'whatever'
+//        });
+//})
 
 gulp.task('gom', ['gom-preCompiler', 'gom-scripts'], function () {
     gulp.start('gom-scss');

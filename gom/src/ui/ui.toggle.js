@@ -5,7 +5,8 @@ define(['View'], function(View) {
     };
     /**
      * 在ios的UI里toggle里是没有文字的，在android里是有的，这里暂时按ios里UI
-     * @class Toggle
+     * @class Gom.UI.Toggle
+     * @alias Toggle
      * @extend {View}
      * @param {object} opts
      */

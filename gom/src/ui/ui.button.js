@@ -7,7 +7,8 @@ define(['View'], function(View) {
         title: ''
     };
     /**
-     * @class Button
+     * @class Gom.UI.Button
+     * @alias Button
      * @extends {View}
      */
     var Button = View.extend({

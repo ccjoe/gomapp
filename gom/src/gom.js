@@ -63,27 +63,21 @@ require.config({
     }
 });
 define('Gom', ['Service', 'Page', 'View', 'UI', 'App'], function(Service, Page, View, UI, App){
-    /**
-     * Gom对象
-     * @constructs Gom
-     * @param {object} config
-     * @return {Object} Gom
-     * @example
-     * new Gom(config, route); 传入配置文件与路由文件
-     */
-    //var expires = 1000*60*5; //5min 过期时间，后面将从config.js配置里获取;
-    var Gom ={
+    var GomStatic ={
         version: '1.0.0',
         isWebApp: /http(s)?:\/\//.test(location.protocol),
     };
-
-    var Module = {
+    /**
+     * Gom对象
+     * @class Gom
+     * @type {{Service: Service, Page: Page, View: View, UI: UI, App: App}}
+     */
+    var Gom = {
         Service:Service,
         Page:   Page,
         View:   View,
         UI:     UI,
         App:    App
     };
-    console.log(Module, 'Module');
-    return Module;
+    return Gom;
 });

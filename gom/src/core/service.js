@@ -58,10 +58,10 @@ define(['Modal'], function(Modal){
      * Model分构造函数与方式调用二种调用，
      * 其用处为构造函数时用于构造Modal的ajax封装，用法为 new Model({url: '//example.com/getList?id=123'});
      * 为方式时作为ajax拦截注入器注入request与response, 用法为 new Model({req:function(){}, res: function(){}});
-     * @namespace
+     * @class Gom.Service
+     * @alias Service
      * @param {object} opts 参列或 opts.req, opts.res
-     * @examle
-       //Service ajax注入器操作，对request,response统一处理。
+     * @examle Service ajax注入器操作，对request,response统一处理。
         new Service({
             req:function(e, xhr, options){
                 console.log(e, xhr, options, 'def request inject');

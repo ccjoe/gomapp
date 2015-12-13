@@ -21,7 +21,8 @@ define(['View'], function(View) {
         subtitle: ''
     };
     /**
-     * @class Header
+     * @class Gom.UI.Header
+     * @alias Header
      * @extends {View}
      */
     var Header = View.extend({
