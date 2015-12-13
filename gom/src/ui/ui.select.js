@@ -2,8 +2,9 @@ define(['View', 'Modal', 'Scroll', 'List'], function(View, Modal, Scroll, List) 
 
     /**
      * 多级联动或是仅多级选择组件
-     * @construct Select
-     * @param {object} opts
+     * @class Select
+     * @extend {View}
+     * @param {object} opts 参列
      * opts.wrapper {selecot} 当非model弹出时需要此属性，组件将插入到此wrapper
      * opts.data包含以下属性：
             title {string}  title
@@ -15,8 +16,7 @@ define(['View', 'Modal', 'Scroll', 'List'], function(View, Modal, Scroll, List) 
             list = {'1': [], '2': []};
             onYes(select val);
             onNo();
-     * @example
-     * 实例一个时间选择器
+     * @example 实例一个时间选择器
      * new Select({
             wrapper:
             title: '时间选择器',

@@ -74,10 +74,14 @@ gulp.task('gom-scripts', function () {
  });*/
 
 /*------------- Documents  ------------*/
+//'./gom/src/core/*.js', './gom/src/ui/*.js', './gom/src/utils/*.js',
 var jsdoc = require("gulp-jsdoc");
 gulp.task('gom-docs', function () {
-    return gulp.src(['./gom/src/core/page.js', '!./gom/src/3rd/*.js'])
-        .pipe(jsdoc( './gom/docs'));
+    return gulp.src(['./gom/src/**/*.js', '!./gom/src/3rd/*.js'])
+        .pipe(jsdoc( './gom/docs'), {
+            path: '../corajs/jaguarjs-jsdoc/conf.json',
+            anyTemplateSpecificParameter: 'whatever'
+        });
 })
 
 gulp.task('gom', ['gom-preCompiler', 'gom-scripts'], function () {

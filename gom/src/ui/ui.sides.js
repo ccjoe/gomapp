@@ -8,7 +8,10 @@ define(['View','Fx'], function(View) {
         position: 'left',   //left or right
         content: ''         // string or html
     };
-
+    /**
+     * @class Sides
+     * @extend {View}
+     */
     var Sides = View.extend({
         init: function (opts) {
             opts.data = _.extend({}, defaultBtn, opts.data);

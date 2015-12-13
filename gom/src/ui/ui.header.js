@@ -1,10 +1,13 @@
 define(['View'], function(View) {
     /**
      * @default
-     * @prop left, right
-     * @prop title, subtitle, text, 分别为主标题，副标题， text为left,right对象才有的属性，显示icon|button|link的文本
-     * @prop type可以为 icon button link,
-     * @prop icon: 为icon时有此属性
+     * @prop {object} left
+     * @prop {string} left.type     -Header左侧内容类型,可选有 icon, button, link
+     * @prop {string} left.text     -Header左侧内容文本，相应的为icon|button|link的文本
+     * @prop {string} left.icon     -Header左侧内容图标class,当left.type为icon时才具体此属性
+     * @prop {object} right         -Header右侧,其子属性同left
+     * @prop {string} title         -主标题
+     * @prop {string} subtitle      -副标题
      */
     var defaults = {
         left:{
@@ -17,6 +20,10 @@ define(['View'], function(View) {
         title: '',
         subtitle: ''
     };
+    /**
+     * @class Header
+     * @extends {View}
+     */
     var Header = View.extend({
         init: function (opts) {
             opts.data = _.extend({}, defaults, opts.data);

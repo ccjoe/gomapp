@@ -1,28 +1,50 @@
 define(['View', 'UI'], function(View, UI){
     /**
-     * page.js相关
+     * Page
      * 1. 页面转场相关
      * 2. 自动初始化页面，在此基础上可以定义ctrl去获取数据与改变数据结构再渲染页面
      * 3. 支持声明式组件写法
      * 4. 页面SEO相关的设置
-     * @extends View
-     * @construct Page
+     * @extends {View}
+     * @class
+     * @param {object} opts={参数列表}
      * @example
      **/
 
     var Page = View.extend({
         init:function (opts) {
+            /**
+             * @property {String|Selector} 页面根元素选择器
+             */
             opts.wrapper = opts.wrapper || opts.config.selector.wrapper || '#viewport';
+            /**
+             * @property {String} 页面标题
+             */
             this.title  = opts.title || '';
-            this.widgets = [];                  //页面上所有经过声明式的组件对象数组， 函数式的在ctrl里可以直接引用
-            this.params = opts.params || null;  //页面参数
+            /**
+             * @property {Array} 声明式的组件对象数组, 函数式的在ctrl里可以直接引用,不在其列
+             */
+            this.widgets = [];
+            /**
+             * @property {Object} 页面参数
+             */
+            this.params = opts.params || null;
+            /**
+             * @property {Object} 页面SEO信息, SPA History的SEO信息配置的作用有待验证
+             */
             this.seo = opts.seo || {
                     title: '',
                     keywords: '',
                     description: ''
                 };
+            /**
+             * @property {Boolean|Null} 判断路由到此页面是前进还是后退还是直进
+             */
             this.isback = opts.isback;
             this._super(opts);
+            /**
+             * @property {Object} APP config信息
+             */
             this.config = opts.config;
         },
 

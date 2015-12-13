@@ -26,7 +26,10 @@ define(['View'], function(View) {
         }
         return $a;
     };
-
+    /**
+     * @class List
+     * @extends {View}
+     */
     var List = View.extend({
         init: function (opts) {
             $.extend(opts, this);   //将List实例混合到opts上， 去父对象上执行

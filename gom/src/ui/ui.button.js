@@ -6,7 +6,10 @@ define(['View'], function(View) {
         badge: void 0, //number || false
         title: ''
     };
-
+    /**
+     * @class Button
+     * @extends {View}
+     */
     var Button = View.extend({
         init: function (opts) {
             opts.data = _.extend({}, defaults, opts.data);

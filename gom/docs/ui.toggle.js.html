@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Index</title>
+    <title>JSDoc: Source: ui/ui.toggle.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,30 +17,56 @@
 
 <div id="main">
 
-    <h1 class="page-title">Index</h1>
+    <h1 class="page-title">Source: ui/ui.toggle.js</h1>
 
     
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>define(['View'], function(View) {
 
+    var defaults = {
+        content: ['Male', 'Female']         // 暂不支持定义
+    };
+    /**
+     * 在ios的UI里toggle里是没有文字的，在android里是有的，这里暂时按ios里UI
+     * @class Toggle
+     * @extend {View}
+     * @param {object} opts
+     */
+    var Toggle = View.extend({
+        init: function (opts) {
+            opts.data = _.extend({}, defaults, opts);
+            opts.tmpl = '&lt;div class="toggle">&lt;div class="toggle-handle">&lt;/div>&lt;/div>';
+            opts.wrapper = opts.wrapper;
+            opts.replace = true;
+            $.extend(opts, this);   //将List实例混合到opts上， 去父对象上执行
+            this._super(opts);
+        },
+        show: function(){
+            var $wp = this.wrapper;
+            $wp.off().on('click', '.toggle-handle', function(){
+                $wp[($wp.hasClass('active') ? 'remove' : 'add') + 'Class']('active');
+            });
+            $wp.find('.toggle-handle').swipeLeft({
+                endCallback: function(){
+                    $wp.removeClass('active');
+                }
+            }).swipeRight({
+                endCallback: function(){
+                    $wp.addClass('active');
+                }
+            });
+        }
+    });
 
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+    return Toggle;
+});
+</code></pre>
+        </article>
+    </section>
 
 
 
