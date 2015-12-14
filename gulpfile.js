@@ -76,7 +76,7 @@ gulp.task('gom-scripts', function () {
 /*------------- Documents  ------------*/
 var docs_exec = require('child_process').exec;
 gulp.task('gom-docs', function(){
-   docs_exec('jsdoc -t ../minami -c "./docs-conf.json" -r ./gom/src/ --readme ./readme.md')
+   docs_exec('jsdoc -t ../minami -c "./docs-conf.json" -r ./gom/src/ --readme ./gom/readme.md -d ./gom/docs')
 });
 //'./gom/src/core/*.js', './gom/src/ui/*.js', './gom/src/utils/*.js',
 //var jsdoc = require("gulp-jsdoc");
