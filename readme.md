@@ -8,5 +8,5 @@
 <iframe src="https://ghbtns.com/github-btn.html?user=ccjoe&repo=gom&type=fork&count=true" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
 
 项目地址： [https://github.com/ccjoe/gom](https://github.com/ccjoe/gom)  
-示例地址： [https://github.com/ccjoe/gomapp](https://github.com/ccjoe/gomapp) [在线预览]()  
-文档地址： [http://ccjoe.github.io/jsdoc/gom](http://ccjoe.github.io/jsdoc/gom) 或 [http://f2ee.com/jsdoc/gom](http://f2ee.com/jsdoc/gom)  
+示例地址： [https://github.com/ccjoe/gomapp](https://github.com/ccjoe/gomapp) [在线预览](http://ccjoe.github.io/gom/app)  
+文档地址： [http://ccjoe.github.io/gom/gom/docs](http://ccjoe.github.io/gom/gom/docs) 或 [http://f2ee.com/gom/gom/docs](http://f2ee.com/gom/gom/docs)  

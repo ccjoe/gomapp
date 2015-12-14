@@ -12,6 +12,7 @@
         Scroll:'ui/ui.scroll',
         Slide: 'ui/ui.slide',
         Select:'ui/ui.select',
+        Toggle:'ui/ui.toggle',
         View:  'core/view',
         Page:  'core/page',
         Service:'core/service',
