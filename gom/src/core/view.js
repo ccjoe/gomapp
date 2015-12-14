@@ -53,16 +53,21 @@ define(['Store', 'UITmpl'], function(Store, UItmpl){
      * @class Gom.View
      * @alias View
      * @param {object} opts 参列
-     * @param {object} opts.events  在UI组件或页面Ctrl里可以直接定义events对象，为组件或页面里需要的元素注册事件与监听
+     * @param {object} [opts.wrapper]  View类对应的视图根元素，即应放入的位置, 此属性被组件或Page继承后为组件或页面应插入的位置,不指定时返回View的htmlFragment
+     * @param {object} [opts.tmplname]   View类对应的模板名称, page的话在route里面配置tmplname，各组件的话在组件内部重写为固定值去对应组件模板, 有tmpl时不需要指定
+     * @param {object} [opts.tmpl]     View类对应的htmlFragment代码片断
+     * @param {object} [opts.replace]  为true时会替换掉wrapper根元素，但会保留其上除data-ui-widget的其它属性
+     * @param {object} opts.data     View类对应的数据, 在组件内实现，通过data的内部定义实现了组件的多态
+     * @param {object} [opts.events]   View类对应的事件绑定 在UI组件或页面Ctrl里可以直接定义events对象，为组件或页面里需要的元素注册事件与监听
+     * @desc 因为View对象为抽象类，供所有UI组件和Page对象继承，各属性继承后的意义见具体对象
      * events: {
-             *   'click,touch selector1,selector2': 'listenerName1',
-             *   'touch .selecor': 'listenerName2',
-             *   'touch .selecor2': function(){}
-             * }
+     *   'click,touch selector1,selector2': 'listenerName1',
+     *   'touch .selecor': 'listenerName2',
+     *   'touch .selecor2': function(){}
+     * }
      * 监听可以为二种类型，string指向的function或function直接量
      * 监听为string有二个参数 (e, target), e为事件对象， target为触发事件的元素，其中listener内this指向所在的环境即env
      * 监听为function直接量有三个参数 (e, target, that), that指向所在的环境即env对象
-     * @example View.extend(); 见相关组件的实现
      */
     var View = Class.extend({
         init:function(opts){
@@ -101,7 +106,7 @@ define(['Store', 'UITmpl'], function(Store, UItmpl){
             return wrap.length ? this : frag;
         },
         /**
-         * View.render后的回调, 一般用于组件实例里供继承View时重写此方法，在render组件后UI业务处理
+         * View#render后的回调, 一般用于组件实例里供继承View时重写此方法，在render组件后UI业务处理
          * @method Gom.View#show
          */
         show: function (){

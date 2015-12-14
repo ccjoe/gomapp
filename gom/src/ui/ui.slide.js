@@ -23,6 +23,7 @@ define(['View', 'Store','Fx'], function(View, Store) {
      * @class Gom.UI.Slide
      * @alias Slide
      * @extends {Gom.View}
+     * @param {object} opts - 详见实例 TMD实在懒得写了!!!
      * @example 实例
      * var slide = new Slide({
             wrapper: '.slide-example',

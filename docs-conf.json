@@ -3,7 +3,7 @@
 		"allowUnknownTags" : true
 	},
     "source": {
-//        "includePattern": ".+\\.js(doc|x)?$",
+        "excludePattern": "(node_modules/|docs)",
         "exclude": [
             "gom/src/3rd"
         ]
@@ -16,7 +16,6 @@
 			"outputSourceFiles" : true
 		},
 		"applicationName": "GomUI",
-		"disqus": "",
 		"googleAnalytics": "",
 		"openGraph": {
 			"title": "",
@@ -36,5 +35,8 @@
 		"parser": "gfm",
 		"hardwrap": true,
 		"tags": ["examples"]
-	}
+	},
+    "opts": {
+        "encoding": "utf8"
+    }
 }

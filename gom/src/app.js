@@ -23,7 +23,12 @@ define(['Page', 'Modal', 'Url', 'Store'], function(Page, Modal, Url, Store){
             this.model = {};
             this.history = [];
         },
-        run: function(){       //App初始化
+        /**
+         * 启动GomApp
+         * @method Gom.App#run
+         * @param {function} [callback] - 在初始Gom.App时的需要完全的工作可以定义在callback
+         */
+        run: function(callback){       //Gom.App初始化
             var that = this;
             var isHistoryApi = !!(window.history && history.pushState);
             if(!isHistoryApi){
@@ -36,10 +41,10 @@ define(['Page', 'Modal', 'Url', 'Store'], function(Page, Modal, Url, Store){
                 that._routeByHash(state.data.hash);
             });
             History.Adapter.trigger(window, 'statechange');
-
-            this.initHref();
+            callback ? callback() : null;
+            this._initHref();
         },
-        initHref: function(){
+        _initHref: function(){
             if ('addEventListener' in document) {
                 document.addEventListener('DOMContentLoaded', function() {
                     FastClick.attach(document.body);
@@ -90,9 +95,9 @@ define(['Page', 'Modal', 'Url', 'Store'], function(Page, Modal, Url, Store){
         /**
          * 根据完整hash获取页面对象(即具体路由指向的路由表对象)
          * 路由查找规则，根据hash路径数据长度查找CRO对应对象，在每个长度的index找不到则查找'/:var'， 在最后index有‘/’则查找'/';
-         * @method App#getCRO
+         * @method Gom.App#getCRO
+         * @param {string} hashPath hashPath是形如?module/list  ?module/123的值
          * @return {object} CRO (Current Router Object)返回具体路由指向的路由表对象
-         * @example ?module/list  ?module/123
          */
         getCRO: function (hashPath) {
             var hashRoute = Url.getHashPath(hashPath, true),
@@ -129,13 +134,17 @@ define(['Page', 'Modal', 'Url', 'Store'], function(Page, Modal, Url, Store){
             CRO.hashs = hashRoute;
             return CRO;
         },
-        //设置cro, 用于页面向某个页面传递数据
-        setCRO: function(cro){
+        /**
+         * 设置cro, 用于页面向某个页面传递数据
+         * @method Gom.App#setCRO
+         * @param {string} hashPath hashPath是形如?module/list  ?module/123的值
+         */
+        setCRO: function(hashPath){
 
         },
         /**
          * 根据完整hash路由或CRO对象到页面，封装了_routeByHash 与 _routeByCRO实现
-         * @method App#goto
+         * @method Gom.App#goto
          * @example module/list  module/123
          * * ? 站内链接跳转
          * # 站内组件或hash跳转(仅页面内)
@@ -162,7 +171,7 @@ define(['Page', 'Modal', 'Url', 'Store'], function(Page, Modal, Url, Store){
         /**
          * 根据完整hash路由到页面
          * @private
-         * @method App#_routeByHash
+         * @method Gom.App#_routeByHash
          * @example module/list  module/123
          */
         _routeByHash: function (hashPath) {
@@ -171,9 +180,10 @@ define(['Page', 'Modal', 'Url', 'Store'], function(Page, Modal, Url, Store){
             this._routeByCRO(CRO);
         },
         /**
+         * 根据CRO对象路由到页面
          * @private
-         * @param CRO
-         * @private
+         * @method Gom.App#_routeByCRO
+         * @param {object} CRO -CRO对象
          */
         _routeByCRO: function(CRO){
             var that = this;
@@ -218,7 +228,12 @@ define(['Page', 'Modal', 'Url', 'Store'], function(Page, Modal, Url, Store){
             }
             //console.log(history, 'THIS HISTORY');
         },
-        //从倒数位置index取历史hash
+        /**
+         * 从后往前依据 倒数index取历史hash
+         * @method Gom.App#getLastHashByLastIndex
+         * @param {number} index 从0开始取值
+         * @returns {string} route的历史记录
+         */
         getLastHashByLastIndex: function(index){
             var history = this.history;
             return history[history.length-index];

@@ -111,8 +111,8 @@ define(['Modal'], function(Modal){
             return this.ajax(ids);
         },
         /**
-         * @method Gom.Service#tmpl
          * 同步获取本地模板
+         * @method Gom.Service#tmpl
          */
         tmpl: function(){
             return this.ajax({dataType:'html', async: false})
@@ -128,8 +128,11 @@ define(['Modal'], function(Modal){
          */
         post: $.post,
         /**
-         * @private
-         * @see  http://zeptojs.com/#ajax
+         * @method Gom.Service#ajax
+         * @param {object} data
+         * @param {object} opts
+         * @returns {promise}
+         * @see  http://zeptojs.com/#ajax 参见zepto的ajax里的data与opts
          */
         ajax: function(data, opts){
             var ajaxOpts = {}, opts = opts || {};

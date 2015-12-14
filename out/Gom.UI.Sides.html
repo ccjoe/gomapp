@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Modal - Documentation</title>
+    <title>Sides - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Modal</h1>
+    <h1 class="page-title">Sides</h1>
     
 
     
@@ -43,7 +43,7 @@
         <h2>
             <span class="ancestors"><a href="Gom.html">Gom</a><a href="Gom.UI.html">.UI</a>.</span>
         
-        Modal
+        Sides
         </h2>
         
     
@@ -56,16 +56,11 @@
 
     
 
-    <h4 class="name" id="Modal"><span class="type-signature"></span>new Modal<span class="signature">(opts)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Sides"><span class="type-signature"></span>new Sides<span class="signature">(opts)</span><span class="type-signature"></span></h4>
 
     
 
 
-
-<div class="description">
-    <p>弹层底层抽象类，如果需要自定义弹出层才需要用到, 自定义一般于Modal.layout，不满足才需要用到此类
-所有弹出层不可共存，但modal与toast可一起显示.</p>
-</div>
 
 
 
@@ -116,7 +111,7 @@
 
             
 
-            <td class="description last"><p>传入的opts参数，会覆盖static默认参数</p>
+            <td class="description last">
                 <h6>Properties</h6>
                 
 
@@ -134,6 +129,8 @@
         
 
         
+        <th>Default</th>
+        
 
         <th class="last">Description</th>
     </tr>
@@ -144,175 +141,7 @@
 
         <tr>
             
-                <td class="name"><code>type</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>自定义GomUI不存在的弹出层组件时才需要指定</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>title</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>弹层标题</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>content</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">html</span>
-|
-
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>弹层的html内部</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>class</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>弹层自定义class</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>mask</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>弹层是否显示遮罩</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>btns</code></td>
+                <td class="name"><code>position</code></td>
             
 
             <td class="type">
@@ -337,42 +166,27 @@
             
 
             
-
-            <td class="description last"><p>弹出层组件时按钮</p>
-                <h6>Properties</h6>
+                <td class="default">
                 
+                    left
+                
+                </td>
+            
 
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
+            <td class="description last"><p>侧边栏位置 左侧或右侧</p></td>
+        </tr>
 
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
     
 
         <tr>
             
-                <td class="name"><code>yes</code></td>
+                <td class="name"><code>content</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">object</span>
 
 
             
@@ -380,8 +194,6 @@
 
             
                 <td class="attributes">
-                
-                    &lt;optional><br>
                 
 
                 
@@ -391,48 +203,14 @@
             
 
             
-
-            <td class="description last"><p>确定按钮名称</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>no</code></td>
-            
-
-            <td class="type">
-            
+                <td class="default">
                 
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
+                    ''
                 
                 </td>
             
 
-            
-
-            <td class="description last"><p>取消按钮名称</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
+            <td class="description last"><p>侧边栏内容</p></td>
         </tr>
 
     
@@ -480,7 +258,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_ui.modal.js.html">ui/ui.modal.js</a>, <a href="ui_ui.modal.js.html#line14">line 14</a>
+        <a href="ui_ui.sides.js.html">ui/ui.sides.js</a>, <a href="ui_ui.sides.js.html#line6">line 6</a>
     </li></ul></dd>
     
 
@@ -488,13 +266,6 @@
 
     
 
-    
-    <dt class="tag-todo">To Do:</dt>
-    <dd class="tag-todo">
-        <ul>
-            <li>loading应该处理为可与其它弹出层共存</li>
-        </ul>
-    </dd>
     
 </dl>
 
@@ -514,19 +285,9 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>&lt;p>opts对象可传入的有如下对象，如果opts为string时，则表示为opts.content
- {  type: '',  //在具体实例中已定义，扩展时可自定义名称
-           btns: {
-                yes: '确定',
-                no:  '取消'
-            },
-            title: '',
-            content: '',   //content为str或html,如果为function则需要返回str或html
-            class: '',
-            mask: true,
-            onYes: function(){},
-            onNo: function(){}
-            }&lt;/p></code></pre>
+    <pre class="prettyprint"><code>&lt;p>var side = new UI.Sides({data:{position: pos}}).render();
+          side.content = sidesDesc + ListSet;
+          side.setContent();&lt;/p></code></pre>
 
 
 
@@ -558,1208 +319,6 @@
 
     
         <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id=".alert"><span class="type-signature">(static) </span>alert<span class="signature">(opts)</span><span class="type-signature"> &rarr; {Modal}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>显示警告框</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>opts</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-|
-
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>传入的opts参数为object时，会覆盖static默认参数, opts参数:@see Gom.UI.Modal#opts
-                             传入的opts参数为string时，则表示为opts.content</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_ui.modal.js.html">ui/ui.modal.js</a>, <a href="ui_ui.modal.js.html#line194">line 194</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>弹出层实例</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Modal</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".bottom"><span class="type-signature">(static) </span>bottom<span class="signature">(opts)</span><span class="type-signature"> &rarr; {Modal}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>显示 bottom layout</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>opts</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-|
-
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>传入的opts参数为object时，会覆盖static默认参数, opts参数:@see Gom.UI.Modal#opts
-                             传入的opts参数为string时，则表示为opts.content</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_ui.modal.js.html">ui/ui.modal.js</a>, <a href="ui_ui.modal.js.html#line268">line 268</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>弹出层实例</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Modal</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".center"><span class="type-signature">(static) </span>center<span class="signature">(opts)</span><span class="type-signature"> &rarr; {Modal}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>显示对话框</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>opts</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-|
-
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>传入的opts参数为object时，会覆盖static默认参数, opts参数:@see Gom.UI.Modal#opts
-                             传入的opts参数为string时，则表示为opts.content</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_ui.modal.js.html">ui/ui.modal.js</a>, <a href="ui_ui.modal.js.html#line240">line 240</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>弹出层实例</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Modal</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".confirm"><span class="type-signature">(static) </span>confirm<span class="signature">(opts)</span><span class="type-signature"> &rarr; {Modal}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>显示对话框</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>opts</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-|
-
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>传入的opts参数为object时，会覆盖static默认参数, opts参数:@see Gom.UI.Modal#opts
-                             传入的opts参数为string时，则表示为opts.content</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_ui.modal.js.html">ui/ui.modal.js</a>, <a href="ui_ui.modal.js.html#line210">line 210</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>弹出层实例</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Modal</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".layout"><span class="type-signature">(static) </span>layout<span class="signature">(static, opts, type)</span><span class="type-signature"> &rarr; {Modal}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>此方法一般用于自定义弹出层组件, 抽象类Modal的抽象实例</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>static</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>默认参数</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>opts</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-|
-
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>传入的opts参数为object时，会覆盖static默认参数, opts参数:@see Gom.UI.Modal#opts
-                             传入的opts参数为string时，则表示为opts.content</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>type</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>弹出层对象的名称
- opts对象可传入的有如下对象，如果opts为string时，则表示为opts.content</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_ui.modal.js.html">ui/ui.modal.js</a>, <a href="ui_ui.modal.js.html#line174">line 174</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>弹出层实例</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Modal</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".loading"><span class="type-signature">(static) </span>loading<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>显示loading</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_ui.modal.js.html">ui/ui.modal.js</a>, <a href="ui_ui.modal.js.html#line226">line 226</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".top"><span class="type-signature">(static) </span>top<span class="signature">(opts)</span><span class="type-signature"> &rarr; {Modal}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>显示 top layout</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>opts</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-|
-
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>传入的opts参数为object时，会覆盖static默认参数, opts参数:@see Gom.UI.Modal#opts
-                             传入的opts参数为string时，则表示为opts.content</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_ui.modal.js.html">ui/ui.modal.js</a>, <a href="ui_ui.modal.js.html#line254">line 254</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>弹出层实例</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Modal</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="autoHide"><span class="type-signature"></span>autoHide<span class="signature">(times)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>经过times millseconds 自动隐藏弹层</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>times</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>毫秒数</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_ui.modal.js.html">ui/ui.modal.js</a>, <a href="ui_ui.modal.js.html#line146">line 146</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         
             
@@ -2207,14 +766,14 @@
 
     
 
-    <h4 class="name" id="getType"><span class="type-signature"></span>getType<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="getSides"><span class="type-signature"></span>getSides<span class="signature">()</span><span class="type-signature"> &rarr; {*}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>获取弹出层类型，即data.type</p>
+    <p>获取侧边栏内容</p>
 </div>
 
 
@@ -2258,7 +817,107 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_ui.modal.js.html">ui/ui.modal.js</a>, <a href="ui_ui.modal.js.html#line71">line 71</a>
+        <a href="ui_ui.sides.js.html">ui/ui.sides.js</a>, <a href="ui_ui.sides.js.html#line29">line 29</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">*</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="hide"><span class="type-signature"></span>hide<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>隐藏侧边栏</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ui_ui.sides.js.html">ui/ui.sides.js</a>, <a href="ui_ui.sides.js.html#line60">line 60</a>
     </li></ul></dd>
     
 
@@ -2891,6 +1550,160 @@
 
     
 
+    <h4 class="name" id="setContent"><span class="type-signature"></span>setContent<span class="signature">(str<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>设置侧边栏内容</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>str</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">html</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    this.content
+                
+                </td>
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ui_ui.sides.js.html">ui/ui.sides.js</a>, <a href="ui_ui.sides.js.html#line40">line 40</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
     <h4 class="name" id="show"><span class="type-signature"></span>show<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
@@ -2898,7 +1711,7 @@
 
 
 <div class="description">
-    <p>显示弹层</p>
+    <p>显示侧边栏</p>
 </div>
 
 
@@ -2947,158 +1760,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_ui.modal.js.html">ui/ui.modal.js</a>, <a href="ui_ui.modal.js.html#line55">line 55</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="toggleModal"><span class="type-signature"></span>toggleModal<span class="signature">(inOrOut<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>上下弹出层会采用slide+fade动画，其它采用scale+fade</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>inOrOut</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    In
-                
-                </td>
-            
-
-            <td class="description last"><p>in|显+out|隐</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_ui.modal.js.html">ui/ui.modal.js</a>, <a href="ui_ui.modal.js.html#line90">line 90</a>
+        <a href="ui_ui.sides.js.html">ui/ui.sides.js</a>, <a href="ui_ui.sides.js.html#line48">line 48</a>
     </li></ul></dd>
     
 
