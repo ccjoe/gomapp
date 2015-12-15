@@ -97,8 +97,10 @@ define(['Store', 'UITmpl'], function(Store, UItmpl){
                     $frag = inheritAttrs(wrap, frag);
                     wrap.replaceWith($frag);
                     this.wrapper = $frag;   //会this.wrapper指向替代后的位置
-                }else{
+                }else if(frag){
                     wrap.html(frag)
+                }else{
+                    //没有tmpl时
                 }
 
             }

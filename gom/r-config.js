@@ -14,6 +14,7 @@
         Slide: 'ui/ui.slide',
         Select:'ui/ui.select',
         Toggle:'ui/ui.toggle',
+        InputLocation: 'ui/ui.inputlocation',
         View:  'core/view',
         Page:  'core/page',
         Service:'core/service',

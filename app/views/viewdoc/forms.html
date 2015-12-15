@@ -1,19 +1,4 @@
 <div class="content">
-    <p class="content-padded">表单</p>
-    <form class="content-padded">
-        <input type="text" placeholder="Full name">
-        <input type="search" placeholder="Search">
-        <textarea rows="5"></textarea>
-        <button class="btn btn-positive btn-block">Choose existing</button>
-    </form>
-
-    <p class="content-padded">带输入组的表单</p>
-    <form class="input-group">
-        <input type="text" placeholder="用户名">
-        <input type="email" placeholder="Email">
-        <input type="date" placeholder="Birth day" value="2015-08-30" class="">
-    </form>
-
     <p class="content-padded">带输入组和标签的表单</p>
     <form class="input-group">
         <div class="input-row">
@@ -34,10 +19,20 @@
         </div>
         <div class="input-row">
             <label>时间</label>
-            <div class="input" data-ui-widget="Select" data-opts='{"title": "时间选择器","modal": false, "cascade": false,
-            "level": 2, "yardNo": 1, "list": {"1":["上午","下午"], "2":["1点","2点","3点","4点","5点","6点","7点","8点","9点","10点","11点","12点"]}}'>
-
+            <div class="input">
+                <div class="input-gom-select" data-ui-widget="Select" data-opts='{"title": "时间选择器","modal": false, "cascade": false,
+                "level": 2, "yardNo": 1, "list": {"1":["上午","下午"], "2":["1点","2点","3点","4点","5点","6点","7点","8点","9点","10点","11点","12点"]}}'>
+                </div>
             </div>
+        </div>
+        <div class="input-row gom-location">
+            <label>位置</label>
+            <input type="text" readonly class="input" placeholder="定位或选择" />
+            <span class="icon-area"><i class="iconfont icon-location"></i></span>
+        </div>        
+        <div class="input-row gom-location">
+            <label>函数式定义位置</label>
+            <div class="input-location"></div>
         </div>
         <div class="input-row">
             <label>性别</label>
@@ -63,4 +58,18 @@
         </ul>
     </form>
 
+    <p class="content-padded">带输入组的表单</p>
+    <form class="input-group">
+        <input type="text" placeholder="用户名">
+        <input type="email" placeholder="Email">
+        <input type="date" placeholder="Birth day" value="2015-08-30" class="">
+    </form>
+
+    <p class="content-padded">表单</p>
+    <form class="content-padded">
+        <input type="text" placeholder="Full name">
+        <input type="search" placeholder="Search">
+        <textarea rows="5"></textarea>
+        <button class="btn btn-positive btn-block">Choose existing</button>
+    </form>
 </div>

@@ -69,10 +69,16 @@
 }
 
 .input-row {
+    height: 40px;
+    line-height: 30px;
+    label{
+        height: 40px;
+    }
     .input{
         float: right;
+        height: 40px;
         width: 65%;
-        padding-left: 0;
+        //padding-left: 0;
         margin-bottom: 0;
         border: 0;
         background: none;
@@ -83,6 +89,23 @@
     }
     .toggle{
         width: 50px;
+        height: 30px;
+        margin: 5px 13px;
         border: 2px solid #e6e6e6;
+    }
+    .input-gom-select{
+        margin-top: 3px;
+    }
+}
+
+.gom-location{
+    position: relative;
+    .icon-area{
+        position: absolute;
+        right: 15px;
+        width: 40px;
+        height: 40px;
+        border-left: 1px solid #eee;
+        text-align: center;
     }
 }

@@ -1,7 +1,7 @@
 /* jshint devel:true */
 var config = {
     DEBUG: true,
-    GOM_PATH: '/gom/build/gom',
+    GOM_PATH: '/gom/src/gom',
     API_HOST: 'http://h5.jc.me:3000/api/',    //服务端API HOST
     STORE_VIEWS: true,                        //缓存模板
     EXPIRES: 24,                              //缓存时间(小时)

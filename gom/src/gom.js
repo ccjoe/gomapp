@@ -57,6 +57,7 @@
             Scroll: GOM_PATH + 'ui/ui.scroll',
             Slide:  GOM_PATH + 'ui/ui.slide',
             Select: GOM_PATH + 'ui/ui.select',
+            InputLocation: GOM_PATH + 'ui/ui.inputlocation',
             View:   GOM_PATH + 'core/view',
             Page:   GOM_PATH + 'core/page',
             Service:GOM_PATH + 'core/service',
