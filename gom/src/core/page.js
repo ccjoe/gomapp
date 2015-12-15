@@ -59,7 +59,7 @@ define(['View', 'UI'], function(View, UI){
 
     var Page = View.extend({
         init:function (opts) {
-            opts.wrapper = opts.wrapper || opts.config.selector.wrapper || '#viewport';
+            opts.wrapper = opts.wrapper || '#viewport';
             this.title  = opts.title || '';
             this.widgets = [];
             this.params = opts.params || null;
@@ -80,7 +80,7 @@ define(['View', 'UI'], function(View, UI){
         render: function () {
             //没有指定this.tmplname先渲染空页面,由ctrl及组件去填充页面
             if(!this.tmplname){
-                this.tmpl = '<div class="'+ (this.config.selector.content.substring(1) || "content") +'"></div>';
+                this.tmpl = '<div class="'+ (this.config.CLASSES.CONTENT.substring(1) || "content") +'"></div>';
                 this.show();
                 return;
             }

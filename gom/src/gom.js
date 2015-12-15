@@ -36,33 +36,39 @@
     };
 })();
 
-var $MAIN_SCRIPT = $('script[data-gom-path]');
-var GOM_PATH = $MAIN_SCRIPT.attr('data-gom-path') || $MAIN_SCRIPT[0].src.match(/(.+)gom\.js/)[1];
-console.log(GOM_PATH, 'gomPath');
-require.config({
-    paths:{
-        Gom:    GOM_PATH + 'gom',
-        App:    GOM_PATH + 'app',
-        UI :    GOM_PATH + 'ui/ui',
-        Toggle :GOM_PATH + 'ui/ui.Toggle',
-        Button: GOM_PATH + 'ui/ui.button',
-        Header: GOM_PATH + 'ui/ui.header',
-        List:   GOM_PATH + 'ui/ui.list',
-        Modal:  GOM_PATH + 'ui/ui.modal',
-        Sides:  GOM_PATH + 'ui/ui.sides',
-        Scroll: GOM_PATH + 'ui/ui.scroll',
-        Slide:  GOM_PATH + 'ui/ui.slide',
-        Select: GOM_PATH + 'ui/ui.select',
-        View:   GOM_PATH + 'core/view',
-        Page:   GOM_PATH + 'core/page',
-        Service:GOM_PATH + 'core/service',
-        Store:  GOM_PATH + 'utils/store',
-        Url:    GOM_PATH + 'utils/url',
-        Fx:     GOM_PATH + 'utils/fx',
-        Swipe:  GOM_PATH + 'utils/swipe',
-        UITmpl: GOM_PATH + 'ui/ui.tmpl'
-    }
-});
+(function(){
+    var GOM_PATH, $MAIN_SCRIPT = $('script[data-gom-path]');
+    GOM_PATH = $MAIN_SCRIPT.length ?
+        ($MAIN_SCRIPT.attr('data-gom-path') || $MAIN_SCRIPT[0].src.match(/(.+)gom\.js/)[1]) : //直接引入依赖
+        config.GOM_PATH.substring(0, config.GOM_PATH.lastIndexOf('gom'));                     //requirejs引入依赖
+
+    console.log(GOM_PATH, 'GOM_PATH');
+    requirejs.config({
+        paths:{
+            Gom:    GOM_PATH + 'gom',
+            App:    GOM_PATH + 'app',
+            UI :    GOM_PATH + 'ui/ui',
+            Toggle :GOM_PATH + 'ui/ui.Toggle',
+            Button: GOM_PATH + 'ui/ui.button',
+            Header: GOM_PATH + 'ui/ui.header',
+            List:   GOM_PATH + 'ui/ui.list',
+            Modal:  GOM_PATH + 'ui/ui.modal',
+            Sides:  GOM_PATH + 'ui/ui.sides',
+            Scroll: GOM_PATH + 'ui/ui.scroll',
+            Slide:  GOM_PATH + 'ui/ui.slide',
+            Select: GOM_PATH + 'ui/ui.select',
+            View:   GOM_PATH + 'core/view',
+            Page:   GOM_PATH + 'core/page',
+            Service:GOM_PATH + 'core/service',
+            Store:  GOM_PATH + 'utils/store',
+            Url:    GOM_PATH + 'utils/url',
+            Fx:     GOM_PATH + 'utils/fx',
+            Swipe:  GOM_PATH + 'utils/swipe',
+            UITmpl: GOM_PATH + 'ui/ui.tmpl'
+        }
+    });
+})();
+
 define('Gom', ['Service', 'Page', 'View', 'UI', 'App'], function(Service, Page, View, UI, App){
     var GomStatic ={
         version: '1.0.0',

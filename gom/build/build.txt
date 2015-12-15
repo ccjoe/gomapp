@@ -1,5 +1,5 @@
 
-Gom.js
+gom.js
 ----------------
 utils/store.js
 ui/ui.tmpl.js
@@ -20,4 +20,4 @@ ui/ui.js
 core/page.js
 utils/url.js
 app.js
-Gom.js
+gom.js

@@ -10,10 +10,31 @@ define(['Page', 'Modal', 'Url', 'Store'], function(Page, Modal, Url, Store){
      * @class Gom.App
      * @alias App
      * @param {object} config -App配置选项config,
-     * @param {route} route   -App配置选项router,
+     * @param {boolean} [config.DEBUG=false] -DEBUG模式(无缓存,可见源码)
+     * @param {boolean} [config.GOM_PATH]    -requirejs引入Gom时需要定义， 在html直接引入gom.js文件时不需要配置
+     * @param {boolean} [config.API_HOST]    -建议将站点请求服务端的host配置于此
+     * @param {boolean} [config.STORE_VIEWS] -是否缓存页面于本地
+     * @param {number} [config.EXPIRES]     -缓存页面时长，会过期
+     * @param {object} [config.CLASSES]     -页面布局类的className配置,尽量默认不要改变
+     * @param {object[]} route              - CRO对象集合, App配置选项router，见route.js,
      * @return {app}
      * @example 传入配置文件与路由文件
-     * new App(config, route).run();
+     *
+config需要定义为全局变量，因为框架也需要用到
+var config = {
+    DEBUG: true,
+    GOM_PATH: '/gom/build/gom',
+    API_HOST: 'http://h5.jc.me:3000/api/',    //服务端API HOST
+    STORE_VIEWS: true,                        //缓存模板
+    EXPIRES: 24,                              //缓存时间(小时)
+    CLASSES: {                                //站点ID配置
+        VIEWPORT: '#viewport',                //页面Viewport
+        HEADER: '#header',                    //Header ID
+        FOOTER: '#footer',                    //Footer ID
+        CONTENT: '.content'                   //页面交替内容
+    }
+};
+new App(config, route).run();
      */
 
     var App = Class.extend({
@@ -77,7 +98,7 @@ define(['Page', 'Modal', 'Url', 'Store'], function(Page, Modal, Url, Store){
                 return;
             }
             $.ajax({url:'views/'+tmplname+'.html', dataType:'html', success: function (tmpl){
-                Store.set(tmplname, tmpl, that.config.expires);
+                Store.set(tmplname, tmpl, that.config.EXPIRES);
                 callback?callback(tmpl):null;
             }});
         },

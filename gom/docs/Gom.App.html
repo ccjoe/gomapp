@@ -115,7 +115,261 @@
 
             
 
-            <td class="description last"><p>App配置选项config,</p></td>
+            <td class="description last"><p>App配置选项config,</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>DEBUG</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>DEBUG模式(无缓存,可见源码)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>GOM_PATH</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>requirejs引入Gom时需要定义， 在html直接引入gom.js文件时不需要配置</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>API_HOST</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>建议将站点请求服务端的host配置于此</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>STORE_VIEWS</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>是否缓存页面于本地</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>EXPIRES</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>缓存页面时长，会过期</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>CLASSES</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>页面布局类的className配置,尽量默认不要改变</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -128,7 +382,7 @@
             <td class="type">
             
                 
-<span class="param-type">route</span>
+<span class="param-type">Array.&lt;object></span>
 
 
             
@@ -138,7 +392,7 @@
 
             
 
-            <td class="description last"><p>App配置选项router,</p></td>
+            <td class="description last"><p>CRO对象集合, App配置选项router，见route.js,</p></td>
         </tr>
 
     
@@ -224,7 +478,21 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>&lt;p>传入配置文件与路由文件
+    <pre class="prettyprint"><code>&lt;p>传入配置文件与路由文件&lt;/p>
+&lt;p>config需要定义为全局变量，因为框架也需要用到
+var config = {
+    DEBUG: true,
+    GOM_PATH: '/gom/build/gom',
+    API_HOST: 'http://h5.jc.me:3000/api/',    //服务端API HOST
+    STORE_VIEWS: true,                        //缓存模板
+    EXPIRES: 24,                              //缓存时间(小时)
+    CLASSES: {                                //站点ID配置
+        VIEWPORT: '#viewport',                //页面Viewport
+        HEADER: '#header',                    //Header ID
+        FOOTER: '#footer',                    //Footer ID
+        CONTENT: '.content'                   //页面交替内容
+    }
+};
 new App(config, route).run();&lt;/p></code></pre>
 
 
@@ -353,7 +621,7 @@ new App(config, route).run();&lt;/p></code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="app.js.html">app.js</a>, <a href="app.js.html#line95">line 95</a>
+        <a href="app.js.html">app.js</a>, <a href="app.js.html#line116">line 116</a>
     </li></ul></dd>
     
 
@@ -506,7 +774,7 @@ new App(config, route).run();&lt;/p></code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="app.js.html">app.js</a>, <a href="app.js.html#line231">line 231</a>
+        <a href="app.js.html">app.js</a>, <a href="app.js.html#line252">line 252</a>
     </li></ul></dd>
     
 
@@ -610,7 +878,7 @@ new App(config, route).run();&lt;/p></code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="app.js.html">app.js</a>, <a href="app.js.html#line145">line 145</a>
+        <a href="app.js.html">app.js</a>, <a href="app.js.html#line166">line 166</a>
     </li></ul></dd>
     
 
@@ -768,7 +1036,7 @@ new App(config, route).run();&lt;/p></code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="app.js.html">app.js</a>, <a href="app.js.html#line26">line 26</a>
+        <a href="app.js.html">app.js</a>, <a href="app.js.html#line47">line 47</a>
     </li></ul></dd>
     
 
@@ -899,7 +1167,7 @@ new App(config, route).run();&lt;/p></code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="app.js.html">app.js</a>, <a href="app.js.html#line137">line 137</a>
+        <a href="app.js.html">app.js</a>, <a href="app.js.html#line158">line 158</a>
     </li></ul></dd>
     
 
@@ -943,7 +1211,7 @@ new App(config, route).run();&lt;/p></code></pre>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Tue Dec 15 2015 12:04:46 GMT+0800 (中国标准时间) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Tue Dec 15 2015 15:09:13 GMT+0800 (中国标准时间) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

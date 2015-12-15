@@ -2,6 +2,7 @@
     baseUrl: './src',
     dir: './build',
     paths: {
+        Gom:   'gom',
         App:   'app',
         UI :   'ui/ui',
         Button:'ui/ui.button',

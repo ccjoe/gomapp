@@ -14,8 +14,8 @@
 
 ## 运行入口
 ```javascript
-require(['App', 'config', 'route'], function(App, config, route){
-    new App(config, route).run();
+require(['App', 'route'], function(App, route){
+    new App(config, route).run();       //config需要先定义，见下面说明
 });
 ```
 
@@ -89,14 +89,23 @@ require(['App', 'config', 'route'], function(App, config, route){
 ```
 
 ## config的配置
+```
+var config = {
+    DEBUG: true,
+    GOM_PATH: '/gom/build/gom',               //gom.js的路径
+    API_HOST: 'http://h5.jc.me:3000/api/',    //服务端API HOST
+    STORE_VIEWS: true,                        //缓存模板
+    EXPIRES: 24,                              //缓存时间(小时)
+    CLASSES: {                                //站点ID配置
+        VIEWPORT: '#viewport',                //页面Viewport
+        HEADER: '#header',                    //Header ID
+        FOOTER: '#footer',                    //Footer ID
+        CONTENT: '.content'                   //页面交替内容
+    }
+};
+```
 
-## 其它说明
-
-+ GoM分页面渲染和ui组件渲染，其都继承于View对象,都有data属性，通过定义组织data，然后调用render方法可以实现不同的渲染方式';
-
-+ 视图上就存在一个data对象，包含视图所需数据
-
-## 内置：  
+## 内置并依赖及自定义的模块有：  
 ```
 "requirejs":"~2.1.15",
 "zepto": "~1.1.2",
