@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>utils/store.js - Documentation</title>
+    <title>ui/ui.inputlocation.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">utils/store.js</h1>
+    <h1 class="page-title">ui/ui.inputlocation.js</h1>
     
 
     
@@ -38,157 +38,111 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * localstorage api封装
- * @author Joe Liu
- * @email icareu.joe@gmail.com
- */
-
-define(function() {
-    var storage = window.localStorage;
-
-    var parseval = function(val){
-        if (typeof val !== 'string') {return undefined ;}
-        try { return JSON.parse(val) ;}
-        catch(e) { return val || undefined ;}
-    };
-
-    var strval = function(val){
-        return val === void 0 || typeof val === "function" ? val+'' : JSON.stringify(val);
-    };
-
-    var bindtime = function(val, expire){
-        if(expire===void 0)
-            return strval({"value":val});
-        return strval({
-            "value": val,
-            "expire": +new Date()+expire
-        });
-    };
-    /**
-     * @namespace store
+            <pre class="prettyprint source linenums"><code>define(['View', 'Select',  'Store'], function(View,  Select, Store) {
+    var defaultsForms = {
+        store: true
+    }
+    /*
+     *
      */
-    var store = {
-        on: function(callback){
-            window.addEventListener('storage', function(e) {
-                callback(e);
-            });
+    var Forms = Class.extend({
+        init: function(opts){
+            this.tmpl = '';  
+            this.data = _.extend({}, defaultsForms, opts);
+            this.wrapper = opts.wrapper ? $(opts.wrapper) : null;
+            // this._id = 
         },
-        /**
-         * 遍历 store
-         * @method store.each
-         * @param {function} callback 参数为key, val
-         */
-        each: function(callback){
-            var that = this;
-            for(var i=0; i&lt;storage.length; i++){
-                key = storage.key[i];
-                val =  that.noexpire(key);
-                if(val){
-                    callback(key, val);
-                }
-            }
+        setStore: function(){
+            var $el = this.wrapper;
+            Store.set(this.wrapper, $el.serialize());
         },
-        /**
-         * 判断key是否过期，没有返回key的值，过期返回false
-         * @method store.noexpire
-         * @param {string} key
-         * @return noexpire
-         */
-        noexpire: function(key){
-            if(key===void 0){
-                return null;
-            }
-            var now = new Date().getTime(),
-                data = parseval(storage.getItem(key));
-            if(!data) return null;
-            if(data.expire !== void 0 &amp;&amp; now >= data.expire){
-                this.del(key);
-                return null;
-            }
-            return data.value;
-        },
-        /**
-         * 通过key获取store的value值
-         * @method store.get
-         * @param {string} key 可以为string或空，为空时取所有的localstorage(不包含过期的)
-         * @return vaule || object
-         */
-        get: function(key){
-            if(key){
-                return this.noexpire(key);
-            }
-            var ret = {};
-            this.each(function(key, val){
-                ret[key] = val;
-            });
-            return ret;
-        },
-        /**
-         * 设置store键值对及过期时间
-         * @method Cora.store.set
-         * @param {string} key
-         * @param {object} val OR(string)
-         * @param {expire} expire 过期时间，此刻起的millsecond数 1000*60=1min后过期
-         */
-        set: function(key, val, expire){
-            if(typeof key === 'string'){
-                storage.setItem(key, bindtime(val, expire));
-                return this;
-            }
-            var data = key;
-            for (var k in data) {
-                val = data[k];
-                this.set(k, val, expire);
-            }
-        },
-        /**
-         * 删除store某个key及值
-         * @method store.del
-         * @param {string} key string
-         * @return store
-         */
-        del: function(key){
-            storage.removeItem(key);
-            return this;
-        },
-        /**
-         * 清除所有store存储
-         * @method store.del
-         * @param {string} key string
-         * @return store
-         */
-        cls:function(){
-            storage.clear();
-            return this;
-        },
-        /**
-         * 判断某key是否存在
-         * @method store.has
-         * @param {string} key string
-         * @return boolean
-         */
-        has: function(key){
-            return storage.hasOwnProperty(key);
-        },
-        /**
-         * 获取store已存储的大小
-         * @method store.size
-         * @param {string} unit 单位默认返回bytes,可以为KB, MB;
-         * @return int
-         */
-        size: function(unit){
-            var bytes = JSON.stringify(localStorage).length
-            if(!unit)
-                return bytes;
-            if(unit==='KB')
-                return bytes/1024;
-            if(unit==='MB')
-                return bytes/1024/1024;
-            return bytes;
+        getStore: function(){
+            // Store.get()
         }
-    };
-    return store;
+    });
+    /**
+     * 在ios的UI里toggle里是没有文字的，在android里是有的，这里暂时按ios里UI
+     * @class Gom.UI.InputLocation
+     * @alias InputLocation
+     * @extends {Gom.View}
+     * @param {object} opts 参列
+     * @param {object} opts.onLocation 获取到地址时回调
+     */
+    var InputLocation = View.extend({
+        init: function (opts) {
+            opts.data = _.extend({},  opts);
+            opts.tmpl = '&lt;div>&lt;input type="text" readonly class="input" placeholder="定位或选择" />&lt;span class="icon-area">&lt;i class="iconfont icon-location">定位&lt;/i>&lt;/span>&lt;/div>';
+            // opts.replace = true;
+            $.extend(opts, this);   //将List实例混合到opts上， 去父对象上执行
+            this._super(opts);
+        },
+        show: function(){
+            console.log('show');
+        },
+        events:{
+            'click .icon-area': 'getCoord',
+            'click input': 'selectLocation'
+        },
+        getInput: function(){
+            return this.wrapper.find('input');
+        },
+        selectLocation: function(){
+            console.log('selectLocation');
+            var num = [01,02,03];
+            new Select({data: {
+                title: '时间选择器',
+                cascade: false,
+                //modal:isModal,
+                //wrapper: $('.content').last(),
+                level: 3,
+                list: {'1':['上午','下午'],'2': num.concat(_.range(10,13)), '3': num.concat(_.range(10,61))},
+                onYes: function(val){
+                   
+                }
+            }}).render();
+        },
+        /**
+         *通过html5获取地理坐标
+         */
+        getCoord: function(){
+            console.log('getCoord');
+            var that = this; geo = navigator.geolocation;
+            if (!geo){
+                this.showToast('您的浏览器不支持地理位置');
+                return;
+            }
+            geo.getCurrentPosition(function(position){
+                that.location(position.coords, '0b895f63ca21c9e82eb158f46fe7f502', function(addr){
+                    that.getInput().val(addr.province+ addr.city + addr.district);
+                    that.onLocation ? that.onLocation(addr) : null;
+                });
+            });
+        }, 
+        /**
+         *通过GD key及coord找到对应的位置字符串
+         * @param {object} coord坐标
+         * @param {number} coord.longitude 坐标
+         * @param {object} coord.latitude  坐标
+         * @param {string} key  GD地图key
+         * @param {function} callback 回调
+         */
+        location: function(coord, key, callback){
+            var gdAddr = 'http://restapi.amap.com/v3/geocode/regeo?key='+key+'&amp;location='+coord.longitude+','+coord.latitude+'&amp;output=json';
+            $.ajax({
+                url: gdAddr,
+                dataType : 'jsonp',
+                success: function(data){
+                    if(data.info === 'OK'){
+                        var addr = data.regeocode.addressComponent;
+                        callback ? callback(addr) : null;
+                        console.log(addr);
+                    }
+                }
+            });
+        }
+    });
+
+    return InputLocation;
 });
 </code></pre>
         </article>
