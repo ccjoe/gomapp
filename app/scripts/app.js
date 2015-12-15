@@ -4,6 +4,6 @@ require.config({
 });
 
 
-require(['App', 'config', 'route'], function(App, config, route){
+require(['App', './config', './route'], function(App, config, route){
     new App(config, route).run();
 });
