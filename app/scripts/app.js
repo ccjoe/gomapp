@@ -1,6 +1,6 @@
 /* jshint devel:true */
 require.config({
-    baseUrl: '../scripts'
+    baseUrl: 'scripts'
 });
 
 

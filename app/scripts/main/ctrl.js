@@ -14,17 +14,17 @@ define(['UI'], function(UI, List, Sides) {
             content: 'UI组件及插件文档【VIEW】',
             hash: '?viewdoc',
             badge: 5,
-            img: '/images/v.png'
+            img: 'images/v.png'
         },{
             title: '页面Page与Ctrl相关',
             content: '页面文档及相关【VIEW,CTRL】',
             hash: '?pagedoc',
-            img: '/images/c.png'
+            img: 'images/c.png'
         },{
             title: '模型Model类',
             content: '与服务端交互相关封装【MODEL】',
             hash: '?modeldoc',
-            img: '/images/m.png'
+            img: 'images/m.png'
         },{
             isDivider: true,
             title: '公用页面',

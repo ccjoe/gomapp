@@ -76,7 +76,7 @@ define(['Page', 'Modal', 'Url', 'Store'], function(Page, Modal, Url, Store){
                 callback?callback(view):null;
                 return;
             }
-            $.ajax({url:'/views/'+tmplname+'.html', dataType:'html', success: function (tmpl){
+            $.ajax({url:'views/'+tmplname+'.html', dataType:'html', success: function (tmpl){
                 Store.set(tmplname, tmpl, that.config.expires);
                 callback?callback(tmpl):null;
             }});
