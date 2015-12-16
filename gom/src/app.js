@@ -58,7 +58,7 @@ new App(config, route).run();
             //Modal.loading();
             History.Adapter.bind(window, 'statechange', function(e){
                 var state = History.getState();
-                state.data.hash = state.data.hash || '/';
+                state.data.hash = state.data.hash || state.hash.substring(1) || '/'; //首次进来默认取state.hash
                 that._routeByHash(state.data.hash);
             });
             History.Adapter.trigger(window, 'statechange');

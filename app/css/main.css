@@ -96,3 +96,6 @@ xmp {
     color: #007aff;
     margin: 10px;
     border-radius: 10px; }
+
+.side .table-view img.media-object {
+  display: none; }
