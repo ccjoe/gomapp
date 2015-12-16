@@ -35,6 +35,10 @@ var config = {
     }
 };
 new App(config, route).run();
+
+有关Webapp内的跳转说明：
+站内链接地址必须是形如：  '?module/sub' 的形式(如果调用此类的方法需要传入hashPath，则要传入的格式是module/sub)
+站间链接才需要加上 http://host
      */
 
     var App = Class.extend({
@@ -58,7 +62,7 @@ new App(config, route).run();
             //Modal.loading();
             History.Adapter.bind(window, 'statechange', function(e){
                 var state = History.getState();
-                state.data.hash = state.data.hash || state.hash.substring(1) || '/'; //首次进来默认取state.hash
+                state.data.hash = state.data.hash || Url.getHTML5Hash(state.hash) || '/'; //首次进来默认取state.hash
                 that._routeByHash(state.data.hash);
             });
             History.Adapter.trigger(window, 'statechange');
@@ -117,7 +121,7 @@ new App(config, route).run();
          * 根据完整hash获取页面对象(即具体路由指向的路由表对象)
          * 路由查找规则，根据hash路径数据长度查找CRO对应对象，在每个长度的index找不到则查找'/:var'， 在最后index有‘/’则查找'/';
          * @method Gom.App#getCRO
-         * @param {string} hashPath hashPath是形如?module/list  ?module/123的值
+         * @param {string} hashPath hashPath是形如 module/list  module/123的值
          * @return {object} CRO (Current Router Object)返回具体路由指向的路由表对象
          */
         getCRO: function (hashPath) {
@@ -158,7 +162,7 @@ new App(config, route).run();
         /**
          * 设置cro, 用于页面向某个页面传递数据
          * @method Gom.App#setCRO
-         * @param {string} hashPath hashPath是形如?module/list  ?module/123的值
+         * @param {string} hashPath hashPath是形如 module/list  module/123的值
          */
         setCRO: function(hashPath){
 
@@ -198,6 +202,7 @@ new App(config, route).run();
         _routeByHash: function (hashPath) {
             this._manageHistory(hashPath);
             var CRO = this.getCRO(hashPath);
+            console.log(CRO, 'CRO');
             this._routeByCRO(CRO);
         },
         /**
@@ -247,7 +252,7 @@ new App(config, route).run();
             if(history.length > 10){
                 history.shift();
             }
-            //console.log(history, 'THIS HISTORY');
+            console.log(history, 'THIS HISTORY');
         },
         /**
          * 从后往前依据 倒数index取历史hash
@@ -277,7 +282,7 @@ new App(config, route).run();
         //判断是否存在CRO而404
         isRouteNotFound: function(CRO){
             if (!CRO) {
-                this.route['/404']['data'] = {Url: location.href};
+                this.route['/404']['data'] = {url: location.href};
                 this.goto('404');
                 return true;
             }
