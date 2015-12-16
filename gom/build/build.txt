@@ -16,6 +16,7 @@ ui/ui.scroll.js
 ui/ui.slide.js
 ui/ui.select.js
 ui/ui.toggle.js
+ui/ui.inputlocation.js
 ui/ui.js
 core/page.js
 utils/url.js

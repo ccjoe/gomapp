@@ -51,6 +51,7 @@ new Button({data: opts, wrapper: '.class'});
         Scroll: require('Scroll'),
         Slide:  require('Slide'),
         Select: require('Select'),
-        Toggle: require('Toggle')
+        Toggle: require('Toggle'),
+        InputLocation: require('InputLocation')
     }
 });
