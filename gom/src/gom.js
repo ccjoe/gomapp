@@ -71,11 +71,7 @@
 })();
 
 define('Gom', ['Service', 'Page', 'View', 'UI', 'App'], function(Service, Page, View, UI, App){
-    var GomStatic ={
-        version: '1.0.0',
-        isWebApp: /http(s)?:\/\//.test(location.protocol),
-    };
-    /**
+       /**
      * Gom对象
      * @class Gom
      * @desc
