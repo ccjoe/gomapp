@@ -60,8 +60,12 @@ define(['Modal'], function(Modal){
      * 为方式时作为ajax拦截注入器注入request与response, 用法为 new Model({req:function(){}, res: function(){}});
      * @class Gom.Service
      * @alias Service
-     * @param {object} opts 参列或 opts.req, opts.res
-     * @examle Service ajax注入器操作，对request,response统一处理。
+     * @param {object} opts A:参列 或 B:opts.req, opts.res
+     * @param {string} opts.url A时的属性
+     * @param {object} opts.param A时的属性 默认参数
+     * @param {object} opts.req B时的属性 对所有请求截击
+     * @param {object} opts.res B时的属性 对所有返回截击
+     * @examle B: Service ajax注入器操作，对request,response统一处理。
         new Service({
             req:function(e, xhr, options){
                 console.log(e, xhr, options, 'def request inject');
@@ -71,7 +75,7 @@ define(['Modal'], function(Modal){
                 console.log(e, xhr, options, 'def response inject');
             }
         });
-        //Service ajax操作
+        //A:Service ajax操作
         var listModel = new Service({
             url: 'http://xproduct.ctrip.me:3003/api/mall/receipts'
         });
@@ -91,6 +95,7 @@ define(['Modal'], function(Modal){
                 return;
             }
             this.url = opts.url;
+            this.params = opts.params || {};
         },
         /**
          * 一般用于post保存数据
@@ -99,7 +104,7 @@ define(['Modal'], function(Modal){
          * @return promise
          */
         save: function(params){
-            return this.ajax(params, {type: 'POST'});
+            return this.ajax($.extend({}, this.params, params), {type: 'POST'});
         },
         /**
          * 一般用于get获取数据
@@ -108,7 +113,16 @@ define(['Modal'], function(Modal){
          * @return promise
          */
         fetch: function(ids){
-            return this.ajax(ids);
+            return this.ajax($.extend({}, this.params, ids));
+        },
+        /**
+         * 获取jsonp数据
+         * @method Gom.Service#jsonp
+         * @param {object|*} params集合
+         * @return promise
+         */
+        jsonp: function(params){
+            return this.ajax($.extend({}, this.params, params), {dataType: 'jsonp', type : 'GET'});
         },
         /**
          * 同步获取本地模板
@@ -143,7 +157,7 @@ define(['Modal'], function(Modal){
             }
             $.extend(ajaxOpts, opts,  {
                 url: this.url,
-                data: data,
+                data: $.extend({}, this.params, data),
                 dataType: opts.dataType || 'json', //json, jsonp, script, xml, html, or text.
                 //headers: opts.headers || {}, //自定义请求会触发预请求
                 //async: opts.async || true,    //默认异步
