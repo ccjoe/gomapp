@@ -62,7 +62,7 @@ define(['View','Fx'], function(View) {
             this.toggleModal();
 
             if(this.isToast()){
-                this.autoHide();
+                this.autoHide(3000);
             }
             if(this.mask !== true){
                 $('.modal-overlay').removeClass('modal-overlay-visible');
