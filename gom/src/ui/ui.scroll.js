@@ -95,6 +95,7 @@ define(['Swipe', 'Fx'], function() {
          * 滚动到...
          * @method Gom.UI.Scroll#scrollTo
          * @param {object} where 可以为具体的数字，元素, top, bottom字符串
+         * @param {function} callback 滚动到后回调
          */
         scrollTo: function(where, callback){
             var toType = typeof  where, val;
@@ -113,13 +114,14 @@ define(['Swipe', 'Fx'], function() {
         /**
          * 滚动到顶部
          * @method Gom.UI.Scroll#scrollTop
-         * @param {object} where 可以为具体的数字，元素, top, bottom字符串
+         * @param {function} callback 到底后回调
          */
         scrollTop: function(callback){
             var that = this;
             var xcallback = function(){
                 that.hold = false;
                 $('.ui-scroll-front').removeClass('refreshing');
+                callback ? callback() : null;
             };
             this.scrollTo(0, xcallback);
         },
