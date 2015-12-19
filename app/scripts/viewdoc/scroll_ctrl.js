@@ -68,13 +68,20 @@ define(['UI'], function(UI) {
                  wrapper    : '.scroll-example2',    //滚动对象所在的容器
                  className  : '.scroll-content',      //滚动对象的className
                  direction  : 'vertical', //'vertical',             //水平与垂直
+                 speed: 0.5,
                  step       : 0, // 不设置步长
                  //outer:       允许出界的范围
-                 outerFront : '允许出界位置上面显示的html或文字',
+                 //outerFront : '允许出界位置上面显示的html或文字',
                  outerEnd   : '允许出界位置下面显示的html或文字',
                  onScroll: function(point){ },    //每次滚动时回调
                  endScroll: function(point){ console.log('单次滚动结束'); }, //   每次滚动停回调
-                 onTop: function(){ console.log('滚动到最上面，滚动停止时触发')},       //滚动到上时
+                 onTop: function(){
+                     /*ajax  请求结束后，改变hold的状态即可*/
+                     var that = this;
+                     $.get('/views/viewdoc/scroll-x.html', function(data){
+                         that.scrollTop();
+                     })
+                 },       //滚动到上时
                  onBottom:  function(){ console.log('滚动到最下面，滚动停止时触发')}   // 滚动到下时
             });
         },

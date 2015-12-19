@@ -46,30 +46,31 @@ define(['Swipe', 'Fx'], function() {
                 $scroll : $(opts.className),
                 step    : opts.step || 0,
                 speed   : opts.speed || 1,
-                outer   : opts.outer ||150,
-                outerFront: opts.outerFront,
+                outer   : opts.outer ||100,
+                outerFront: opts.outerFront || '<div class="pull-to-refresh-layer"><div class="preloader"></div><div class="pull-to-refresh-arrow"></div></div>',
                 outerEnd:  opts.outerEnd,
                 isX     : opts.direction !== 'vertical',
                 onScroll  : opts.onScroll || function(){},
                 endScroll : opts.endScroll || function(){},
                 onTop : opts.onTop || function(){},
-                onBottom : opts.onBottom || function(){}
+                onBottom : opts.onBottom || function(){},
             };
 
             $.extend(this, defalutsThis);
             this.construct();
         },
         construct: function(){
-          this.bindScroll();
+            this.$scroll.addClass('gom-scroll');
+            this.bindScroll();
         },
         bindScroll: function(){
             var that = this, $wrapper = this.$wrapper, direct = this.isX?'horizontal':'vertical';
             console.log(direct, 'direct');
             if(this.outerFront){
-                $wrapper.prepend('<div class="ui-scroll-front">'+this.outerFront+'</div>');
+                $wrapper.prepend('<div class="ui-scroll-front pull-to-refresh-content">'+this.outerFront+'</div>');
             }
             if(this.outerEnd){
-             $wrapper.append('<div class="ui-scroll-end">'+this.outerEnd+'</div>');
+             $wrapper.prepend('<div class="ui-scroll-end">'+this.outerEnd+'</div>');
             }
             $wrapper.addClass('ui-scroll ui-scroll-'+direct).swipe({
                 //swipeY: 30,
@@ -95,7 +96,7 @@ define(['Swipe', 'Fx'], function() {
          * @method Gom.UI.Scroll#scrollTo
          * @param {object} where 可以为具体的数字，元素, top, bottom字符串
          */
-        scrollTo: function(where){
+        scrollTo: function(where, callback){
             var toType = typeof  where, val;
             if(where === 'top'){
                 val = 0;
@@ -106,8 +107,21 @@ define(['Swipe', 'Fx'], function() {
                 val = where;
             }
             console.log(val, 'scrollTo val');
-            this._scrollFxTo(val);
+            this._scrollFxTo(val, callback);
             console.log(this.getSteps(), '滚动的步长为：');
+        },
+        /**
+         * 滚动到顶部
+         * @method Gom.UI.Scroll#scrollTop
+         * @param {object} where 可以为具体的数字，元素, top, bottom字符串
+         */
+        scrollTop: function(callback){
+            var that = this;
+            var xcallback = function(){
+                that.hold = false;
+                $('.ui-scroll-front').removeClass('refreshing');
+            };
+            this.scrollTo(0, xcallback);
         },
         /**
          * 设置了step时获取滚动了多少步长
@@ -117,7 +131,7 @@ define(['Swipe', 'Fx'], function() {
         getSteps: function(){
             return   this.$scroll.data('swipe-steps');
         },
-        _scrollFxTo: function(val){
+        _scrollFxTo: function(val, callback){
             //有步长值的话以步长计
             if(this.step){
                 var vals = this._getTransStep(val);
@@ -127,7 +141,7 @@ define(['Swipe', 'Fx'], function() {
             }
 
             this.$scroll.data('swipe-offset', val);
-            this.$scroll.fx(this._scrollCount(val));  //, 'normal', 'easeOutQuint'
+            this.$scroll.fx(this._scrollCount(val), 'normal', 'linear', callback?callback:function(){});  //, 'normal', 'easeOutQuint'
         },
         //滚动时回调（moving为true为事件中回调，false为事件结束时回调）
         _setScrollTrans: function(point, moveing){
@@ -138,7 +152,8 @@ define(['Swipe', 'Fx'], function() {
                 this.$scroll.css(transStr);
                 this.onScroll(point);
             }else{
-                this._scrollFxTo(transVal);
+                //hold住时不回弹,用于上拉刷新时等待刷新结果
+                this._scrollFxTo(!this.hold ? transVal : $('.pull-to-refresh-layer').height());
                 this.endScroll(point);
             }
         },
@@ -156,29 +171,32 @@ define(['Swipe', 'Fx'], function() {
                 maxRange = maxTransDis + maxOuter;
             console.log(this.getScrollSize(), this.getWrapperSize(), distance, minRange, maxTransDis, maxRange, '滑动内容大小, 容器大小, 滑动距离, 最小范围, 最大位移， 最大范围');
             var absDis = Math.abs(distance), pxDis = distance + 'px';
-            //在顶端越界拉时
+            //在顶端越界拉没超过允许的out时
             if(0 < distance &&  distance <= minRange){
-                $('.ui-scroll-front').show().css({height: pxDis,'line-height': pxDis});
+                $('.ui-scroll-front').show().addClass('pull-up');
+                    //.css({height: pxDis,'line-height': pxDis});
             }
-            //在底端越界拉时
+            //在底端越界拉没超过允许的out时
             if(maxTransDis < absDis &&  absDis <= maxRange){
                 pxDis = (absDis-maxTransDis)+'px';
-                $('.ui-scroll-end').show().css({height: pxDis, 'line-height': pxDis});
+                $('.ui-scroll-end').show();
+                    //.css({height: pxDis, 'line-height': pxDis});
             }
-
+            //顶端越界超过允许的out时
             if(distance > minRange){
                 distance = minRange;
                 if(!moveing){
+                    $('.ui-scroll-front').addClass('refreshing').removeClass('pull-up');
+                    this.hold = true;
                     this.onTop();
-                    $('.ui-scroll-front').hide();
                 };
             }
-
+            //底端越界超过允许的out时
             if(distance < -maxRange){
                 distance = -maxRange;
                 if(!moveing){
                     this.onBottom();
-                    $('.ui-scroll-end').hide();
+                    //$('.ui-scroll-end').hide();
                 };
             }
 
@@ -194,16 +212,20 @@ define(['Swipe', 'Fx'], function() {
                 val: step*stepNum
             };
         },
-
+        //暂停回弹
+        _holdScroll: function(){
+            this.hold = true;
+        },
         //根据swipe时间计算滚动速度
         _getRatio: function(swipeTime){
             var ratio, speedval = this.speed*1000;
             if(swipeTime > speedval){
-                ratio = 1;
+                ratio = 1 * this.speed;
             }else{
                 ratio = speedval/swipeTime;
-                ratio = ratio > 30 ? 30 : ratio;
+                ratio = ratio > 20 ? 20 : ratio;
             }
+
             console.log(swipeTime, ratio, 'swipeRatio');
             return ratio;
         },

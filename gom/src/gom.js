@@ -37,7 +37,7 @@
 })();
 $(function() {
     FastClick.attach(document.body);
-}); 
+});
 (function(){
     var GOM_PATH, $MAIN_SCRIPT = $('script[data-gom-path]');
     GOM_PATH = $MAIN_SCRIPT.length ?

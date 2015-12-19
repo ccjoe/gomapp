@@ -1,4 +1,8 @@
 /* === Scroll === */
+.gom-scroll{
+    background-color: #fff;
+    padding: 10px;
+}
 .ui-scroll{
     overflow: hidden;
     > div{
@@ -9,7 +13,7 @@
         position: absolute;
         width: 100%;
         text-align: center;
-        background-color: #aaa;
+        background-color: #eee;
         display: none;
     }
     .ui-scroll-front{
