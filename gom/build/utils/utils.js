@@ -1,0 +1,1 @@
+define([],function(){var e={version:"1.0.0",isWebApp:/http(s)?:\/\//.test(location.protocol)};return e})

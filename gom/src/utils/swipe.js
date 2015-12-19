@@ -79,6 +79,7 @@ define(function(){
         //callbacks
         var cbs = {
             startCallback: function (e) {
+                e.preventDefault();
                 $.extend(point, doPoint.setNull); //重置初始值
                 var cp = e.touches[0],
                     startPoint = {
@@ -91,6 +92,7 @@ define(function(){
                 opts.startCallback ? opts.startCallback(point) : null;
             },
             moveCallback: function (e) {
+                e.preventDefault();
                 var cp = e.touches[0],
                     movePoint = {
                         moveX: cp.pageX,
@@ -106,6 +108,7 @@ define(function(){
                 opts.moveCallback ? opts.moveCallback(point) : null;
             },
             endCallback: function (e) {
+                e.preventDefault();
                 if (!doPoint.checkRange(point)) {
                     return;
                 }

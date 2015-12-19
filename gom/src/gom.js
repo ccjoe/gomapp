@@ -35,7 +35,9 @@
         return Class;
     };
 })();
-
+$(function() {
+    FastClick.attach(document.body);
+}); 
 (function(){
     var GOM_PATH, $MAIN_SCRIPT = $('script[data-gom-path]');
     GOM_PATH = $MAIN_SCRIPT.length ?
@@ -71,11 +73,7 @@
 })();
 
 define('Gom', ['Service', 'Page', 'View', 'UI', 'App'], function(Service, Page, View, UI, App){
-    var GomStatic ={
-        version: '1.0.0',
-        isWebApp: /http(s)?:\/\//.test(location.protocol),
-    };
-    /**
+       /**
      * Gom对象
      * @class Gom
      * @desc

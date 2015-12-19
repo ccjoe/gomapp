@@ -10,16 +10,17 @@ define(function () {
         kv: /(\w+)=([^&#]+)/g,
         search: /([^\?]+)?\??((\w+=\w+&?)+)?/,     //[^\?]+ 除?外所有
         path: /.+((\/\w+)+)?/,
-        history: /[^\?]*\?((\w+\/)+\w+)/          //获取html history url风格的search path
+        history: /[^\?]?\?((\w+)+(\/\w+)*)/        //获取html history url风格的search path
     };
     /**
      * 处理键值对字符串为对象,获取url里所有键值对返回
      * @method url.getHTML5Hash
-     * @param {string} url  html5 history url 类似 tets.com?hash/path/to
+     * @param {string} url  html5 history url 类似 tets.com?hash/path/to&abc
      * @return {string} 返回like=>  hash/path/to
      */
     var getHTML5Hash = function(url){
-        return re.history.exec(url)[1];
+        var execRes = re.history.exec(url);
+        return execRes ? re.history.exec(url)[1] : '';
     };
     /**
      * 处理键值对字符串为对象,获取url里所有键值对返回
