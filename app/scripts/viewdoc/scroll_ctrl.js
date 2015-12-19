@@ -72,17 +72,25 @@ define(['UI'], function(UI) {
                  step       : 0, // 不设置步长
                  //outer:       允许出界的范围
                  //outerFront : '允许出界位置上面显示的html或文字',
-                 outerEnd   : '允许出界位置下面显示的html或文字',
+                 //outerEnd   : '允许出界位置下面显示的html或文字',
                  onScroll: function(point){ },    //每次滚动时回调
                  endScroll: function(point){ console.log('单次滚动结束'); }, //   每次滚动停回调
                  onTop: function(){
                      /*ajax  请求结束后，改变hold的状态即可*/
                      var that = this;
+                     that.showFresh();
                      $.get('/views/viewdoc/scroll-x.html', function(data){
-                         that.scrollTop();
+                         that.hideFresh();
                      })
                  },       //滚动到上时
-                 onBottom:  function(){ console.log('滚动到最下面，滚动停止时触发')}   // 滚动到下时
+                 onBottom:  function(){
+                     /*ajax  请求结束后，改变hold的状态即可*/
+                     var that = this;
+                     that.showFresh('end');
+                     $.get('/views/viewdoc/scroll-x.html', function(data){
+                         that.hideFresh('end');
+                     })
+                 }   // 滚动到下时
             });
         },
         showScrollX: function(){
@@ -122,6 +130,7 @@ define(['UI'], function(UI) {
             new Scroll({
                 wrapper    : '.scroll-mdoal-example',    //滚动对象所在的容器
                 className  : '.scroll-mdaol-content',      //滚动对象的className
+                outer: 0
             });
 
         },

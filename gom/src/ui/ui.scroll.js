@@ -13,8 +13,12 @@ define(['Swipe', 'Fx'], function() {
      * opts.className   require className 滚动对象的className
      * opts.step        options 步长 默认0 不计步长，滚动的结果一定是以此为单位, 滚屏网站时可以一屏一步长,
      *                  非滚动选择组件(time, district..)一般不用此属性,否则滚动以步长计不会具体到点
-     * opts.outer       options 允许出界的范围
-     * opts.outerFront  options 允许出界位置上面显示的html或文字
+     * opts.outer       options 允许出界的范围,默认100
+     * opts.outerFront       options 自定义front出界显示的html,false时没有，''时有默认，指定时显示指定
+     * opts.outerEnd         options 同上
+     *
+     * opts.frontText  options 允许出界位置上面显示的html或文字
+     * opts.endText  options 允许出界位置上面显示的html或文字
      * opts.speed 1     0与1之间  速度控制，默认1，在time选择器时设置小更容易选择，在页面滚动设置为1较好。
      * opts.outerEnd    允许出界位置下面显示的html或文字
      * opts.direction   options vertical/horizontal 默认为垂直 水平与垂直
@@ -30,32 +34,45 @@ define(['Swipe', 'Fx'], function() {
              direction  : 'vertical', //'vertical',             //水平与垂直
              step       : 0, // 不设置步长
              outer:       允许出界的范围
-             outerFront : '允许出界位置上面显示的html或文字',
-             outerEnd   : '允许出界位置下面显示的html或文字',
+             frontText : '允许出界位置上面显示的html或文字',
+             EndText   : '允许出界位置下面显示的html或文字',
              onScroll: function(point){ },    //每次滚动时回调
              endScroll: function(point){ console.log('单次滚动结束'); }, //   每次滚动停回调
              onTop: function(){ console.log('滚动到最上面，滚动停止时触发')},       //滚动到上时
              onBottom:  function(){ console.log('滚动到最下面，滚动停止时触发')}   // 滚动到下时
         });
      */
+
+    var getFreshStr = function(moveStr, freshStr){
+        return '<div class="pull-to-refresh-layer">' +
+        '<div class="pull-show-item"><span class="preloader-text">'+moveStr+'</span><span class="preloader"></span></div>' +
+        '<div class="pull-show-item"><span class="pull-to-refresh-text">'+freshStr+'</span><span class="pull-to-refresh-arrow"></span></div>' +
+        '</div>';
+    };
+
     var Scroll = Class.extend({
         init: function (opts) {
             opts.direction = opts.direction || 'vertical';
+
+            var frontText = opts.frontText || '松手刷新', endText = opts.endText || '松手加载';
+
             var defalutsThis = {
                 $wrapper : $(opts.wrapper),
                 $scroll : $(opts.className),
                 step    : opts.step || 0,
                 speed   : opts.speed || 1,
-                outer   : opts.outer ||100,
-                outerFront: opts.outerFront || '<div class="pull-to-refresh-layer"><div class="preloader"></div><div class="pull-to-refresh-arrow"></div></div>',
-                outerEnd:  opts.outerEnd,
+                outer   : opts.outer===void 0 ? 100 : opts.outer,
                 isX     : opts.direction !== 'vertical',
                 onScroll  : opts.onScroll || function(){},
                 endScroll : opts.endScroll || function(){},
                 onTop : opts.onTop || function(){},
-                onBottom : opts.onBottom || function(){},
+                onBottom : opts.onBottom || function(){}
             };
 
+            if(!defalutsThis.isX && Number(defalutsThis.outer)>0){
+                defalutsThis.outerFront = opts.outerFront===false?'':(opts.outerFront?opts.outerFront:getFreshStr('正在为您刷新', frontText));
+                defalutsThis.outerEnd =  opts.outerEnd===false?'':(opts.outerEnd?opts.outerEnd:getFreshStr('正在拼命加载中...', endText));
+            }
             $.extend(this, defalutsThis);
             this.construct();
         },
@@ -67,12 +84,13 @@ define(['Swipe', 'Fx'], function() {
             var that = this, $wrapper = this.$wrapper, direct = this.isX?'horizontal':'vertical';
             console.log(direct, 'direct');
             if(this.outerFront){
-                $wrapper.prepend('<div class="ui-scroll-front pull-to-refresh-content">'+this.outerFront+'</div>');
+                $wrapper.prepend('<div class="ui-scroll-front gom-scroll-out">'+this.outerFront+'</div>');
             }
             if(this.outerEnd){
-             $wrapper.prepend('<div class="ui-scroll-end">'+this.outerEnd+'</div>');
+             $wrapper.prepend('<div class="ui-scroll-end gom-scroll-out">'+this.outerEnd+'</div>');
             }
-            $wrapper.addClass('ui-scroll ui-scroll-'+direct).swipe({
+
+            var swipeOpts = {
                 //swipeY: 30,
                 moveCallback: function(point){
                     that._setScrollTrans(point, true);
@@ -80,7 +98,10 @@ define(['Swipe', 'Fx'], function() {
                 endCallback: function(point){
                     that._setScrollTrans(point);
                 }
-            })
+            };
+            this.isX ?
+            $wrapper.addClass('ui-scroll ui-scroll-'+direct).swipeLeft(swipeOpts).swipeRight(swipeOpts):
+            $wrapper.addClass('ui-scroll ui-scroll-'+direct).swipeTop(swipeOpts).swipeBottom(swipeOpts);
         },
         //滑动区域尺寸，纵向滚动获取总高度，横向滚动获取总宽
         getScrollSize: function(){
@@ -111,20 +132,7 @@ define(['Swipe', 'Fx'], function() {
             this._scrollFxTo(val, callback);
             console.log(this.getSteps(), '滚动的步长为：');
         },
-        /**
-         * 滚动到顶部
-         * @method Gom.UI.Scroll#scrollTop
-         * @param {function} callback 到底后回调
-         */
-        scrollTop: function(callback){
-            var that = this;
-            var xcallback = function(){
-                that.hold = false;
-                $('.ui-scroll-front').removeClass('refreshing');
-                callback ? callback() : null;
-            };
-            this.scrollTo(0, xcallback);
-        },
+
         /**
          * 设置了step时获取滚动了多少步长
          * @method Gom.UI.Scroll#getSteps
@@ -159,6 +167,32 @@ define(['Swipe', 'Fx'], function() {
                 this.endScroll(point);
             }
         },
+        /**
+         * 滚动到顶请求数据时需要调用，一般用于onTop显示刷新请求数据，成功后调用hideFresh()隐藏刷新
+         * @method Gom.UI.Scroll#showFresh
+         * @param {string} [pos=front] 显示刷新，头部刷新front,尾部end
+         * @return  {number} 步长数
+         */
+        showFresh: function(pos){
+            pos = pos || 'front';
+            $('.ui-scroll-'+pos).addClass('refreshing').removeClass('pull-up');
+            this.hold = true;
+        },
+        /**
+         * 滚动到底请求数据时需要调用
+         * @method Gom.UI.Scroll#hideFresh
+         * @param {string} [pos=front] 隐藏刷新，头部刷新front,尾部end
+         * @return  {number} 步长数
+         */
+        hideFresh: function(pos){
+            pos = pos || 'front';
+            var that = this;
+            var toPos = pos==='front'?0:-(this.getScrollSize() - this.getWrapperSize());
+            that.scrollTo(toPos, function(){
+                $('.ui-scroll-'+pos).removeClass('refreshing');
+                that.hold = false;
+            });
+        },
         //计算当前滚动到的并限制边界范围
         _getTransVal: function(distance, swipeTime, moveing){
             distance = moveing ? distance : distance * this._getRatio(swipeTime);
@@ -188,8 +222,6 @@ define(['Swipe', 'Fx'], function() {
             if(distance > minRange){
                 distance = minRange;
                 if(!moveing){
-                    $('.ui-scroll-front').addClass('refreshing').removeClass('pull-up');
-                    this.hold = true;
                     this.onTop();
                 };
             }

@@ -112,6 +112,8 @@ define(['View', 'Modal', 'Scroll', 'List'], function(View, Modal, Scroll, List) 
                 new Scroll({
                     step: 33,
                     speed: 0.5,
+                    outerFront: false,
+                    outerEnd: false,
                     wrapper    : '.ui-scroll-select-'+l,    //滚动对象所在的容器
                     className  : '.ss-cell-'+l,      //滚动对象的className
                     endScroll: function(point){

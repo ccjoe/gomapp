@@ -91,10 +91,13 @@ pre{
 
 .ui-scroll-horizontal{
     .scroll-content{
-        width: 1500px;
-    }
-    p{
-        float: left;
+        text-align: center;
+        width: 1820px;
+        height: 100%;
+        p{
+            width: 1.5em;
+            float: left;
+        }
     }
 }
 .scroll-mdoal-example{
