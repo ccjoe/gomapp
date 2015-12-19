@@ -123,7 +123,7 @@ define(['Swipe', 'Fx'], function() {
             if(where === 'top'){
                 val = 0;
             }else if(where === 'bottom'){
-                val = this.getWrapperSize() - this.getScrollSize();
+                val = -this.getMaxTrans();
             }
             if(toType === 'number'){
                 val = where;
@@ -163,7 +163,9 @@ define(['Swipe', 'Fx'], function() {
                 this.onScroll(point);
             }else{
                 //hold住时不回弹,用于上拉刷新时等待刷新结果
-                this._scrollFxTo(!this.hold ? transVal : $('.pull-to-refresh-layer').height());
+                if(!this.hold){
+                    this._scrollFxTo(transVal); //!this.hold ? transVal : $('.pull-to-refresh-layer').height()
+                }
                 this.endScroll(point);
             }
         },
@@ -187,11 +189,14 @@ define(['Swipe', 'Fx'], function() {
         hideFresh: function(pos){
             pos = pos || 'front';
             var that = this;
-            var toPos = pos==='front'?0:-(this.getScrollSize() - this.getWrapperSize());
+            var toPos = pos==='front'?0:-(this.getMaxTrans());
             that.scrollTo(toPos, function(){
                 $('.ui-scroll-'+pos).removeClass('refreshing');
                 that.hold = false;
             });
+        },
+        getMaxTrans: function(){
+            return this.getScrollSize() - this.getWrapperSize();
         },
         //计算当前滚动到的并限制边界范围
         _getTransVal: function(distance, swipeTime, moveing){
@@ -201,7 +206,7 @@ define(['Swipe', 'Fx'], function() {
                 distance += swipeOffset;
             }
             //限制区域
-            var maxTransDis = this.getScrollSize() - this.getWrapperSize();
+            var maxTransDis = this.getMaxTrans();
             var maxOuter    = moveing ? this.outer : 0,
                 minRange = 0 + maxOuter,
                 maxRange = maxTransDis + maxOuter;
