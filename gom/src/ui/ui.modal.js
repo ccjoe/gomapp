@@ -57,15 +57,13 @@ define(['View','Fx'], function(View) {
          * @method Gom.UI.Modal#show
          */
         show: function (){
-            this.wrapper.fadeIn(100);
+            $('.modal-overlay')[this.mask!==true?'removeClass':'addClass']('modal-overlay-visible');
+            this.wrapper.fadeIn(0);
             this.reloc();
             this.toggleModal();
 
             if(this.isToast()){
                 this.autoHide(3000);
-            }
-            if(this.mask !== true){
-                $('.modal-overlay').removeClass('modal-overlay-visible');
             }
         },
         /**
@@ -114,7 +112,7 @@ define(['View','Fx'], function(View) {
             this.getModal().fx({
                 opacity: 0, scale: 0.2
             }, 300, 'easeOutCirc', function(){
-                that.wrapper.hide();
+                that.wrapper.fadeOut();
             });
         },
         slideInModal: function(pos){
@@ -127,7 +125,7 @@ define(['View','Fx'], function(View) {
             var fxprops = {opacity: 0};
                 fxprops[pos] = -this.getModal().height();
             this.getModal().fx(fxprops, 300, 'easeOutCirc', function(){
-                that.wrapper.hide();
+                that.wrapper.fadeOut();
             });
         },
         /**

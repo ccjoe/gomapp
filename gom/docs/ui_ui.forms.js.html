@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>utils/url.js - Documentation</title>
+    <title>ui/ui.forms.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">utils/url.js</h1>
+    <h1 class="page-title">ui/ui.forms.js</h1>
     
 
     
@@ -38,156 +38,204 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/******************************** URL parse ***********************************/
-/**
- * Url处理
- * @author Joe Liu
- * @email icareu.joe@gmail.com
- */
-define(function () {
-    var re = {
-        url: /((http|https):\/\/)?((\w+\.)+\w+)?(:\d+)?((\/\w+)+)?\/?\??((\w+=\w+&amp;?)+)?#?(.+)?/g,
-        kv: /(\w+)=([^&amp;#]+)/g,
-        search: /([^\?]+)?\??((\w+=\w+&amp;?)+)?/,     //[^\?]+ 除?外所有
-        path: /.+((\/\w+)+)?/,
-        history: /[^\?]?\?((\w+)+(\/\w+)*)/        //获取html history url风格的search path
+            <pre class="prettyprint source linenums"><code>define(['View', 'Select'], function(View, Select) {
+    var defaultsBtns = {
+        type: 'primary',    //primary, positive, negative, link
+        outline: false, //true/false
+        icon: void 0, //icon className
+        badge: void 0, //number || false
+        title: ''
     };
     /**
-     * 处理键值对字符串为对象,获取url里所有键值对返回
-     * @method url.getHTML5Hash
-     * @param {string} url  html5 history url 类似 tets.com?hash/path/to&amp;abc
-     * @return {string} 返回like=>  hash/path/to
+     * @class Gom.UI.Button
+     * @alias Button
+     * @extends {Gom.View}
+     * @param {object} opts 参数列表
+     * @param {object} [opts.wrapper] 组件根元素 固定值opts.replace = true 替换组件根元素wrapper
+     * @param {object} [opts.data]  组件数据相关
+     * @param {string} [opts.data.type='primary'] Button类型,可选有primary, positive, negative, link
+     * @param {boolean} [opts.data.outline=false] 是否有外边
+     * @param {string|Undefined} [opts.data.icon] icon className
+     * @param {string|Undefined} [opts.data.badge] 显示小数字
+     * @param {string} opts.data.title 标题
+     * @example
+     * &lt;div data-ui-widget="Button" data-opts='{"type":"negative", "badge": 10, "icon": "icon-search", "isblock": true}'>Text&lt;/div>
+     * 或
+     * new Button({data: opts, wrapper: '.class'});
      */
-    var getHTML5Hash = function(url){
-        var execRes = re.history.exec(url);
-        return execRes ? re.history.exec(url)[1] : '';
-    };
-    /**
-     * 处理键值对字符串为对象,获取url里所有键值对返回
-     * @method url.getParams
-     * @param {string} kvp key-value-pairs-string
-     * @return {object} 返回键值对对象
-     * @example  hashsearch=test; => {hashsearch: test}
-     */
-    var getParams = function (kvp) {
-        if (!kvp) return {};
-        var okvp = {}, kvpi; //object key val pairs;
-        var kvpArr = encodeURI(kvp).match(re.kv);
-        if (!kvpArr || !kvpArr.length) return {};
-        kvpArr.forEach(function (i) {
-            re.kv.lastIndex = 0;
-            kvpi = re.kv.exec(i);
-            okvp[kvpi[1]] = decodeURI(kvpi[2]);
-        });
-        return okvp;
-    };
-    /**
-     * 处理hash里 search部分键值对对象
-     * @method url.getHashSearch
-     * @param {string} url  string
-     * @param {boolean} isParse  为ture时返回的是对象
-     * @return {object} 返回hash里的search部分键值对对象
-     * @example  #hash/hashpath/123?hashsearch=test; =>hashsearch=test isParse为ture时返回的是对象{hashsearch: test}
-     */
-    var getHashSearch = function (hash, isParse) {
-        if (!hash) return isParse ? {} : '';
-        var hashSchStr = re.search.exec(hash)[2];
-        return isParse ? getParams(hashSchStr) : hashSchStr;
-    };
-
-    /**
-     * 处理hash里 path部分数组
-     * @method url.getHashPath
-     * @param {string} hash hash部分字符串
-     * @param {boolean} isParse  为ture时返回的是对象
-     * @return {array} 返回hash里的path部分数组
-     * @example  #hash/hashpath/123/?hashsearch=test; =>hashpath/123 isParse为ture时返回的是对象[hashpath,123]
-     */
-    var getHashPath = function (hash, isParse) {
-        if (!hash) return isParse ? [] : '';
-        var hashPathStr = re.path.exec(hash)[0];
-        return isParse ? hashPathStr.split('/') : hashPathStr;
-    };
-
-    /**
-     * 处理url 相关部件解析与 生成
-     * @method url.getUrl
-     * @param {string} url 传入url
-     * @param {boolean} isParse parse为true时返回的各部件为序列化对象，否则为string,同上面的isParse
-     * @return {object} 返回url各部件
-     * @example  http://domain.com/pathto/urlpath/123?search=1&amp;param=11/#hash/hashpath/123?hashsearch=test;
-     * return value like {
-                protocal: {string},   协议
-                domain: {string},     域名
-                path: {string},       路径
-                search: {object},     参数
-                hash: {string},       Hash，#后所有
-                hashsearch: {object}  Hash里参数
-                hashPath: {array}     Hash里数组
-            };
-     */
-    var getUrl  = function (url, isParse){
-        re.url.lastIndex = 0;
-        var uri = re.url.exec(url);
-        var hashfull = uri[10], path = uri[6] || '', search = uri[8] || '';
-        //console.log(uri, 'uri');
-        return {
-            protocal: uri[2],
-            domain: uri[3],
-            port: uri[5],
-            path: isParse ? path.substring(1).split('/') : path,
-            search: isParse ? getParams(search) : search,
-            hash: hashfull,
-            hashPath: getHashPath(hashfull, isParse) ,
-            hashsearch: getHashSearch(hashfull, isParse)
-        };
-    };
-    /**
-     * 将object 处理为url 相关部件search
-     * @method url.setParam
-     * @param {object} obj 将object对象转化为url参数字符串
-     * @param {string} equalStr key与value间的相等字符, 默认为 '='
-     * @param {string} joinStr key-value key-value间的连接符 默认为 '&amp;'
-     * @return {object} search
-     */
-    var setParams = function (obj, equalStr, joinStr) {
-        var paramstr = '', equalStr = equalStr || '=';
-        joinStr = joinStr || '&amp;';
-
-        for (var i in obj) {
-            paramstr += i + equalStr + obj[i] + joinStr;
+    var Button = View.extend({
+        init: function (opts) {
+            opts.data = _.extend({}, defaultsBtns, opts.data);
+            opts.tmplname = 'ui.button';
+            opts.replace = true;
+            $.extend(opts, this);   //将List实例混合到opts上， 去父对象上执行
+            this._super(opts);
         }
-        return paramstr.remove('right');
+    });
+
+    var defaults = {
+        content: ['Male', 'Female']         // 暂不支持定义
     };
     /**
-     * 将object 为url设置新增serach
-     * @method url.set
-     * @param {string} url 被操作的url
-     * @param {string} kvpOrk object or string key
-     * @param {string} value  value
-     * @return {object} 设置search的url
+     * 在ios的UI里toggle里是没有文字的，在android里是有的，这里暂时按ios里UI
+     * @class Gom.UI.Toggle
+     * @alias Toggle
+     * @extends {Gom.View}
+     * @param {object} opts
      */
-    var setUrl = function (url, kvpOrk, value) {
-        var kvpair = (typeof kvpOrk === 'object') ? setParams(kvpOrk) : (kvpOrk + '=' + value);
-        return url.replace(re.search, function (str, $0, $1) {
-            return ($0 ? $0 : '') + '?' + ($1 ? $1 + '&amp;' : '') + kvpair;
-        });
-    };
+    var Toggle = View.extend({
+        init: function (opts) {
+            opts.data = _.extend({}, defaults, opts);
+            opts.tmpl = '&lt;div class="toggle">&lt;div class="toggle-handle">&lt;/div>&lt;/div>';
+            opts.wrapper = opts.wrapper;
+            opts.replace = true;
+            $.extend(opts, this);   //将List实例混合到opts上， 去父对象上执行
+            this._super(opts);
+        },
+        show: function(){
+            var $wp = this.wrapper;
+            $wp.off().on('click', '.toggle-handle', function(){
+                $wp[($wp.hasClass('active') ? 'remove' : 'add') + 'Class']('active');
+            });
+            $wp.find('.toggle-handle').swipeLeft({
+                endCallback: function(){
+                    $wp.removeClass('active');
+                }
+            }).swipeRight({
+                endCallback: function(){
+                    $wp.addClass('active');
+                }
+            });
+        }
+    });
+
+    var CheckBox = View.extend({
+        init: function(opts){
+            this.wrapper = opts.wrapper || '.gom-checkbox';
+            this._super(opts);
+            this.bindEvent();
+        },
+        bindEvent: function(){
+            var $t;
+            this.wrapper.off().click(function(){
+                $t = $(this);
+                $t[$t.hasClass('active')?'removeClass':'addClass']('active');
+            });
+        }
+    });
+
     /**
-     * url
-     * @namespace url
+     * 在ios的UI里toggle里是没有文字的，在android里是有的，这里暂时按ios里UI
+     * @class Gom.UI.InputLocation
+     * @alias InputLocation
+     * @extends {Gom.View}
+     * @param {object} opts 参列
+     * @param {object} opts.onLocation 获取到地址时回调
      */
+    var InputLocation = View.extend({
+        init: function (opts) {
+            opts.data = _.extend({},  opts);
+            opts.tmpl = '&lt;div>&lt;input type="text" readonly class="input" placeholder="定位或选择" />&lt;span class="icon-area">&lt;i class="iconfont icon-location">定位&lt;/i>&lt;/span>&lt;/div>';
+            // opts.replace = true;
+            $.extend(opts, this);   //将List实例混合到opts上， 去父对象上执行
+            this._super(opts);
+        },
+        show: function(){
+            console.log('show');
+        },
+        events:{
+            'click .icon-area': 'getCoord',
+            'click input': 'selectLocation'
+        },
+        getInput: function(){
+            return this.wrapper.find('input');
+        },
+        selectLocation: function(){
+            console.log('selectLocation');
+            var num = [01,02,03];
+            new Select({data: {
+                title: '时间选择器',
+                cascade: false,
+                //modal:isModal,
+                //wrapper: $('.content').last(),
+                level: 3,
+                list: {'1':['上午','下午'],'2': num.concat(_.range(10,13)), '3': num.concat(_.range(10,61))},
+                onYes: function(val){
+
+                }
+            }}).render();
+        },
+        /**
+         *通过html5获取地理坐标
+         */
+        getCoord: function(){
+            console.log('getCoord');
+            var that = this; geo = navigator.geolocation;
+            if (!geo){
+                this.showToast('您的浏览器不支持地理位置');
+                return;
+            }
+            geo.getCurrentPosition(function(position){
+                that.location(position.coords, '0b895f63ca21c9e82eb158f46fe7f502', function(addr){
+                    that.getInput().val(addr.province+ addr.city + addr.district);
+                    that.onLocation ? that.onLocation(addr) : null;
+                });
+            });
+        },
+        /**
+         *通过GD key及coord找到对应的位置字符串
+         * @param {object} coord坐标
+         * @param {number} coord.longitude 坐标
+         * @param {object} coord.latitude  坐标
+         * @param {string} key  GD地图key
+         * @param {function} callback 回调
+         */
+        location: function(coord, key, callback){
+            var gdAddr = 'http://restapi.amap.com/v3/geocode/regeo?key='+key+'&amp;location='+coord.longitude+','+coord.latitude+'&amp;output=json';
+            $.ajax({
+                url: gdAddr,
+                dataType : 'jsonp',
+                success: function(data){
+                    if(data.info === 'OK'){
+                        var addr = data.regeocode.addressComponent;
+                        callback ? callback(addr) : null;
+                        console.log(addr);
+                    }
+                }
+            });
+        }
+    });
+
+    /* var defaultsForms = {
+     store: true
+     }
+     /!*
+     *
+     *!/
+     var Forms = Class.extend({
+     init: function(opts){
+     this.tmpl = '';
+     this.data = _.extend({}, defaultsForms, opts);
+     this.wrapper = opts.wrapper ? $(opts.wrapper) : null;
+     // this._id =
+     },
+     setStore: function(){
+     var $el = this.wrapper;
+     Store.set(this.wrapper, $el.serialize());
+     },
+     getStore: function(){
+     // Store.get()
+     }
+     });*/
 
     return {
-        get: getUrl,
-        set: setUrl,
-        getParams: getParams,
-        setParams: setParams,
-        getHashSearch: getHashSearch,
-        getHashPath: getHashPath,
-        getHTML5Hash: getHTML5Hash
+        CheckBox: CheckBox,
+        Toggle: Toggle,
+        Button: Button,
+        InputLocation: InputLocation
     };
-});</code></pre>
+});
+</code></pre>
         </article>
     </section>
 

@@ -42,8 +42,7 @@ new Button({data: opts, wrapper: '.class'});
 ```
 ## 声明式组件可以通过 $().data('widget')获取到该组件实例
      */
-    return {
-        Button: require('Button'),
+    var UIs =  {
         Header: require('Header'),
         List:   require('List'),
         Modal:  require('Modal'),
@@ -51,7 +50,8 @@ new Button({data: opts, wrapper: '.class'});
         Scroll: require('Scroll'),
         Slide:  require('Slide'),
         Select: require('Select'),
-        Toggle: require('Toggle'),
-        InputLocation: require('InputLocation')
-    }
+    };
+
+    var Forms = require('Forms');
+    return $.extend(UIs, Forms);
 });

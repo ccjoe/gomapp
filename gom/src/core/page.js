@@ -110,7 +110,6 @@ define(['View', 'UI'], function(View, UI){
                 $t = $(it);
                 uitype = $t.data('ui-widget');
                 uiopts = $t.data('opts');
-
                 $items = $t.find('item');
                 hasItemsLen = $items.length;
                 //判断是否是列表类组件对象，简言之：获取title 或 列表时的title与content

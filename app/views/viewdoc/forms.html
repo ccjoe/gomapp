@@ -29,7 +29,7 @@
             <label>位置</label>
             <input type="text" readonly class="input" placeholder="定位或选择" />
             <span class="icon-area"><i class="iconfont icon-location"></i></span>
-        </div>        
+        </div>
         <div class="input-row gom-location">
             <label>函数式定义位置</label>
             <div class="input-location"></div>
@@ -45,7 +45,6 @@
             <label>测试</label>
             <div class="input" data-ui-widget="Toggle"></div>
         </div>
-
         <ul class="table-view">
             <li class="table-view-cell">
                 公母(声明式定义togger):
@@ -54,6 +53,31 @@
             <li class="table-view-cell">
                 性取向(函数式定义togger):
                 <div class="toggle-wrapper active"></div>
+            </li>
+        </ul>
+        <ul class="table-view"  data-ui-widget="CheckBox" data-opts='{"position":"left"}'>
+            <input type="hidden" name="" />
+            <li class="table-view-cell item active">
+                <label>复选框,默认选中则加上active</label>
+            </li>
+            <li  class="table-view-cell item">
+                <label>复选框子项</label>
+            </li>
+            <li  class="table-view-cell item">
+                <label>复选框子项</label>
+            </li>
+        </ul>
+
+        <ul class="table-view" data-ui-widget="Radio">
+            <input type="hidden" name="" />
+            <li  class="table-view-cell item">
+                <label>单选框</label>
+            </li>
+            <li  class="table-view-cell item active">
+                <label>默认选中需要加上active</label>
+            </li>
+            <li  class="table-view-cell item">
+                <label>单选框子项</label>
             </li>
         </ul>
     </form>

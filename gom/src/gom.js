@@ -50,8 +50,7 @@ $(function() {
             Gom:    GOM_PATH + 'gom',
             App:    GOM_PATH + 'app',
             UI :    GOM_PATH + 'ui/ui',
-            Toggle :GOM_PATH + 'ui/ui.Toggle',
-            Button: GOM_PATH + 'ui/ui.button',
+            Forms : GOM_PATH + 'ui/ui.forms',
             Header: GOM_PATH + 'ui/ui.header',
             List:   GOM_PATH + 'ui/ui.list',
             Modal:  GOM_PATH + 'ui/ui.modal',
@@ -59,7 +58,6 @@ $(function() {
             Scroll: GOM_PATH + 'ui/ui.scroll',
             Slide:  GOM_PATH + 'ui/ui.slide',
             Select: GOM_PATH + 'ui/ui.select',
-            InputLocation: GOM_PATH + 'ui/ui.inputlocation',
             View:   GOM_PATH + 'core/view',
             Page:   GOM_PATH + 'core/page',
             Service:GOM_PATH + 'core/service',
@@ -67,12 +65,13 @@ $(function() {
             Url:    GOM_PATH + 'utils/url',
             Fx:     GOM_PATH + 'utils/fx',
             Swipe:  GOM_PATH + 'utils/swipe',
+            Utils:  GOM_PATH + 'utils/utils',
             UITmpl: GOM_PATH + 'ui/ui.tmpl'
         }
     });
 })();
 
-define('Gom', ['Service', 'Page', 'View', 'UI', 'App'], function(Service, Page, View, UI, App){
+define('Gom', ['Service', 'Page', 'View', 'UI', 'Utils', 'App'], function(Service, Page, View, UI, Utils, App){
        /**
      * Gom对象
      * @class Gom
@@ -101,7 +100,8 @@ define('Gom', ['Service', 'Page', 'View', 'UI', 'App'], function(Service, Page, 
         Page:   Page,
         View:   View,
         UI:     UI,
-        App:    App
+        Utils: Utils,
+        App:    App,
     };
     return Gom;
 });

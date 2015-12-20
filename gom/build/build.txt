@@ -7,7 +7,6 @@ core/view.js
 utils/fx.js
 ui/ui.modal.js
 core/service.js
-ui/ui.button.js
 ui/ui.header.js
 ui/ui.list.js
 ui/ui.sides.js
@@ -15,10 +14,10 @@ utils/swipe.js
 ui/ui.scroll.js
 ui/ui.slide.js
 ui/ui.select.js
-ui/ui.toggle.js
-ui/ui.inputlocation.js
+ui/ui.forms.js
 ui/ui.js
 core/page.js
+utils/utils.js
 utils/url.js
 app.js
 gom.js

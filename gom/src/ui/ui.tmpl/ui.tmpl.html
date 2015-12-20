@@ -53,7 +53,7 @@
 
 <script id="ui.modal" type="text/template">
 {{ if(data.type.indexOf('toast') === -1 ){ }}
-<div class="modal-overlay modal-overlay-visible"></div>
+<div class="modal-overlay"></div>
 <div class="modal-layout  modal-{{=data.type}} {{=data.class}}">
     <div class="modal-inner">
         {{ if(data.type === 'loading'){ }}

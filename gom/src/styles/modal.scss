@@ -27,6 +27,8 @@ $actionsPopoverHairline: rgba(0,0,0,0.2);
     z-index: 13000;
     visibility: hidden;
     opacity: 0;
+    -webkit-transition-duration: 400ms;
+    transition-duration: 400ms;
     &.modal-overlay-visible {
         visibility: visible;
         opacity: 1;

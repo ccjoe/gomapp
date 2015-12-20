@@ -1,4 +1,4 @@
-define(['Toggle', 'InputLocation'], function(Toggle, InputLocation) {
+define(['Forms'], function(Forms) {
     'use strict';
 
     return {
@@ -8,7 +8,7 @@ define(['Toggle', 'InputLocation'], function(Toggle, InputLocation) {
             this.createInputLocation();
         },
         createToggles: function(){
-            new Toggle({
+            new Forms.Toggle({
                 wrapper: '.toggle-wrapper',
                 data: {
                     content: ['声明式', '函数式']
@@ -16,10 +16,9 @@ define(['Toggle', 'InputLocation'], function(Toggle, InputLocation) {
             }).render();
         },
         createInputLocation: function(){
-            new InputLocation({
+            new Forms.InputLocation({
                 wrapper: '.input-location'
             }).render();
         }
     };
 });
-
