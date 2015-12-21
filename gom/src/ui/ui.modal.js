@@ -46,18 +46,18 @@ define(['View','Fx'], function(View) {
             opts.data = $.extend({}, data, opts.data);
             $.extend(opts, this);   //将List实例混合到opts上， 去父对象上执行
             opts.tmplname = 'ui.modal';
-            opts.wrapper = opts.wrapper || 'body';
+            opts.wrapper = opts.wrapper || '.modal-layout';
             this._super(opts);
             this.onYes = opts.data.onYes || noop;
             this.onNo = opts.data.onNo || noop;
             this.mask = opts.data.mask;
         },
         render: function(){
-            var wrap = this.wrapper;
+            var wrap = $('body');
             var frag = this.getHTMLFragment(), $gm = this.getModal();
             if(wrap){
                 if($gm.length){
-                    $gm.replaceWith(frag);
+                    //$gm.replaceWith(frag);
                 }else{
                     wrap.append(frag);
                 }
@@ -71,13 +71,29 @@ define(['View','Fx'], function(View) {
          */
         show: function (){
             $('.modal-overlay')[this.mask!==true?'removeClass':'addClass']('modal-overlay-visible');
-            //this.wrapper.fadeIn(200);
             this.reloc();
             this.toggleModal();
 
             if(this.isToast()){
-                //this.autoHide(3000);
+                this.autoHide(3000);
             }
+
+            this.initEvents();
+        },
+        initEvents: function(){
+            var that = this;
+            $('.modal-layout').on('click', '.modal-button', function(){
+                if($(this).hasClass('modal-btn-yes')){
+                    that._onYes();
+                }
+                if($(this).hasClass('modal-btn-no')){
+                    that._onNo();
+                }
+            });
+
+            $('.modal-overlay').off().click(function(){
+                that._onYes();
+            });
         },
         /**
          * 获取弹出层类型，即data.type
@@ -96,7 +112,7 @@ define(['View','Fx'], function(View) {
             return is;
         },
         getModal: function(){
-            return this.wrapper.find(this.isToast() ? '.modal-toast' : '.modal-layout');
+            return $(this.isToast() ? '.modal-toast' : '.modal-layout');
         },
         getMask: function(){
             return $('.modal-overlay');
@@ -158,8 +174,8 @@ define(['View','Fx'], function(View) {
             var props = {}; props[pos] = -h;
             ml.css('height', h).css(pos ? props : {'margin-top': -h/2}); //居上|下 //居中
         },
-        close: function(){
-            this.wrapper.hide();
+        remove: function(){
+            this.getModal().remove();
         },
         /**
          * 经过times millseconds 自动隐藏弹层
@@ -172,11 +188,6 @@ define(['View','Fx'], function(View) {
                 that.toggleModal('Out');
                 clearTimeout(time);
             }, times);
-        },
-        events: {
-            'click .modal-overlay': '_onNo',
-            'click .modal-btn-yes': '_onYes',
-            'click .modal-btn-no': '_onNo'
         },
         _onYes: function(){
             this.onYes();
