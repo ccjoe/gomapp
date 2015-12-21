@@ -46,11 +46,24 @@ define(['View','Fx'], function(View) {
             opts.data = $.extend({}, data, opts.data);
             $.extend(opts, this);   //将List实例混合到opts上， 去父对象上执行
             opts.tmplname = 'ui.modal';
-            opts.wrapper = opts.wrapper || '#modal';
+            opts.wrapper = opts.wrapper || 'body';
             this._super(opts);
             this.onYes = opts.data.onYes || noop;
             this.onNo = opts.data.onNo || noop;
             this.mask = opts.data.mask;
+        },
+        render: function(){
+            var wrap = this.wrapper;
+            var frag = this.getHTMLFragment(), $gm = this.getModal();
+            if(wrap){
+                if($gm.length){
+                    $gm.replaceWith(frag);
+                }else{
+                    wrap.append(frag);
+                }
+            }
+            this.show();
+            return wrap.length ? this : frag;
         },
         /**
          * 显示弹层
@@ -58,12 +71,12 @@ define(['View','Fx'], function(View) {
          */
         show: function (){
             $('.modal-overlay')[this.mask!==true?'removeClass':'addClass']('modal-overlay-visible');
-            this.wrapper.fadeIn(0);
+            //this.wrapper.fadeIn(200);
             this.reloc();
             this.toggleModal();
 
             if(this.isToast()){
-                this.autoHide(3000);
+                //this.autoHide(3000);
             }
         },
         /**
@@ -85,6 +98,9 @@ define(['View','Fx'], function(View) {
         getModal: function(){
             return this.wrapper.find(this.isToast() ? '.modal-toast' : '.modal-layout');
         },
+        getMask: function(){
+            return $('.modal-overlay');
+        },
         /**
          * 判断显示与隐藏及相应动画
          * @method Gom.UI.Modal#toggleModal
@@ -99,33 +115,37 @@ define(['View','Fx'], function(View) {
             }else{
                 this['scale'+inout+'Modal'](); //居中
             }
+            if(this.mask){
+                this.getMask()[inout==='In'?'addClass':'removeClass']('modal-overlay-visible');
+            }
         },
         scaleInModal: function(){
             this.getModal().css({
-                opacity: 0.2, transform: 'scale(1.5)'
+                opacity: 0.8, transform: 'scale(1.2)'
             }).fx({
                 opacity: 1, scale: 1
-            }, 300, 'easeOutCirc');
+            }, 500, 'easeOutCirc');
+
         },
         scaleOutModal: function(){
-            var that = this;
-            this.getModal().fx({
-                opacity: 0, scale: 0.2
+            var $gm = this.getModal();
+            $gm.fx({
+                opacity: 0, scale: 0.8
             }, 300, 'easeOutCirc', function(){
-                that.wrapper.fadeOut();
+                $gm.remove();
             });
         },
         slideInModal: function(pos){
             var fxprops = {opacity: 1};
                 fxprops[pos] = 0;
-            this.getModal().fx(fxprops, 300, 'easeOutCirc');
+            this.getModal().fx(fxprops, 500, 'easeOutCirc');
         },
         slideOutModal: function(pos){
-            var that = this;
             var fxprops = {opacity: 0};
                 fxprops[pos] = -this.getModal().height();
-            this.getModal().fx(fxprops, 300, 'easeOutCirc', function(){
-                that.wrapper.fadeOut();
+            var $gm = this.getModal();
+            $gm.fx(fxprops, 300, 'easeOutCirc', function(){
+                $gm.remove();
             });
         },
         /**
@@ -298,12 +318,12 @@ define(['View','Fx'], function(View) {
         toast: function(content, toastType){
             toastType = toastType || 'info';
             return new Modal({
-                wrapper: '#toast',
                 data:{
                     type: 'toast-'+toastType,
                     content: content,
                     btns: false,
-                    title: false
+                    title: false,
+                    mask: false
                 }
             }).render();
         }

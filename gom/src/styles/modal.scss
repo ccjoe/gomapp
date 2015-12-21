@@ -279,44 +279,35 @@ $actionsPopoverHairline: rgba(0,0,0,0.2);
     }
 }
 
-#modal{
-    width: 100%;
-    height: 100%;}
-
 //TOAST
-#toast{
-    display: none;
-    //@include absCenter(250px, auto, fixed);
+.modal-toast{
     position: fixed;
-    bottom:20%;
-    width: 100%;
+    bottom:25%;
     text-align: center;
-    .modal-toast{
-        padding: 5px 10px;
-        text-align: center;
-        display: inline-block;
-        margin: 0 auto;
-        color: #fff;
-        .icon{
-            font-size: 15px;
-            &:before{
-                font-size: 18px;
-                position: relative;
-                top:1px;
-                margin-right: 5px;
-                //background-color: #fff;
-                //border-radius: 100%;
-            }
+
+    padding: 5px 10px;
+    display: inline-block;
+    margin: 0 auto;
+    color: #fff;
+    .icon{
+        font-size: 15px;
+        &:before{
+            font-size: 18px;
+            position: relative;
+            top:1px;
+            margin-right: 5px;
+            //background-color: #fff;
+            //border-radius: 100%;
         }
     }
-    .modal-toast-info{
-        background-color: #333;
-    }
-    .modal-toast-success{
-        background-color: forestgreen;
-    }
-    .modal-toast-error{
-        background-color: orangered;
-    }
-
 }
+.modal-toast-info{
+    background-color: #333;
+}
+.modal-toast-success{
+    background-color: forestgreen;
+}
+.modal-toast-error{
+    background-color: orangered;
+}
+
