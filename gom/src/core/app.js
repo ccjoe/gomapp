@@ -115,6 +115,7 @@ new App(config, route).run();
         /**
          * 根据完整hash获取页面对象(即具体路由指向的路由表对象)
          * 路由查找规则，根据hash路径数据长度查找CRO对应对象，在每个长度的index找不到则查找'/:var'， 在最后index有‘/’则查找'/';
+         * @todo 如果index=0都没有找到，还是到首页吧，因为在其它环境时（如在app里，会默认加上?appinfo导致解析问题）
          * @method Gom.App#getCRO
          * @param {string} hashPath hashPath是形如 module/list  module/123的值
          * @return {object} CRO (Current Router Object)返回具体路由指向的路由表对象

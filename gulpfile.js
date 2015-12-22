@@ -48,6 +48,7 @@ gulp.task('gom-scss', function () {
 /*------------- Denpency Lib ------------*/
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
+
 gulp.task('gom-lib', function () {
     return gulp.src([GOM_PATH + 'src/3rd/zepto.js', GOM_PATH + 'src/3rd/!(zepto.js)*.js'])
         .pipe(uglify())
@@ -55,13 +56,17 @@ gulp.task('gom-lib', function () {
         .pipe(gulp.dest(GOM_PATH + 'build/'));
 });
 
-
 /*------------- RequireJs  ------------*/
 var exec = require('child_process').exec;
 gulp.task('gom-scripts', function () {
     exec('node ./gom/r.js -o ./gom/r-config.js', function (err, stdout, stderr) {
         console.log(stdout);
         console.log(stderr);
+        //以下内容执行的话将合并gom.js与base.js
+       /* gulp.src([GOM_PATH + 'src/3rd/zepto.js', GOM_PATH + 'src/3rd/!(zepto.js)*.js', GOM_PATH+'build/gom.js'])
+            .pipe(uglify())
+            .pipe(concat('gom.js'))
+            .pipe(gulp.dest(GOM_PATH + 'build/'));*/
     });
 });
 
@@ -78,20 +83,11 @@ var docs_exec = require('child_process').exec;
 gulp.task('gom-docs', function(){
    docs_exec('jsdoc -t ../minami -c "./docs-conf.json" -r ./gom/src/ --readme ./gom/readme.md -d ./gom/docs')
 });
-//'./gom/src/core/*.js', './gom/src/ui/*.js', './gom/src/utils/*.js',
-//var jsdoc = require("gulp-jsdoc");
-//gulp.task('gom-docs', function () {
-//    return gulp.src(['./gom/src/**/*.js', '!./gom/src/3rd/*.js'])
-//        .pipe(jsdoc( './gom/docs'), {
-//            path: '../corajs/jaguarjs-jsdoc/conf.json',
-//            anyTemplateSpecificParameter: 'whatever'
-//        });
-//})
 
 gulp.task('gom', ['gom-preCompiler', 'gom-scripts'], function () {
     gulp.start('gom-scss');
     gulp.start('gom-lib');
-    //gulp.start('gom-docs');
+    gulp.start('gom-docs');
 });
 
 /*----------------------GOM Frame Build END-------------------------*/

@@ -61,9 +61,15 @@
 <!-- endbuild -->
 
 <script src="../gom/build/base.js"></script>
+<!--在HTML里引入gomjs的二种方式都兼容-->
+<!--dev-->
 <!--<script src="../gom/src/gom.js" data-gom-path></script>-->
+<!--dev end-->
+<!--build-->
+<!--<script src="../gom/build/gom.js" data-gom-path></script>-->
+<!--build end-->
+<!--在HTML里没有引入gomjs的话，可以在app.js里用requirejs引入开发与Build版本的gomjs-->
 <script src="scripts/app.js"></script>
-
 <!--代码高亮-->
 <!--<script src="scripts/3rd/run_prettify.js"></script>-->
 </body>
