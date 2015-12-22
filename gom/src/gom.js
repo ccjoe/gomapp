@@ -48,7 +48,7 @@ $(function() {
     requirejs.config({
         paths:{
             Gom:    GOM_PATH + 'gom',
-            App:    GOM_PATH + 'app',
+            App:    GOM_PATH + 'core/app',
             UI :    GOM_PATH + 'ui/ui',
             Forms : GOM_PATH + 'ui/ui.forms',
             Header: GOM_PATH + 'ui/ui.header',

@@ -91,7 +91,7 @@ gulp.task('gom-docs', function(){
 gulp.task('gom', ['gom-preCompiler', 'gom-scripts'], function () {
     gulp.start('gom-scss');
     gulp.start('gom-lib');
-    gulp.start('gom-docs');
+    //gulp.start('gom-docs');
 });
 
 /*----------------------GOM Frame Build END-------------------------*/

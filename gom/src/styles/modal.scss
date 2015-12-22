@@ -37,20 +37,27 @@ $actionsPopoverHairline: rgba(0,0,0,0.2);
 .popup-overlay {
     z-index: 10500;
 }
-.modal-layout {
-    @include absCenter(270px, auto, fixed);
+.modal-layout, .modal-toast{
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    perspective: 1000;
     z-index: 13500;
-    //text-align: center;
+}
+.modal-layout {
+    position: absolute;
+    width: 270px;
+    margin-left: -135px;
     border-radius: 13px;
     opacity: 0;
     color:#000;
     overflow: hidden;
-    -webkit-backface-visibility: hidden;
-    -moz-backface-visibility: hidden;
-    -ms-backface-visibility: hidden;
-    -o-backface-visibility: hidden;
 }
-
+.modal-alert, .modal-confirm, .modal-loading, .modal-center{
+    left: 50%;
+    top:50%;
+}
 .modal-inner {
     padding: 15px;
     border-radius: 13px 13px 0 0;
@@ -150,7 +157,8 @@ $actionsPopoverHairline: rgba(0,0,0,0.2);
 
 .modal-loading{
     overflow: hidden;
-    @include absCenter(80px, auto, fixed);
+    width:80px;
+    margin-left:-40px;
     .modal-inner{
         background-color: transparent;
         width: 80px;
@@ -189,16 +197,19 @@ $actionsPopoverHairline: rgba(0,0,0,0.2);
 
 .modal-top{
     top: 0;
-    bottom: auto!important;
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
     .modal-inner{
         background-color:rgba(0, 0, 0, 0.85);
         color: #fff;
     }
 }
 .modal-bottom{
-    top: auto!important;
     bottom:0;
+    top: auto;
     max-height: 200px;
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
     .modal-inner{
         padding: 0;
     }
@@ -245,11 +256,10 @@ $actionsPopoverHairline: rgba(0,0,0,0.2);
     height: 100%;
     border-radius: 50%;
     background-color: #007aff;
-    opacity: 0.6;
+    opacity: 0.8;
     position: absolute;
     top: 0;
     left: 0;
-
     -webkit-animation: bounce 2.0s infinite ease-in-out;
     animation: bounce 2.0s infinite ease-in-out;
 }
@@ -281,15 +291,15 @@ $actionsPopoverHairline: rgba(0,0,0,0.2);
 
 //TOAST
 .modal-toast{
-    position: fixed;
+    position: absolute;
     bottom:25%;
+    left:50%;
     text-align: center;
-
     padding: 5px 10px;
-    display: inline-block;
     margin: 0 auto;
     color: #fff;
     .icon{
+        -webkit-font-smoothing: antialiased;
         font-size: 15px;
         &:before{
             font-size: 18px;

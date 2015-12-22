@@ -31,7 +31,7 @@ var config = {
         VIEWPORT: '#viewport',                //页面Viewport
         HEADER: '#header',                    //Header ID
         FOOTER: '#footer',                    //Footer ID
-        CONTENT: '.content'                   //页面交替内容
+        CONTENT: '.gom-content'                   //页面交替内容
     }
 };
 new App(config, route).run();

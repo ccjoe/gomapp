@@ -3,7 +3,7 @@
     dir: './build',
     paths: {
         Gom:   'gom',
-        App:   'app',
+        App:   'core/app',
         UI :   'ui/ui',
         Header:'ui/ui.header',
         Forms: 'ui/ui.forms',

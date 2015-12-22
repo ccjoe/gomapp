@@ -86,21 +86,17 @@
             opts.data = $.extend({}, data, opts.data);
             $.extend(opts, this);   //将List实例混合到opts上， 去父对象上执行
             opts.tmplname = 'ui.modal';
-            opts.wrapper = opts.wrapper || 'body';
+            opts.wrapper = opts.wrapper || '.modal-layout';
             this._super(opts);
             this.onYes = opts.data.onYes || noop;
             this.onNo = opts.data.onNo || noop;
             this.mask = opts.data.mask;
         },
         render: function(){
-            var wrap = this.wrapper;
-            var frag = this.getHTMLFragment(), $frag;
+            var wrap = $('body');
+            var frag = this.getHTMLFragment();
             if(wrap){
-                if(this.getModal().length){
-                    $('.modal-layout').replaceWith(frag);
-                }else{
-                    wrap.append(frag);
-                }
+                wrap.append(frag);
             }
             this.show();
             return wrap.length ? this : frag;
@@ -111,13 +107,29 @@
          */
         show: function (){
             $('.modal-overlay')[this.mask!==true?'removeClass':'addClass']('modal-overlay-visible');
-            //this.wrapper.fadeIn(200);
             this.reloc();
             this.toggleModal();
 
             if(this.isToast()){
                 this.autoHide(3000);
             }
+
+            this.initEvents();
+        },
+        initEvents: function(){
+            var that = this;
+            $('.modal-layout').on('click', '.modal-button', function(){
+                if($(this).hasClass('modal-btn-yes')){
+                    that._onYes();
+                }
+                if($(this).hasClass('modal-btn-no')){
+                    that._onNo();
+                }
+            });
+
+            $('.modal-overlay').off().click(function(){
+                that._onYes();
+            });
         },
         /**
          * 获取弹出层类型，即data.type
@@ -136,7 +148,7 @@
             return is;
         },
         getModal: function(){
-            return this.wrapper.find(this.isToast() ? '.modal-toast' : '.modal-layout');
+            return $(this.isToast() ? '.modal-toast' : '.modal-layout');
         },
         getMask: function(){
             return $('.modal-overlay');
@@ -155,34 +167,40 @@
             }else{
                 this['scale'+inout+'Modal'](); //居中
             }
+            if(this.mask){
+                this.getMask()[inout==='In'?'addClass':'removeClass']('modal-overlay-visible');
+            }
         },
         scaleInModal: function(){
             this.getModal().css({
                 opacity: 0.8, transform: 'scale(1.2)'
             }).fx({
-                opacity: 1, scale: 1
-            }, 500, 'easeOutCirc');
-            this.getMask().addClass('modal-overlay-visible');
+                opacity: 1, scale: 1,
+                translate3d: '0,0,0'
+            }, 5000, 'easeOutCirc');
+
         },
         scaleOutModal: function(){
-            var that = this;
-            this.getModal().fx({
-                opacity: 0, scale: 0.8
-            }, 300, 'easeOutCirc');
-            this.getMask().removeClass('modal-overlay-visible');
+            var $gm = this.getModal();
+            $gm.fx({
+                opacity: 0, scale: 0.8,
+                translate3d: '0,0,0'
+            }, 300, 'easeOutCirc', function(){
+                $gm.remove();
+            });
         },
         slideInModal: function(pos){
-            var fxprops = {opacity: 1};
-                fxprops[pos] = 0;
-            this.getModal().fx(fxprops, 500, 'easeOutCirc');
-            this.getMask().addClass('modal-overlay-visible');
+            var fxprops = {opacity: 1, translate3d: '0, 0, 0'};
+                //fxprops[pos] = 0;
+            this.getModal().fx(fxprops, 5000, 'easeOutCirc');
         },
         slideOutModal: function(pos){
-            var that = this;
-            var fxprops = {opacity: 0};
-                fxprops[pos] = -this.getModal().height();
-            this.getModal().fx(fxprops, 300, 'easeOutCirc');
-            this.getMask().removeClass('modal-overlay-visible');
+            var fxprops = {opacity: 0, translate3d: '0, 100%, 0'};
+                //fxprops[pos] = -this.getModal().height();
+            var $gm = this.getModal();
+            $gm.fx(fxprops, 300, 'easeOutCirc', function(){
+                $gm.remove();
+            });
         },
         /**
          * 重置为动画前状态, 会根据modal所处的位置重置modal会置
@@ -190,12 +208,17 @@
          * @private
          */
         reloc: function(){
-            var ml = this.getModal(),  h = ml.height(), pos = this.isTopBot();
-            var props = {}; props[pos] = -h;
-            ml.css('height', h).css(pos ? props : {'margin-top': -h/2}); //居上|下 //居中
+            var ml = this.getModal(), isTB = this.isTopBot(), isToast = this.isToast(),
+                h = ml.height(), w = ml.width(), centerProps={};
+            if(isToast){
+                centerProps['margin-left'] = -w/2;
+            } else if(!isTB){
+                centerProps['margin-top'] = -h/2;
+            }
+            ml.css('margin-top', centerProps);
         },
-        close: function(){
-            this.wrapper.hide();
+        remove: function(){
+            this.getModal().remove();
         },
         /**
          * 经过times millseconds 自动隐藏弹层
@@ -208,11 +231,6 @@
                 that.toggleModal('Out');
                 clearTimeout(time);
             }, times);
-        },
-        events: {
-            'click .modal-overlay': '_onNo',
-            'click .modal-btn-yes': '_onYes',
-            'click .modal-btn-no': '_onNo'
         },
         _onYes: function(){
             this.onYes();
@@ -354,12 +372,12 @@
         toast: function(content, toastType){
             toastType = toastType || 'info';
             return new Modal({
-                wrapper: '#toast',
                 data:{
                     type: 'toast-'+toastType,
                     content: content,
                     btns: false,
-                    title: false
+                    title: false,
+                    mask: false
                 }
             }).render();
         }
@@ -378,7 +396,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Mon Dec 21 2015 23:20:21 GMT+0800 (CST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Tue Dec 22 2015 13:13:34 GMT+0800 (中国标准时间) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

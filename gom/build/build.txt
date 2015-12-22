@@ -19,5 +19,5 @@ ui/ui.js
 core/page.js
 utils/utils.js
 utils/url.js
-app.js
+core/app.js
 gom.js

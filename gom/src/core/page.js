@@ -64,10 +64,10 @@ define(['View', 'UI'], function(View, UI){
             this.widgets = [];
             this.params = opts.params || null;
             this.seo = opts.seo || {
-                    title: '',
-                    keywords: '',
-                    description: ''
-                };
+                title: '',
+                keywords: '',
+                description: ''
+            };
             this.isback = opts.isback;
             this._super(opts);
             this.config = opts.config;
@@ -80,7 +80,7 @@ define(['View', 'UI'], function(View, UI){
         render: function () {
             //没有指定this.tmplname先渲染空页面,由ctrl及组件去填充页面
             if(!this.tmplname){
-                this.tmpl = '<div class="'+ (this.config.CLASSES.CONTENT.substring(1) || "content") +'"></div>';
+                this.tmpl = '<div class="'+ (this.config.CLASSES.CONTENT.substring(1) || "gom-content") +'"></div>';
                 this.show();
                 return;
             }
@@ -93,14 +93,56 @@ define(['View', 'UI'], function(View, UI){
          */
         show: function(){
             var isback = this.isback;
-            var effect = (isback === null) ? null : (!isback ? 'swipe-left':'swipe-right');
+            //var effect = (isback === null) ? null : (!isback ? 'swipe-left':'swipe-right');
 
-            this.push(this.getHTMLFragment('view'), effect);
+            this.push(this.getHTMLFragment('view'), isback);
             //this._parseEvent();
             if (this.title) {
                 this.setHeader();
             }
             this.initWidgetUI();
+        },
+        /**
+         * 页面转场 会保留最近的三个层次页面
+         * @method Gom.Page#push
+         * @param {element} dom    - 推入的htmlFragment
+         * @param {string} goback 前进与后退
+         **/
+        push: function(dom, isback){
+            var $dc = $(this.wrapper ? this.wrapper : '#viewport');
+            var from = !isback ? '0' : '100%',  //新层
+                to = !isback ? '-20%' : '0',    //旧层
+                lastfrom = !isback ? '100%' : '0',  //新层
+                fromcss = 'translateX('+lastfrom+')';
+
+            //不是后退则追加dom
+            if(!isback){
+                $dc.append(dom);
+            }
+            //后退时如果没有dom了，往前追加
+            if($dc.find('.content').length===1 && isback){
+                $dc.prepend(dom);
+            }
+            var $dcct = $dc.find('.content').addClass('gom-content'), $last =  $dcct.last();
+            if($dcct.length > 3){
+                $dcct.eq(0).remove();
+            }
+            if(typeof isback==='boolean'){
+                $last.prev()
+                    .animate({
+                    translateX: to,
+                    translate3d: '0,0,0'
+                }, 350, 'ease-out');
+
+                $last.css({'transform': fromcss})
+                    .animate({
+                        translateX: from,
+                        translate3d: '0,0,0'
+                    }, 350, 'ease-out', function(){
+                        isback ? $last.remove() : null;
+                    });
+            }
+            return;
         },
         //渲染页面后自动实例化组件，去支持声明式初始UI组件, 组件式的内容作为title, data-opts作为参数对象, 若有重复，以data-opts为主
         //声明式初始UI组件初始隐藏，解析后显示.
@@ -137,37 +179,6 @@ define(['View', 'UI'], function(View, UI){
                 $t.data('widget', that.widgets[i]);
                 $t.removeAttr('data-ui-widget');
             });
-        },
-        /**
-         * 页面转场 会保留最近的二个页面
-         * @method Gom.Page#push
-         * @param {element} dom    - 推入的htmlFragment
-         * @param {string} effect  - 效果有：swipe-left, swipe-rigth, swipe-top, swipe-bottom 推入的html
-         **/
-        push: function(dom, effect){
-            var $dc = $(this.wrapper ? this.wrapper : '#viewport');
-                $dc.append(dom);
-            var $dcct = $dc.find('.content');
-            if($dcct.length > 2){
-                $dcct.eq(0).remove();
-            }
-
-            if(!effect){    //如果没有效果直接放进去
-
-            }else{
-                var xy = /left|right/.test(effect) ? 'X' : 'Y',
-                    val = /left|top/.test(effect) ? '100%' : '-100%',
-                    effcss = 'translate'+xy+'('+val+')';
-
-                if(/swipe-/.test(effect)){
-                    $dcct.last().css({'transform': effcss})
-                        .animate({
-                            translateX: '0',
-                            translate3d: '0,0,0'
-                        }, 300, 'ease-out');
-                    return;
-                }
-            }
         },
         /**
          * 设置Header

@@ -54,43 +54,39 @@ define(['View','Fx'], function(View) {
         },
         render: function(){
             var wrap = $('body');
-            var frag = this.getHTMLFragment(), $gm = this.getModal();
-            if(wrap){
-                if($gm.length){
-                    //$gm.replaceWith(frag);
-                }else{
-                    wrap.append(frag);
-                }
+            var frag = this.getHTMLFragment();
+            var modal = this.getModal();
+            if(!this.getModal().length){
+                wrap.append(frag);
+            }else{
+                modal.replaceWith(frag);
             }
             this.show();
-            return wrap.length ? this : frag;
+            return this;
         },
         /**
          * 显示弹层
          * @method Gom.UI.Modal#show
          */
         show: function (){
-            $('.modal-overlay')[this.mask!==true?'removeClass':'addClass']('modal-overlay-visible');
             this.reloc();
             this.toggleModal();
 
             if(this.isToast()){
-                this.autoHide(3000);
+                //this.autoHide(3000);
             }
-
             this.initEvents();
         },
         initEvents: function(){
-            var that = this;
-            $('.modal-layout').on('click', '.modal-button', function(){
-                if($(this).hasClass('modal-btn-yes')){
+            var that = this, $t;
+            $('.modal-layout').off().on('click', '.modal-btn', function(){
+                $t = $(this);
+                if($t.hasClass('modal-btn-yes')){
                     that._onYes();
-                }
-                if($(this).hasClass('modal-btn-no')){
+                }else if($t.hasClass('modal-btn-no')){
                     that._onNo();
                 }
             });
-
             $('.modal-overlay').off().click(function(){
                 that._onYes();
             });
@@ -108,12 +104,21 @@ define(['View','Fx'], function(View) {
         isTopBot: function(){
             var type =  this.getType();
             var is = (type ==='top' || type==='bottom');
-            if(is){return type}
-            return is;
+            return is ? type : is;
         },
+        /**
+         * 获取弹层elements
+         * @method Gom.UI.Modal#getModal
+         * @returns {*|jQuery|HTMLElement}
+         */
         getModal: function(){
             return $(this.isToast() ? '.modal-toast' : '.modal-layout');
         },
+        /**
+         * 获取遮罩层
+         * @method Gom.UI.Modal#getMask
+         * @returns {*|jQuery|HTMLElement}
+         */
         getMask: function(){
             return $('.modal-overlay');
         },
@@ -129,38 +134,27 @@ define(['View','Fx'], function(View) {
             if(pos){
                 this['slide'+inout+'Modal'](pos);
             }else{
-                this['scale'+inout+'Modal'](); //居中
+                this['scale'+inout+'Modal']();
             }
             if(this.mask){
                 this.getMask()[inout==='In'?'addClass':'removeClass']('modal-overlay-visible');
             }
         },
         scaleInModal: function(){
-            this.getModal().css({
-                opacity: 0.8, transform: 'scale(1.2)'
-            }).fx({
-                opacity: 1, scale: 1
-            }, 500, 'easeOutCirc');
-
+            this.getModal().css({opacity: 0.8, transform: 'scale(1.2)'}).fx({opacity: 1, scale: 1, perspective:1000}, 500, 'easeOutCirc');
         },
         scaleOutModal: function(){
             var $gm = this.getModal();
-            $gm.fx({
-                opacity: 0, scale: 0.8
-            }, 300, 'easeOutCirc', function(){
+            $gm.fx({opacity: 0, scale: 0.8, perspective:1000}, 300, 'easeOutCirc', function(){
                 $gm.remove();
             });
         },
-        slideInModal: function(pos){
-            var fxprops = {opacity: 1};
-                fxprops[pos] = 0;
-            this.getModal().fx(fxprops, 500, 'easeOutCirc');
+        slideInModal: function(){
+            this.getModal().fx({opacity: 1, translate3d: '0,0,0', perspective:1000}, 500, 'easeOutCirc');
         },
-        slideOutModal: function(pos){
-            var fxprops = {opacity: 0};
-                fxprops[pos] = -this.getModal().height();
+        slideOutModal: function(){
             var $gm = this.getModal();
-            $gm.fx(fxprops, 300, 'easeOutCirc', function(){
+            $gm.fx({opacity: 0, translate3d: '0,100%,0', perspective:1000}, 300, 'easeOutCirc', function(){
                 $gm.remove();
             });
         },
@@ -170,9 +164,14 @@ define(['View','Fx'], function(View) {
          * @private
          */
         reloc: function(){
-            var ml = this.getModal(),  h = ml.height(), pos = this.isTopBot();
-            var props = {}; props[pos] = -h;
-            ml.css('height', h).css(pos ? props : {'margin-top': -h/2}); //居上|下 //居中
+            var ml = this.getModal(), isTB = this.isTopBot(), isToast = this.isToast(),
+                h = ml.height(), w = ml.width(), centerProps={};
+            if(isToast){
+                centerProps['margin-left'] = -w/2;
+            }else if(!isTB){
+                centerProps['margin-top'] = -h/2;
+            }
+            ml.css(centerProps);
         },
         remove: function(){
             this.getModal().remove();
@@ -264,7 +263,7 @@ define(['View','Fx'], function(View) {
                     title: false,
                     mask: false
                 }
-            }).render();
+            });
         },
         /**
          * 显示对话框

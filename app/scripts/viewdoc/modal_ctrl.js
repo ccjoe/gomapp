@@ -24,7 +24,6 @@
         },
         createLoading: function(){
             var loading = Modal.loading().render();
-            console.log(loading, 'laoding');
         },
         createConfirm: function(){
             var confirm = Modal.confirm({content: '这是一个测试对话框，这里可以是html',
@@ -39,10 +38,10 @@
         createToast: function(){
             var toastType = $('#toastType').val();
             console.log('选择的是：'+toastType);
-            var toast = Modal.toast('这是toast信息', toastType);
+           Modal.toast('这是toast信息', toastType);
         },
         createCenter: function(){
-            var toast = Modal.center({title: '中间弹出层', content: '骚年,举起你的双手，来创造一个对话框，OK?'});
+            Modal.center({title: '中间弹出层', content: '骚年,举起你的双手，来创造一个对话框，OK?'});
         },
         createBottom: function(){
             var viewList = {
