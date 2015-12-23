@@ -90,14 +90,20 @@ new App(config, route).run();
                 return false;
             });
         },
+        //设置了isbug即不读localStorage,否则读设置的值。
         getViewTmpl: function(tmplname, callback){
-            var that = this, view = Store.get('tmplname');
-            if(!!view){
-                callback?callback(view):null;
-                return;
+            var  that = this, expires = +that.config.EXPIRES;
+            if(expires>0){
+                var view = Store.get(tmplname);
+                if(!!view){
+                    callback?callback(view):null;
+                    return;
+                }
             }
             $.ajax({url:'views/'+tmplname+'.html', dataType:'html', success: function (tmpl){
-                Store.set(tmplname, tmpl, that.config.EXPIRES);
+                if(expires>0){
+                    Store.set(tmplname, tmpl,expires*60*60*1000+(+new Date()));
+                }
                 callback?callback(tmpl):null;
             }});
         },

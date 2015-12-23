@@ -39,6 +39,7 @@ define(['Modal'], function(Modal){
             Modal.toast('信号偏弱，访问超时', 'error');
         } else if (errorType === 'error') {
             var statusCode = xhr.status;
+            Modal.toast('请求发生错误,状态码:' +statusCode, 'error');
             if (statusCode === 404 || statusCode === 500) {   //处理状态码错误
                 //window.location.href = '?' + statusCode;
             }
@@ -46,7 +47,7 @@ define(['Modal'], function(Modal){
     };
 
     $(document).on('ajaxBeforeSend', function(e, xhr, options){
-        loading = Modal.loading();
+        loading = Modal.loading().render();
         var req = modelInject.request(e, xhr, options);
         if(req === false) return false;  //阻击发出请求
     }).on('ajaxComplete', function(e, xhr, options){
