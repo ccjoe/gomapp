@@ -20,14 +20,11 @@
     <meta name="msapplication-tap-highlight" content="no"> <!-- windows phone 点击无高光 -->
     <title>h5 mvc</title>
     <link href="./favicon.ico" type="image/x-icon" rel=icon> <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css css/vendor.css -->
-    <!-- bower:css -->
-    <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:css css/main.css -->
-    <!-- endbuild -->
-    <link rel="stylesheet" href="../gom/build/css/gom.css">
+
+    <!-- build:css css/all.css -->
+    <link rel="stylesheet" href="gom/build/css/gom.css">
     <link rel="stylesheet" href="css/main.css">
+    <!-- endbuild -->
 </head>
 
 <body>
@@ -40,7 +37,7 @@
 <!--页面区-->
 <div id="page">
     <!--页面区HEADER-->
-    <header id="header" class="bar bar-nav"  data-ui-widget="Header">GoM APP</header>
+    <header id="header" class="bar bar-nav"  data-ui-widget="Header">CTRIP GOM APP</header>
     <!--页面区主体内容-->
     <div class="ui-viewport" id="viewport">
 
@@ -52,26 +49,17 @@
 <div class="ui-sides" id="sides"></div>
 <div class="modal-overlay"></div>
 
-<!-- build:js scripts/vendor.js -->
-<!-- bower:js -->
-
-<!-- endbower -->
-<!-- endbuild -->
-<!-- build:js scripts/app.js -->
-<!-- endbuild -->
-
-<script src="../gom/build/base.js"></script>
-<!--在HTML里引入gomjs的二种方式都兼容-->
-<!--dev-->
-<!--<script src="../gom/src/gom.js" data-gom-path></script>-->
-<!--dev end-->
-<!--build-->
-<!--<script src="../gom/build/gom.js" data-gom-path></script>-->
-<!--build end-->
-<!--在HTML里没有引入gomjs的话，可以在app.js里用requirejs引入开发与Build版本的gomjs-->
+<script src="gom/build/base.js"></script>
+<script src="gom/build/gom.js" data-gom-path></script>
 <script src="scripts/app.js"></script>
-<!--代码高亮-->
-<!--<script src="scripts/3rd/run_prettify.js"></script>-->
-</body>
 
+<!--在HTML里没有引入gomjs的话，可以在app.js里用requirejs引入开发与Build版本的gomjs-->
+<!--dev-->
+<!--<script src="gom/src/gom.js" data-gom-path></script>-->
+<!--dev end-->
+<!--prod-->
+<!--<script src="gom/build/gom.js" data-gom-path></script>-->
+<!--prod end-->
+
+</body>
 </html>
