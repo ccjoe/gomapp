@@ -53,7 +53,8 @@
 
 <script id="ui.modal" type="text/template">
 {{ if(data.type.indexOf('toast') === -1 ){ }}
-<div class="modal-layout  modal-{{=data.type}} {{=data.class}}">
+<div class="modal-layout modal-{{=data.type}} {{=data.class}}">
+    {{ if(data.close===true){ }} <span class="icon icon-close"></span> {{ } }}
     <div class="modal-inner">
         {{ if(data.type === 'loading'){ }}
         <div class="spinner">
@@ -63,9 +64,7 @@
         {{ }else{ }}
         <div class="modal-title">
             {{if(data.type==='bottom' && data.btns.yes && data.btns.no){ }}<span class='btn modal-btn btn-link modal-btn-no'>{{=data.btns.no}}</span>{{=data.title}}<span class='btn modal-btn btn-link modal-btn-yes'>{{=data.btns.yes}}</span>
-            {{ }else{ }}
-                {{=data.title}}
-            {{ } }}
+            {{ }else{ }}  {{=data.title}}  {{ } }}
         </div>
         <div class="modal-text">{{=data.content}}</div>
         {{ } }}
