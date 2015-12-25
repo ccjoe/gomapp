@@ -10,7 +10,7 @@ var config = {
     GOM_PATH: isdebug ? '/gom/src/gom' : '/gom/build/gom',
     API_HOST: 'http://h5.jc.me:3000/api/',    //服务端API HOST
     STORE_VIEWS: true,                        //缓存模板
-    EXPIRES: isdebug ? 0 : 24,                //缓存时间(小时)
+    EXPIRES: isdebug ? 0 : 24*3600*1000,      //缓存时间(24小时)
     CLASSES: {                                //站点ID配置
         VIEWPORT: '#viewport',                //页面Viewport
         HEADER: '#header',                    //Header ID

@@ -102,7 +102,7 @@ new App(config, route).run();
             }
             $.ajax({url:'views/'+tmplname+'.html', dataType:'html', success: function (tmpl){
                 if(expires>0){
-                    Store.set(tmplname, tmpl,expires*60*60*1000+(+new Date()));
+                    Store.set(tmplname, tmpl, expires);
                 }
                 callback?callback(tmpl):null;
             }});

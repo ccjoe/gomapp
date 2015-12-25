@@ -97,6 +97,7 @@ define(['Store', 'UITmpl'], function(Store, UItmpl){
                     $frag = inheritAttrs(wrap, frag);
                     wrap.replaceWith($frag);
                     this.wrapper = $frag;   //会this.wrapper指向替代后的位置
+                    console.log(this.wrapper, 'this.wrapper');
                 }else if(frag){
                     wrap.html(frag)
                 }else{
@@ -188,39 +189,54 @@ define(['Store', 'UITmpl'], function(Store, UItmpl){
             return this;
         },
         /**
+         * 刷新events事件对象
+         * 解决三种情况：
+         * 1.当没有wrapper时，render()返回fragmentHTML,组件上的events对象无法绑定事件，当fragmentHTML插入document后，可以调用此方法重新绑定events对象事件
+         * 2.不在view组件的 wrapper里面，但想需要被 view组件的events对象解析绑定事件的html
+         * 3.组件实例化后新增或删除事件（还没有通过此方法实现，待考证是否有必要）
          * @method Gom.View#refreshEvent
-         * @todo 当没有wrapper时，render返回fragmentHTML,没有绑定事件，当fragmentHTML插入document后，可以调用此方法绑定固有事件
+         * @param {string} frag所在的选择器或元素
+         * @param {object} events对象所在的环境，即其父对象
          */
-        refreshEvent: function(){
-        //    //this.wrapper =  //@todo如何找到 fragmentHTML 被插入的多个位置并重新绑定事件
-        //    //this._parseEvent(this);
+        refreshEvent: function(frag, env){
+            this._parseEvent(env, frag);
         },
         /**
          * @private
          * @method Gom.View#_parseEvent
-         * @param {object} env env为事件绑定时的listener所在的执行环境,为ctrl或View, UI-widget
+         * @param {object} env env为事件绑定时的listener所在的执行环境, 即events对象所在的环境，也即父对象 为ctrl或View, UI-widget
+         * @param {element} delegateElement 事件代理所有的元素，默认是不需要这个参数的，其用在refreshEvent时
          * events: {
          *   'click,touch selector1,selector2': 'function',
          *   'touch .selecor': 'function2'
          * }
          * function有二个参数 (e, target),其this指向所在的环境即env
          **/
-        _parseEvent: function(env){
-            var that = this;
-            if(!this.events) return;
-            this.offview();
+        _parseEvent: function(env, delegateElement){
             var events = this.events;
+            if(!events) return;
+
+            var onfn=function(){}, $de = $(delegateElement);
+            //绑定事件的方法,获取方法名称使用会导致this指向window
+            if($de.length){
+                $de.off();
+                onfn = _.bind($de.on, $de);    //修复使this指向zepto on里的this指向的对象
+            }else if(this.wrapper.length){
+                onfn = _.bind(this.onview, this); //修复使this指向onview里的this指向的对象
+                this.offview();
+            }
+            //var that = this;
             for(var eve in events){
                 (function(eve){
                     var eventSrc = getEventSrc(eve),
                         eventListener = events[eve];
-
-                    that.onview(eventSrc.event, eventSrc.selector, function (e){
+                    //console.log($(delegateElement), that.wrapper,  eventSrc.event, eventSrc.selector, '绑定的事件');
+                    onfn(eventSrc.event, eventSrc.selector, function (e){
                         if(typeof eventListener === 'function'){
                             eventListener(e, this, env);   //events对象值为函数直接量时，参列为(e, target, that)第三个参数为所在的执行环境env,即this
                             return false;
                         }
-                        env[eventListener](e, this);    //events对象值为字符串时, 参列为(e, target){ //内部this指向执行环境 }
+                        env[eventListener](e, this);      //events对象值为字符串时, 参列为(e, target){ //内部this指向执行环境 }
                         return false;
                     });
                 })(eve);
@@ -231,7 +247,7 @@ define(['Store', 'UITmpl'], function(Store, UItmpl){
                 var ret = /(\w+)+\s+(.+)/.exec(eve);
                 return {
                     event: ret[1],  //event type 1
-                    selector: ret[2],  //event selector all
+                    selector: ret[2]  //event selector all
                 };
             }
         }

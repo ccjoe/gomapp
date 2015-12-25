@@ -209,9 +209,9 @@ gulp.task('serve', ['styles'], function () {
         '.tmp/fonts/**/*'
     ]).on('change', reload);
     //监听框架变化并作相应处理
-    gulp.watch('app/gom/src/ui/ui.tmpl/*.html', ['gom']);
-    gulp.watch('app/gom/src/styles/*.scss', ['gom-scss']);
-    gulp.watch('app/gom/src/**/*.js', ['gom']);
+    gulp.watch('app/gom/src/ui/ui.tmpl/*.html', ['gom-preCompiler']);
+    gulp.watch('app/gom/src/styles/**/*.scss', ['gom-scss']);
+    //gulp.watch('app/gom/src/**/*.js', ['gom']);
     //监听APP变化并作相应处理
     gulp.watch('app/styles/*.scss', ['styles']);
     //gulp.watch('app/fonts/**/*', ['fonts']);

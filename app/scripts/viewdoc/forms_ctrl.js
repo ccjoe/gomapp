@@ -11,13 +11,17 @@ define(['Forms'], function(Forms) {
             new Forms.Toggle({
                 wrapper: '.toggle-wrapper',
                 data: {
+                    name: "xqx",
                     content: ['声明式', '函数式']
                 }
             }).render();
         },
         createInputLocation: function(){
             new Forms.InputLocation({
-                wrapper: '.input-location'
+                wrapper: '.input-location',
+                data:{
+                    name:　'position'
+                }
             }).render();
         }
     };

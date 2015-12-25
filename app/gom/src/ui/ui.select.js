@@ -46,7 +46,6 @@ define(['View', 'Modal', 'Scroll', 'List'], function(View, Modal, Scroll, List) 
         },
         show: function(){
             var that = this; data = this.data;
-            console.log(this.modal, 'thismodal');
             if(data.modal){
                 Modal.bottom({title: data.title, content: this.makeScrollCtn(),
                     onYes: function(){
@@ -67,7 +66,8 @@ define(['View', 'Modal', 'Scroll', 'List'], function(View, Modal, Scroll, List) 
             this.initSelect();
         },
         getScrollRoot: function(){
-            return this.data.className ? $('.'+this.data.className) : $('.ui-scroll-select');
+            var $el = this.wrapper, $classEl = $('.'+this.data.className);
+            return $el.length ? $el : ($classEl.length ? $classEl : $('.modal-layout .ui-scroll-select'));
         },
         initSelect: function(){
             var $wrapper = this.getScrollRoot();
@@ -114,11 +114,11 @@ define(['View', 'Modal', 'Scroll', 'List'], function(View, Modal, Scroll, List) 
                     speed: 0.5,
                     outerFront: false,
                     outerEnd: false,
-                    wrapper    : '.ui-scroll-select-'+l,    //滚动对象所在的容器
+                    wrapper    : this.getScrollRoot().find('.ui-scroll-select-'+l),    //滚动对象所在的容器
                     className  : '.ss-cell-'+l,      //滚动对象的className
-                    endScroll: function(point){
-                        console.log(point, 'point');
+                    endScroll: function(){
                         var step = this.getSteps();
+                        console.log(this.$scroll, 'this.$scroll');
                         this.$scroll.find('li.table-view-cell').removeClass('active').eq(step).addClass('active');
                     }
                 });

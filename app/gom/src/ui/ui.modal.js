@@ -13,6 +13,7 @@ define(['View','Fx'], function(View) {
     var noop = function(){};
     /**
      * 弹层底层抽象类，如果需要自定义弹出层才需要用到, 自定义一般于Modal.layout，不满足才需要用到此类
+     * 弹层层的家庭比较大，有Loading，confirm， alert, center, popover, tips, popup, top , bottom, toast
      * 所有弹出层不可共存，但modal与toast可一起显示.
      *  @todo loading应该处理为可与其它弹出层共存
      *  @class Gom.UI.Modal
@@ -24,6 +25,7 @@ define(['View','Fx'], function(View) {
      *  @param {html|string} [opts.content] 弹层的html内部
      *  @param {string} [opts.class] 弹层自定义class
      *  @param {boolean} [opts.mask] 弹层是否显示遮罩
+     *  @param {boolean} [opts.close] 当且仅当为true时会在右上角显示关闭小图标
      *  @param {object} [opts.btns]  弹出层组件时按钮
      *  @param {string} [opts.btns.yes] 确定按钮名称
      *  @param {string} [opts.btns.no]  取消按钮名称
@@ -44,7 +46,7 @@ define(['View','Fx'], function(View) {
     var Modal = View.extend({
         init: function (opts) {
             opts.data = $.extend({}, data, opts.data);
-            $.extend(opts, this);   //将List实例混合到opts上， 去父对象上执行
+            $.extend(opts, this);   //将List实例混合到opts上， 去父对象上执行(_super())
             opts.tmplname = 'ui.modal';
             opts.wrapper = opts.wrapper || '.modal-layout';
             this._super(opts);
@@ -73,17 +75,17 @@ define(['View','Fx'], function(View) {
             this.toggleModal();
 
             if(this.isToast()){
-                //this.autoHide(3000);
+                this.autoHide(3000);
             }
             this.initEvents();
         },
         initEvents: function(){
             var that = this, $t;
-            $('.modal-layout').off().on('click', '.modal-btn', function(){
+            $('.modal-layout').off().on('click', '.modal-btn, .icon-close', function(){
                 $t = $(this);
                 if($t.hasClass('modal-btn-yes')){
                     that._onYes();
-                }else if($t.hasClass('modal-btn-no')){
+                }else if($t.hasClass('modal-btn-no') || $t.hasClass('icon-close')){
                     that._onNo();
                 }
             });
@@ -154,7 +156,7 @@ define(['View','Fx'], function(View) {
         },
         slideOutModal: function(){
             var $gm = this.getModal();
-            $gm.fx({opacity: 0, translate3d: '0,100%,0', perspective:1000}, 300, 'easeOutCirc', function(){
+            $gm.fx({opacity: 0.5, translate3d: '0,100%,0', perspective:1000}, 500, 'easeOutCirc', function(){
                 $gm.remove();
             });
         },
@@ -261,7 +263,7 @@ define(['View','Fx'], function(View) {
                     type: 'loading',
                     btns: false,
                     title: false,
-                    mask: false
+                    mask: true
                 }
             });
         },
@@ -290,6 +292,8 @@ define(['View','Fx'], function(View) {
             var bottomStatic = {
                 title: opts.title || '',
                 btns: false,
+                mask: false,
+                close: true
             };
             return this.layout(bottomStatic, opts, 'top').render();
         },
@@ -307,17 +311,80 @@ define(['View','Fx'], function(View) {
                 btns: {
                     no: '取消',
                     yes: '完成'
-                },
+                }
             };
             return this.layout(bottomStatic, opts, 'bottom').render();
         },
-        popover: function(opts){
-            var tipsStatic = {
-                type: 'tips',
-                btn: false,
-                content: [{},{},{}]
+        /**
+         * popup 较类似于bottom,只不过是全屏的 :)
+         * @method Gom.UI.Modal.bottom
+         */
+        popup: function(opts){
+            var popupStatic = {
+                title: opts.title || '',
+                class: 'modal-popup',
+                btns: {
+                    yes: 'OK',
+                    no: '取消'
+                }
             };
-            return this.layout(tipsStatic, opts).render();
+            return this.layout(popupStatic, opts, 'bottom').render();
+        },
+        /**
+         * 显示 popover layout
+         * @method Gom.UI.Modal.popover
+         * @param {object|string} opts 传入的opts参数为object时，会覆盖static默认参数, opts参数:@see Gom.UI.Modal#opts 传入的opts参数为string时，则表示为opts.content
+         * @param {object|string} opts.bindElem 弹出层绑定的元素（位置）
+         * @return {Modal} 弹出层实例
+         */
+        popover: function(opts){
+            var popoverStatic = {
+                title: '',
+                btns: false
+            };
+            if(!opts.bindElem){
+                console.warn('没有定义popover弹出层绑定的元素');
+                return;
+            }else{
+                var $bindElem = $(opts.bindElem),
+                    pos = $bindElem.offset();
+            }
+            var popover = this.layout(popoverStatic, opts, 'popover').render();
+            var top, trisize = 20, tripos = 'tri-bottom',
+                $modal = popover.getModal(), mw = $modal.width(), mh = $modal.height(),
+                top = pos.top - mh/2 - trisize/2,
+                left = pos.left+(pos.width-mw)/2,
+                fullWidth = $('body').width(), gap = 10;
+
+            if(pos.top< mh){
+                top = pos.top + mh/2 + trisize;
+                tripos = 'tri-top';
+            }
+            console.log(left, fullWidth, mw, mh, top, left, 'size');
+            if(left < gap){
+                left = gap;
+                tripos += ' tri-left';
+            }else if(left>fullWidth-mw-gap){
+                left = fullWidth-mw-gap;
+                tripos += ' tri-right';
+            }
+            $modal.addClass(tripos).css({
+                left: left,
+                top: top
+            });
+
+            return popover;
+        },
+        /**
+         * 显示 tips,实质就是popover，加上tips的样式而已(啊？不好意思暂不能多开，原因，你猜！)
+         * @method Gom.UI.Modal.tips
+         * @param {object|string} opts 传入的opts参数为object时，会覆盖static默认参数, opts参数:@see Gom.UI.Modal#opts 传入的opts参数为string时，则表示为opts.content
+         * @param {object|string} opts.bindElem 弹出层绑定的元素（位置）
+         * @return {Modal} 弹出层实例
+         */
+        tips: function(opts){
+            $.extend(opts, {'class': 'modal-tips', mask: false});
+            ModalExtend.popover(opts);
         },
         /**
          * 显示不同类型的弹出提示

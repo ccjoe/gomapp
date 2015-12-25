@@ -55,10 +55,10 @@ define(['Swipe', 'Fx'], function() {
             opts.direction = opts.direction || 'vertical';
 
             var frontText = opts.frontText || '松手刷新', endText = opts.endText || '松手加载';
-
+            var $el = $(opts.wrapper);
             var defalutsThis = {
-                $wrapper : $(opts.wrapper),
-                $scroll : $(opts.className),
+                $wrapper : $el,
+                $scroll  : $el.find(opts.className),
                 step    : opts.step || 0,
                 speed   : opts.speed || 1,
                 outer   : opts.outer===void 0 ? 100 : opts.outer,
@@ -73,6 +73,7 @@ define(['Swipe', 'Fx'], function() {
                 defalutsThis.outerFront = opts.outerFront===false?'':(opts.outerFront?opts.outerFront:getFreshStr('正在为您刷新', frontText));
                 defalutsThis.outerEnd =  opts.outerEnd===false?'':(opts.outerEnd?opts.outerEnd:getFreshStr('正在拼命加载中...', endText));
             }
+            console.log(defalutsThis.$wrapper, 'aaaaaaaaaaaaaaaaa');
             $.extend(this, defalutsThis);
             this.construct();
         },
@@ -82,7 +83,6 @@ define(['Swipe', 'Fx'], function() {
         },
         bindScroll: function(){
             var that = this, $wrapper = this.$wrapper, direct = this.isX?'horizontal':'vertical';
-            console.log(direct, 'direct');
             if(this.outerFront){
                 $wrapper.prepend('<div class="ui-scroll-front gom-scroll-out">'+this.outerFront+'</div>');
             }
@@ -128,7 +128,6 @@ define(['Swipe', 'Fx'], function() {
             if(toType === 'number'){
                 val = where;
             }
-            console.log(val, 'scrollTo val');
             this._scrollFxTo(val, callback);
             console.log(this.getSteps(), '滚动的步长为：');
         },
@@ -228,7 +227,7 @@ define(['Swipe', 'Fx'], function() {
                 distance = minRange;
                 if(!moveing){
                     this.onTop();
-                };
+                }
             }
             //底端越界超过允许的out时
             if(distance < -maxRange){
@@ -236,9 +235,8 @@ define(['Swipe', 'Fx'], function() {
                 if(!moveing){
                     this.onBottom();
                     //$('.ui-scroll-end').hide();
-                };
+                }
             }
-
             return distance;
         },
 
@@ -264,8 +262,6 @@ define(['Swipe', 'Fx'], function() {
                 ratio = speedval/swipeTime;
                 ratio = ratio > 20 ? 20 : ratio;
             }
-
-            console.log(swipeTime, ratio, 'swipeRatio');
             return ratio;
         },
 

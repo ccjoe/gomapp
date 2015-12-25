@@ -167,14 +167,14 @@ define(['View', 'UI'], function(View, UI){
                     uititle = {};
                     uititle.title = $t.text();
                 }
-                try{
+                //try{
                     that.widgets[i] = new UI[uitype]({
                         wrapper: $t,
                         data: $.extend({},  uititle, uiopts)
                     });
-                }catch(e){
-                    console.warn(uitype + '组件定义错误，UI对象上不存在此组件！');
-                }
+                //}catch(e){
+                //    console.warn(uitype + '组件定义错误，UI对象上不存在此组件！');
+                //}
                 that.widgets[i].render();
                 $t.data('widget', that.widgets[i]);
                 $t.removeAttr('data-ui-widget');
