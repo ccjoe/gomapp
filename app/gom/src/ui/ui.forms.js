@@ -48,9 +48,9 @@ define(['View', 'Select', 'Url', 'Store'], function(View, Select,Url, Store) {
          * @method Gom.UI.FormBase#getInput
          */
         getInput: function(){
-           var $el = this.wrapper;
-           var innerInput = $el.find('input:hidden'),
-               outerInput = $el.prev().filter('input:hidden');
+            var $el = this.wrapper;
+            var innerInput = $el.find('input:hidden'),
+                outerInput = $el.prev().filter('input:hidden');
             return innerInput.length ? innerInput : outerInput;
         },
         /**
@@ -141,9 +141,9 @@ define(['View', 'Select', 'Url', 'Store'], function(View, Select,Url, Store) {
             var that = this, val = this.getInput().val().split(','), $i;
             this.getItems().each(function(i,item){
                 $i = $(item); $ival = String($i.data('keyval'));
-               if( !!~val.indexOf($ival) ){
-                   that.selectItem($i, false, true);
-               }
+                if( !!~val.indexOf($ival) ){
+                    that.selectItem($i, false, true);
+                }
             });
         },
         events: {
@@ -214,7 +214,7 @@ define(['View', 'Select', 'Url', 'Store'], function(View, Select,Url, Store) {
          */
         fresh: function(){
             var that = this;
-                val = this.getInput().val();
+            val = this.getInput().val();
             this.getItems().each(function(i, item){
                 if($(item).data('keyval') == val){
                     that.selectItem(item);
@@ -263,7 +263,7 @@ define(['View', 'Select', 'Url', 'Store'], function(View, Select,Url, Store) {
     var InputLocation = View.extend({
         init: function (opts) {
             var data = opts.data;
-                data.name = data.name || 'location';
+            data.name = data.name || 'location';
             opts.tmpl = '<div><input type="text" readonly class="input" name="'+ opts.data.name +'" placeholder="定位或选择" /><span class="icon-area"><i class="iconfont icon-location">定位</i></span></div>';
             //opts.replace = true;
             $.extend(opts, this);   //将List实例混合到opts上， 去父对象上执行
@@ -302,7 +302,7 @@ define(['View', 'Select', 'Url', 'Store'], function(View, Select,Url, Store) {
                 return;
             }
             geo.getCurrentPosition(function(position){
-                that.location(position.coords, '0b895f63ca21c9e82eb158f46fe7f502', function(addr){
+                that.location(position.coords, config.mapkey || '0b895f63ca21c9e82eb158f46fe7f502', function(addr){
                     that.getInput().val(addr.province+ addr.city + addr.district);
                     that.onLocation ? that.onLocation(addr) : null;
                 });
@@ -383,7 +383,6 @@ define(['View', 'Select', 'Url', 'Store'], function(View, Select,Url, Store) {
          */
         inputStore: function(){
             var gets = this.getStore(true);
-            if(!gets) return;
             for(var name in gets){
                 this.wrapper.find('[name='+name+']').val(gets[name]);
             }
