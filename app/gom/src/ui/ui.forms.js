@@ -383,11 +383,10 @@ define(['View', 'Select', 'Url', 'Store'], function(View, Select,Url, Store) {
          */
         inputStore: function(){
             var gets = this.getStore(true);
+            if(!gets) return;
             for(var name in gets){
                 this.wrapper.find('[name='+name+']').val(gets[name]);
             }
-
-            console.log();
         },
         //监听所有表单的变化
         events:{
