@@ -1,4 +1,4 @@
-define(['Forms'], function(Forms) {
+define(['Forms', 'District'], function(Forms, District) {
     'use strict';
 
     return {
@@ -23,6 +23,9 @@ define(['Forms'], function(Forms) {
                     name:　'position'
                 }
             }).render();
+        },
+        showDistrict: function(){
+            District();
         }
     };
 });

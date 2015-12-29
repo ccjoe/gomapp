@@ -54,7 +54,7 @@ define(['Swipe', 'Fx'], function() {
         init: function (opts) {
             opts.direction = opts.direction || 'vertical';
 
-            var frontText = opts.frontText || '松手刷新', endText = opts.endText || '松手加载';
+            var frontText = opts.frontText || '上拉刷新', endText = opts.endText || '下拉加载';
             var $el = $(opts.wrapper);
             var defalutsThis = {
                 $wrapper : $el,
@@ -73,7 +73,6 @@ define(['Swipe', 'Fx'], function() {
                 defalutsThis.outerFront = opts.outerFront===false?'':(opts.outerFront?opts.outerFront:getFreshStr('正在为您刷新', frontText));
                 defalutsThis.outerEnd =  opts.outerEnd===false?'':(opts.outerEnd?opts.outerEnd:getFreshStr('正在拼命加载中...', endText));
             }
-            console.log(defalutsThis.$wrapper, 'aaaaaaaaaaaaaaaaa');
             $.extend(this, defalutsThis);
             this.construct();
         },
@@ -209,28 +208,41 @@ define(['Swipe', 'Fx'], function() {
             var maxOuter    = moveing ? this.outer : 0,
                 minRange = 0 + maxOuter,
                 maxRange = maxTransDis + maxOuter;
-            console.log(this.getScrollSize(), this.getWrapperSize(), distance, minRange, maxTransDis, maxRange, '滑动内容大小, 容器大小, 滑动距离, 最小范围, 最大位移， 最大范围');
+            //console.log(this.getScrollSize(), this.getWrapperSize(), distance, minRange, maxTransDis, maxRange, '滑动内容大小, 容器大小, 滑动距离, 最小范围, 最大位移， 最大范围');
             var absDis = Math.abs(distance), pxDis = distance + 'px';
+
+            var $usf = $('.ui-scroll-front');
+            var $use = $('.ui-scroll-end');
             //在顶端越界拉没超过允许的out时
-            if(0 < distance &&  distance <= minRange){
-                $('.ui-scroll-front').show().addClass('pull-up');
-                    //.css({height: pxDis,'line-height': pxDis});
+            if(0 < distance){
+                $usf.show();
+                //超过outer一半时箭头变化
+                if(distance <= minRange/2){
+                    $usf.removeClass('pull-up');
+                }else if(distance > minRange/2){
+                    $usf.addClass('pull-up');
+                }
+                //顶端越界超过允许的out时
+                if(distance >= minRange){
+                    distance = minRange;
+                    if(!moveing){
+                        this.onTop();
+                    }
+                }
             }
             //在底端越界拉没超过允许的out时
             if(maxTransDis < absDis &&  absDis <= maxRange){
-                pxDis = (absDis-maxTransDis)+'px';
-                $('.ui-scroll-end').show();
-                    //.css({height: pxDis, 'line-height': pxDis});
-            }
-            //顶端越界超过允许的out时
-            if(distance > minRange){
-                distance = minRange;
-                if(!moveing){
-                    this.onTop();
+                $use.show();
+                //超过outer一半时箭头变化
+                if(maxRange-absDis <= maxOuter/2){
+                    $use.removeClass('pull-up');
+                }else if(maxRange-absDis > maxOuter/2){
+                    $use.addClass('pull-up');
                 }
             }
+
             //底端越界超过允许的out时
-            if(distance < -maxRange){
+            if(distance <= -maxRange){
                 distance = -maxRange;
                 if(!moveing){
                     this.onBottom();

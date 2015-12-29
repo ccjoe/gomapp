@@ -15,7 +15,7 @@ define(['View','Fx'], function(View) {
      * 弹层底层抽象类，如果需要自定义弹出层才需要用到, 自定义一般于Modal.layout，不满足才需要用到此类
      * 弹层层的家庭比较大，有Loading，confirm， alert, center, popover, tips, popup, top , bottom, toast
      * 所有弹出层不可共存，但modal与toast可一起显示.
-     *  @todo loading应该处理为可与其它弹出层共存
+     *  @todo 模态类型分拆及共存问题？
      *  @class Gom.UI.Modal
      *  @alias Modal
      *  @extends {Gom.View}
@@ -24,7 +24,7 @@ define(['View','Fx'], function(View) {
      *  @param {string} [opts.title] 弹层标题
      *  @param {html|string} [opts.content] 弹层的html内部
      *  @param {string} [opts.class] 弹层自定义class
-     *  @param {boolean} [opts.mask] 弹层是否显示遮罩
+     *  @param {boolean} [opts.mask=false] 弹层是否显示遮罩
      *  @param {boolean} [opts.close] 当且仅当为true时会在右上角显示关闭小图标
      *  @param {object} [opts.btns]  弹出层组件时按钮
      *  @param {string} [opts.btns.yes] 确定按钮名称
@@ -74,7 +74,7 @@ define(['View','Fx'], function(View) {
             this.reloc();
             this.toggleModal();
 
-            if(this.isToast()){
+            if(this.is('toast')){
                 this.autoHide(3000);
             }
             this.initEvents();
@@ -100,8 +100,8 @@ define(['View','Fx'], function(View) {
         getType: function(){
             return this.data.type;
         },
-        isToast: function(){
-            return this.getType().indexOf('toast')!==-1;
+        is: function(type){
+            return this.getType().indexOf(type)!==-1;
         },
         isTopBot: function(){
             var type =  this.getType();
@@ -114,7 +114,11 @@ define(['View','Fx'], function(View) {
          * @returns {*|jQuery|HTMLElement}
          */
         getModal: function(){
-            return $(this.isToast() ? '.modal-toast' : '.modal-layout');
+            var $el;
+            var ist = this.is('toast'); isl = this.is('loading');
+            if(ist) return $('.modal-toast');
+            if(isl) return $('.modal-loading');
+            return $('.modal-layout');
         },
         /**
          * 获取遮罩层
@@ -166,7 +170,7 @@ define(['View','Fx'], function(View) {
          * @private
          */
         reloc: function(){
-            var ml = this.getModal(), isTB = this.isTopBot(), isToast = this.isToast(),
+            var ml = this.getModal(), isTB = this.isTopBot(), isToast = this.is('toast'),
                 h = ml.height(), w = ml.width(), centerProps={};
             if(isToast){
                 centerProps['margin-left'] = -w/2;
@@ -256,14 +260,15 @@ define(['View','Fx'], function(View) {
         /**
          * 显示loading
          * @method Gom.UI.Modal.loading
+         * @param {boolean} mask是否需要 mask
          */
-        loading:function(){
+        loading:function(mask){
             return new Modal({
                 data:{
                     type: 'loading',
                     btns: false,
                     title: false,
-                    mask: true
+                    mask: mask
                 }
             });
         },

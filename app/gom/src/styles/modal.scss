@@ -38,7 +38,7 @@ $triSize: 20px;
 .popup-overlay {
     z-index: 10500;
 }
-.modal-layout, .modal-toast{
+.modal-layout, .modal-toast, .modal-loading{
     -webkit-backface-visibility: hidden;
     -moz-backface-visibility: hidden;
     backface-visibility: hidden;
@@ -46,7 +46,7 @@ $triSize: 20px;
     perspective: 1000px;
     z-index: 13500;
 }
-.modal-layout {
+.modal-layout, .modal-loading{
     position: absolute;
     width: 270px;
     margin-left: -135px;

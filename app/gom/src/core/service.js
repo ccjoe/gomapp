@@ -47,11 +47,11 @@ define(['Modal'], function(Modal){
     };
 
     $(document).on('ajaxBeforeSend', function(e, xhr, options){
-        loading = Modal.loading().render();
+        loading = Modal.loading(false).render();
         var req = modelInject.request(e, xhr, options);
         if(req === false) return false;  //阻击发出请求
     }).on('ajaxComplete', function(e, xhr, options){
-        loading.toggleModal('Out');
+        loading.remove();
         modelInject.response(e, xhr, options);
     });
 
@@ -70,7 +70,7 @@ define(['Modal'], function(Modal){
         new Service({
             req:function(e, xhr, options){
                 console.log(e, xhr, options, 'def request inject');
-                if(!!~options.url.indexOf('http://xproduct.ctrip.me:3003')) return false;   //return false时拦截ajax发出请求发现
+                if(!!~options.url.indexOf('http://www.test.me:3003')) return false;   //return false时拦截ajax发出请求发现
             },
             res: function(e, xhr, options){
                 console.log(e, xhr, options, 'def response inject');
@@ -78,7 +78,7 @@ define(['Modal'], function(Modal){
         });
         //A:Service ajax操作
         var listModel = new Service({
-            url: 'http://xproduct.ctrip.me:3003/api/mall/receipts'
+            url: 'http://www.test.me:3003/api/mall/receipts'
         });
         listModel.fetch({userId:123}).done(function(data){
             console.log(data, 'data');

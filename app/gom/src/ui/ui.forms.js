@@ -1,4 +1,4 @@
-define(['View', 'Select', 'Url', 'Store'], function(View, Select,Url, Store) {
+define(['View', 'District', 'Url', 'Store'], function(View, District, Url, Store) {
     var defaultsBtns = {
         type: 'primary',    //primary, positive, negative, link
         outline: false, //true/false
@@ -277,19 +277,7 @@ define(['View', 'Select', 'Url', 'Store'], function(View, Select,Url, Store) {
             return this.wrapper.find('input');
         },
         selectLocation: function(){
-            console.log('selectLocation');
-            var num = [01,02,03];
-            new Select({data: {
-                title: '时间选择器',
-                cascade: false,
-                //modal:isModal,
-                //wrapper: $('.content').last(),
-                level: 3,
-                list: {'1':['上午','下午'],'2': num.concat(_.range(10,13)), '3': num.concat(_.range(10,61))},
-                onYes: function(val){
-
-                }
-            }}).render();
+            District.show();
         },
         /**
          *通过html5获取地理坐标

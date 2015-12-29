@@ -154,8 +154,7 @@ define(['View', 'Store','Fx'], function(View, Store) {
 
                   }
                   that.rollback(index);
-                  console.log(index, len);
-                    return;
+                  return;
                 }
             });
         },

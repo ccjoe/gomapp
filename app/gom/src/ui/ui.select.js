@@ -33,7 +33,7 @@ define(['View', 'Modal', 'Scroll', 'List'], function(View, Modal, Scroll, List) 
     var defaults = {
         title: '请选择',
         yardNo: 3,
-        modal: true,
+        modal: true
     };
     var Select = View.extend({
         init: function(opts){
@@ -47,7 +47,9 @@ define(['View', 'Modal', 'Scroll', 'List'], function(View, Modal, Scroll, List) 
         show: function(){
             var that = this; data = this.data;
             if(data.modal){
-                Modal.bottom({title: data.title, content: this.makeScrollCtn(),
+                Modal.bottom({
+                    title: data.title,
+                    content: this.makeScrollCtn(),
                     onYes: function(){
                         var val = that.getSelect();
                         data.onYes ? data.onYes(val) : null;
