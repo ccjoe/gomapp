@@ -48,7 +48,6 @@ define(['View','Fx'], function(View) {
             opts.data = $.extend({}, data, opts.data);
             $.extend(opts, this);   //将List实例混合到opts上， 去父对象上执行(_super())
             opts.tmplname = 'ui.modal';
-            opts.wrapper = opts.wrapper || '.modal-layout';
             this._super(opts);
             this.onYes = opts.data.onYes || noop;
             this.onNo = opts.data.onNo || noop;
@@ -57,8 +56,13 @@ define(['View','Fx'], function(View) {
         render: function(){
             var wrap = $('body');
             var frag = this.getHTMLFragment();
+            if(this.wrapper.length){
+                this.wrapper.html(frag);
+                this.show();
+                return this;
+            }
             var modal = this.getModal();
-            if(!this.getModal().length){
+            if(!modal.length){
                 wrap.append(frag);
             }else{
                 modal.replaceWith(frag);
@@ -114,11 +118,11 @@ define(['View','Fx'], function(View) {
          * @returns {*|jQuery|HTMLElement}
          */
         getModal: function(){
-            var $el;
+            var $el = this.wrapper.length ? this.wrapper : $('body');
             var ist = this.is('toast'); isl = this.is('loading');
-            if(ist) return $('.modal-toast');
-            if(isl) return $('.modal-loading');
-            return $('.modal-layout');
+            if(ist) return $el.find('> .modal-toast');
+            if(isl) return $el.find('> .modal-loading');
+            return $el.find('> .modal-layout');
         },
         /**
          * 获取遮罩层
@@ -133,7 +137,7 @@ define(['View','Fx'], function(View) {
          * @method Gom.UI.Modal#toggleModal
          * @param {string} [inOrOut=In] in|显+out|隐
          * @desc 上下弹出层会采用slide+fade动画，其它采用scale+fade
-         **/
+         */
         toggleModal: function(inout){
             inout = inout || 'In';
             var pos = this.isTopBot();
@@ -147,7 +151,9 @@ define(['View','Fx'], function(View) {
             }
         },
         scaleInModal: function(){
-            this.getModal().css({opacity: 0.8, transform: 'scale(1.2)'}).fx({opacity: 1, scale: 1, perspective:1000}, 500, 'easeOutCirc');
+            var size = 1; dsize = this.data.size;
+            if(dsize) size = dsize;
+            this.getModal().css({opacity: 0.8, transform: 'scale(1.2)'}).fx({opacity: 1, scale: size, perspective:1000}, 500, 'easeOutCirc');
         },
         scaleOutModal: function(){
             var $gm = this.getModal();
@@ -170,11 +176,9 @@ define(['View','Fx'], function(View) {
          * @private
          */
         reloc: function(){
-            var ml = this.getModal(), isTB = this.isTopBot(), isToast = this.is('toast'),
-                h = ml.height(), w = ml.width(), centerProps={};
-            if(isToast){
-                centerProps['margin-left'] = -w/2;
-            }else if(!isTB){
+            var ml = this.getModal(), isTB = this.isTopBot(),
+                h = ml.height(), centerProps={};
+            if(!isTB){
                 centerProps['margin-top'] = -h/2;
             }
             ml.css(centerProps);
@@ -260,15 +264,19 @@ define(['View','Fx'], function(View) {
         /**
          * 显示loading
          * @method Gom.UI.Modal.loading
-         * @param {boolean} mask是否需要 mask
+         * @param {boolean} mask 是否需要 mask
+         * @param {string} preload loading放入的位置
+         * @param {number} size loading的大小， 最好是0-1之间的比例;
          */
-        loading:function(mask){
+        loading:function(mask, preload, size){
             return new Modal({
+                wrapper: preload,
                 data:{
                     type: 'loading',
                     btns: false,
                     title: false,
-                    mask: mask
+                    mask: mask,
+                    size: size
                 }
             });
         },

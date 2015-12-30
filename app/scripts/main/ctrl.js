@@ -12,13 +12,13 @@ define(['UI'], function(UI, List, Sides) {
         },{
             title: '组件及插件(UI)',
             content: 'UI组件及插件文档【VIEW】',
-            hash: '?viewdoc',
+            hash: '?viewdoc&debug=1',
             badge: 5,
             img: 'images/v.png'
         },{
             title: '页面Page与Ctrl相关',
             content: '页面文档及相关【VIEW,CTRL】',
-            hash: '?pagedoc',
+            hash: 'http://localhost:9000/?pagedoc&debug=1',
             img: 'images/c.png'
         },{
             title: '模型Model类',

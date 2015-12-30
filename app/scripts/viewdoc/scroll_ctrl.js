@@ -75,19 +75,17 @@ define(['UI'], function(UI) {
                  //outerEnd   : '允许出界位置下面显示的html或文字',
                  onScroll: function(point){ },    //每次滚动时回调
                  endScroll: function(point){ console.log('单次滚动结束'); }, //   每次滚动停回调
-                 onTop: function(){
+                 onFront: function(){
                      /*ajax  请求结束后，改变hold的状态即可*/
                      var that = this;
-                     that.showFresh();
                      $.get('/views/viewdoc/scroll-x.html', function(data){
                          that.hideFresh();
                      })
                  },       //滚动到上时
-                 onBottom:  function(){
+                 onEnd:  function(){
                      /*ajax  请求结束后，改变hold的状态即可*/
                      var that = this;
-                     that.showFresh('end');
-                     $.get('/views/viewdoc/scroll-x.html', function(data){
+                     $.get('/views/viewdoc/scroll-y.html', function(data){
                          that.hideFresh('end');
                      })
                  }   // 滚动到下时
@@ -99,13 +97,14 @@ define(['UI'], function(UI) {
                  className  : '.scroll-content',      //滚动对象的className
                  direction  : 'horizontal', //'vertical', //水平与垂直
                  step       : $('.scroll-example2').width(), // 步长
-                 outer      : 50,  //允许出界的范围
-                 //outerFront  允许出界位置上面显示的html或文字
+                 outer      : 0,  //允许出界的范围
+                 outerFront : false,  //允许出界位置上面显示的html或文字
+                 outerEnd : false,  //允许出界位置上面显示的html或文字
                 // outerEnd  允许出界位置下面显示的html或文字
                  onScroll: function(point){ },    //每次滚动时回调
                  endScroll: function(point){ console.log('单次滚动结束'); },          //每次滚动停回调
-                 onTop: function(){ console.log('滚动到最上面，滚动停止时触发')},       //滚动到上时
-                 onBottom:  function(){ console.log('滚动到最下面，滚动停止时触发')}    //滚动到下时
+                 onFront: function(){ console.log('滚动到最上面，滚动停止时触发')},       //滚动到上时
+                 onEnd:  function(){ console.log('滚动到最下面，滚动停止时触发')}    //滚动到下时
             });
         },
         showModalScroll: function(){

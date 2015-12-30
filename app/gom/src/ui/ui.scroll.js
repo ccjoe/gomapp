@@ -16,7 +16,6 @@ define(['Swipe', 'Fx'], function() {
      * opts.outer       options 允许出界的范围,默认100
      * opts.outerFront       options 自定义front出界显示的html,false时没有，''时有默认，指定时显示指定
      * opts.outerEnd         options 同上
-     *
      * opts.frontText  options 允许出界位置上面显示的html或文字
      * opts.endText  options 允许出界位置上面显示的html或文字
      * opts.speed 1     0与1之间  速度控制，默认1，在time选择器时设置小更容易选择，在页面滚动设置为1较好。
@@ -24,8 +23,8 @@ define(['Swipe', 'Fx'], function() {
      * opts.direction   options vertical/horizontal 默认为垂直 水平与垂直
      * opts.onScroll    options 每次滚动时回调 回调里的this指向本实例
      * opts.endScroll   options 每次滚动停回调 回调里的this指向本实例
-     * opts.onTop       options 滚动到上时 回调里的this指向本实例
-     * opts.onBottom    options 滚动到下时 回调里的this指向本实例
+     * opts.onFront       options 滚动到上时 回调里的this指向本实例
+     * opts.onEnd    options 滚动到下时 回调里的this指向本实例
      //* opts.scrollBar options 是否显示滚动条
      * @example 实例
      * new Scroll({
@@ -38,8 +37,8 @@ define(['Swipe', 'Fx'], function() {
              EndText   : '允许出界位置下面显示的html或文字',
              onScroll: function(point){ },    //每次滚动时回调
              endScroll: function(point){ console.log('单次滚动结束'); }, //   每次滚动停回调
-             onTop: function(){ console.log('滚动到最上面，滚动停止时触发')},       //滚动到上时
-             onBottom:  function(){ console.log('滚动到最下面，滚动停止时触发')}   // 滚动到下时
+             onFront: function(){ console.log('滚动到最上面，滚动停止时触发')},       //滚动到上时
+             onEnd:  function(){ console.log('滚动到最下面，滚动停止时触发')}   // 滚动到下时
         });
      */
 
@@ -65,8 +64,8 @@ define(['Swipe', 'Fx'], function() {
                 isX     : opts.direction !== 'vertical',
                 onScroll  : opts.onScroll || function(){},
                 endScroll : opts.endScroll || function(){},
-                onTop : opts.onTop || function(){},
-                onBottom : opts.onBottom || function(){}
+                onFront : opts.onFront || function(){},
+                onEnd : opts.onEnd || function(){}
             };
 
             if(!defalutsThis.isX && Number(defalutsThis.outer)>0){
@@ -86,7 +85,7 @@ define(['Swipe', 'Fx'], function() {
                 $wrapper.prepend('<div class="ui-scroll-front gom-scroll-out">'+this.outerFront+'</div>');
             }
             if(this.outerEnd){
-             $wrapper.prepend('<div class="ui-scroll-end gom-scroll-out">'+this.outerEnd+'</div>');
+             $wrapper.prepend('<div class="ui-scroll-end gom-scroll-out pull-up">'+this.outerEnd+'</div>');
             }
 
             var swipeOpts = {
@@ -95,7 +94,7 @@ define(['Swipe', 'Fx'], function() {
                     that._setScrollTrans(point, true);
                 },
                 endCallback: function(point){
-                    that._setScrollTrans(point);
+                    that._setScrollTrans(point, false);
                 }
             };
             this.isX ?
@@ -137,7 +136,7 @@ define(['Swipe', 'Fx'], function() {
          * @return  {number} 步长数
          */
         getSteps: function(){
-            return   this.$scroll.data('swipe-steps');
+            return   this.$scroll.data('swipe-steps') || 0;
         },
         _scrollFxTo: function(val, callback){
             //有步长值的话以步长计
@@ -147,16 +146,16 @@ define(['Swipe', 'Fx'], function() {
                 val = vals.val;
                 this.$scroll.data('swipe-steps', vals.stepNum);
             }
-
+            console.log('set data swipe offset');
             this.$scroll.data('swipe-offset', val);
             this.$scroll.fx(this._scrollCount(val), 'normal', 'linear', callback?callback:function(){});  //, 'normal', 'easeOutQuint'
         },
         //滚动时回调（moving为true为事件中回调，false为事件结束时回调）
-        _setScrollTrans: function(point, moveing){
+        _setScrollTrans: function(point, moving){
             var distance = this.isX ? point.swipeX : point.swipeY;
-            var transVal = this._getTransVal(distance, point.swipeTime, moveing);
+            var transVal = this._getTransVal(distance, point.swipeTime, moving);
             var transStr = this._scrollCount(transVal);
-            if(moveing){
+            if(moving){
                 this.$scroll.css(transStr);
                 this.onScroll(point);
             }else{
@@ -168,7 +167,7 @@ define(['Swipe', 'Fx'], function() {
             }
         },
         /**
-         * 滚动到顶请求数据时需要调用，一般用于onTop显示刷新请求数据，成功后调用hideFresh()隐藏刷新
+         * 滚动到顶请求数据时需要调用，一般用于onFront显示刷新请求数据，成功后调用hideFresh()隐藏刷新
          * @method Gom.UI.Scroll#showFresh
          * @param {string} [pos=front] 显示刷新，头部刷新front,尾部end
          * @return  {number} 步长数
@@ -196,57 +195,80 @@ define(['Swipe', 'Fx'], function() {
         getMaxTrans: function(){
             return this.getScrollSize() - this.getWrapperSize();
         },
-        //计算当前滚动到的并限制边界范围
-        _getTransVal: function(distance, swipeTime, moveing){
-            distance = moveing ? distance : distance * this._getRatio(swipeTime);
-            var swipeOffset = this.$scroll.data('swipe-offset') || 0;
-            if(swipeOffset){
-                distance += swipeOffset;
-            }
-            //限制区域
-            var maxTransDis = this.getMaxTrans();
-            var maxOuter    = moveing ? this.outer : 0,
-                minRange = 0 + maxOuter,
+        //hold时与滑动时的边界是带有outer的， 滑动停止时的边界不带有outer值，
+        rangeCheck: function(dis, moving){
+            var maxTransDis = this.getMaxTrans(),
+                maxOuter    = moving ? this.outer : 0,
                 maxRange = maxTransDis + maxOuter;
-            //console.log(this.getScrollSize(), this.getWrapperSize(), distance, minRange, maxTransDis, maxRange, '滑动内容大小, 容器大小, 滑动距离, 最小范围, 最大位移， 最大范围');
-            var absDis = Math.abs(distance), pxDis = distance + 'px';
+
+            if(dis > maxOuter){
+                dis = maxOuter;
+            }else if(Math.abs(dis) > maxRange){
+                dis = -maxRange;
+            }
+            return dis;
+        },
+        //计算当前滚动到的并限制边界范围
+        _getTransVal: function(distance, swipeTime, moving){
+
+            //限制区域
+            var maxTransDis = this.getMaxTrans(),
+                maxOuter    = this.outer,
+                maxRange = maxTransDis + maxOuter,
+                singleSwipeDis = distance,
+                swipeOffset = this.$scroll.data('swipe-offset') || 0;
+                distance += swipeOffset;
+
+
+            if(0>distance && distance>=-maxTransDis){
+                distance = moving ? distance : singleSwipeDis*this._getRatio(swipeTime)+swipeOffset;
+            }
+            var absDis = Math.abs(distance);
+            console.log(distance > maxOuter, absDis, absDis> maxRange, this.outerFront, this.outerEnd, moving, this._getRatio(swipeTime), this.getScrollSize(), this.getWrapperSize(), distance, maxTransDis, maxRange, '滑动内容大小, 容器大小, 滑动距离, 最小范围, 最大位移， 最大范围');
+
+            distance = this.rangeCheck(distance, moving);
+
+            if(!this.outer){
+                return distance;
+            }
 
             var $usf = $('.ui-scroll-front');
             var $use = $('.ui-scroll-end');
-            //在顶端越界拉没超过允许的out时
-            if(0 < distance){
+            //在顶端越界时
+            if(distance >= 0 && this.outerFront){
                 $usf.show();
                 //超过outer一半时箭头变化
-                if(distance <= minRange/2){
+                if(distance <= maxOuter/2){
                     $usf.removeClass('pull-up');
-                }else if(distance > minRange/2){
+                }else if(distance > maxOuter/2){
                     $usf.addClass('pull-up');
-                }
-                //顶端越界超过允许的out时
-                if(distance >= minRange){
-                    distance = minRange;
-                    if(!moveing){
-                        this.onTop();
+                    if(!moving){
+                        this.showFresh();
+                        this.onFront();
                     }
                 }
-            }
-            //在底端越界拉没超过允许的out时
-            if(maxTransDis < absDis &&  absDis <= maxRange){
-                $use.show();
-                //超过outer一半时箭头变化
-                if(maxRange-absDis <= maxOuter/2){
-                    $use.removeClass('pull-up');
-                }else if(maxRange-absDis > maxOuter/2){
-                    $use.addClass('pull-up');
+                if(!moving){ //moveEnd时
+                    $usf.removeClass('pull-up');
+                    distance = 0;
                 }
             }
 
-            //底端越界超过允许的out时
-            if(distance <= -maxRange){
-                distance = -maxRange;
-                if(!moveing){
-                    this.onBottom();
-                    //$('.ui-scroll-end').hide();
+            if(absDis > maxTransDis && this.outerEnd){
+                $use.show();
+                var moveOutDis = maxRange-absDis;
+                //超过outer一半时箭头变化
+                if(moveOutDis <= maxOuter/2){
+                    $use.removeClass('pull-up');
+                    if(!moving){
+                        this.showFresh('end');
+                        this.onEnd();
+                    }
+                }else if(moveOutDis > maxOuter/2){
+                    $use.addClass('pull-up');
+                }
+                if(!moving){ //moveEnd时
+                    $use.addClass('pull-up');
+                    distance = -maxTransDis;
                 }
             }
             return distance;
@@ -254,7 +276,6 @@ define(['Swipe', 'Fx'], function() {
 
         //计算当前滚动到的并限制步长结果的值,返回步长数与与滚动步长的值
         _getTransStep: function(val){
-            console.log(val, 'val');
             var step = this.step, stepNum = Math.round(val/step);
             return {
                 stepNum: Math.abs(stepNum),
@@ -269,7 +290,7 @@ define(['Swipe', 'Fx'], function() {
         _getRatio: function(swipeTime){
             var ratio, speedval = this.speed*1000;
             if(swipeTime > speedval){
-                ratio = 1 * this.speed;
+                ratio = 1;
             }else{
                 ratio = speedval/swipeTime;
                 ratio = ratio > 20 ? 20 : ratio;

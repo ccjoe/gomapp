@@ -359,14 +359,17 @@ $triSize: 20px;
 .modal-toast{
     position: absolute;
     bottom:25%;
-    left:50%;
+    width:100%;
     text-align: center;
-    padding: 5px 10px;
     margin: 0 auto;
     color: #fff;
+    pointer-events: none;
     .icon{
         -webkit-font-smoothing: antialiased;
         font-size: 15px;
+        padding: 5px 10px;
+        max-width:80%;
+        pointer-events: fill;
         &:before{
             font-size: 18px;
             position: relative;
@@ -376,13 +379,13 @@ $triSize: 20px;
             //border-radius: 100%;
         }
     }
-}
-.modal-toast-info{
-    background-color: #333;
-}
-.modal-toast-success{
-    background-color: forestgreen;
-}
-.modal-toast-error{
-    background-color: orangered;
+    &.modal-toast-info .icon{
+        background-color: #333;
+    }
+    &.modal-toast-success .icon{
+        background-color: forestgreen;
+    }
+    &.modal-toast-error .icon{
+        background-color: orangered;
+    }
 }

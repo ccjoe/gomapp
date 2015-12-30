@@ -277,7 +277,7 @@ define(['View', 'District', 'Url', 'Store'], function(View, District, Url, Store
             return this.wrapper.find('input');
         },
         selectLocation: function(){
-            District.show();
+            District();
         },
         /**
          *通过html5获取地理坐标

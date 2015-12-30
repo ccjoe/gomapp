@@ -23,9 +23,6 @@ define(['Forms', 'District'], function(Forms, District) {
                     name:　'position'
                 }
             }).render();
-        },
-        showDistrict: function(){
-            District();
         }
     };
 });
