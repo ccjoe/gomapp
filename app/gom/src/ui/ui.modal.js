@@ -265,7 +265,7 @@ define(['View','Fx'], function(View) {
          * 显示loading
          * @method Gom.UI.Modal.loading
          * @param {boolean} mask 是否需要 mask
-         * @param {string} preload loading放入的位置
+         * @param {string} [preload=''] loading放入的位置,没有此值则为全局loading
          * @param {number} size loading的大小， 最好是0-1之间的比例;
          */
         loading:function(mask, preload, size){
@@ -363,7 +363,7 @@ define(['View','Fx'], function(View) {
                     pos = $bindElem.offset();
             }
             var popover = this.layout(popoverStatic, opts, 'popover').render();
-            var top, trisize = 20, tripos = 'tri-bottom',
+            var trisize = 20, tripos = 'tri-bottom',
                 $modal = popover.getModal(), mw = $modal.width(), mh = $modal.height(),
                 top = pos.top - mh/2 - trisize/2,
                 left = pos.left+(pos.width-mw)/2,
@@ -373,7 +373,6 @@ define(['View','Fx'], function(View) {
                 top = pos.top + mh/2 + trisize;
                 tripos = 'tri-top';
             }
-            console.log(left, fullWidth, mw, mh, top, left, 'size');
             if(left < gap){
                 left = gap;
                 tripos += ' tri-left';
