@@ -13,9 +13,9 @@ var config = {
     EXPIRES: isdebug ? 0 : 24*3600*1000,      //缓存时间(24小时)
     MAPKEY: '0b895f63ca21c9e82eb158f46fe7f502', //地图相关的key
     CLASSES: {                                //站点ID配置
-        VIEWPORT: '#viewport',                //页面Viewport
-        HEADER: '#header',                    //Header ID
-        FOOTER: '#footer',                    //Footer ID
+        //VIEWPORT: '#viewport',                //页面Viewport
+        //HEADER: '#header',                    //Header ID
+        //FOOTER: '#footer',                    //Footer ID
         CONTENT: '.content'                   //页面交替内容
     }
 };
@@ -23,7 +23,7 @@ var config = {
 requirejs.config({
     baseUrl: 'scripts',
     paths:{
-        Gom : config.GOM_PATH,               //定义paths.Gom,则采取的是requirejs引入Gom,直接引入gom.js文件时不需要此配置
+        Gom : config.GOM_PATH               //定义paths.Gom,则采取的是requirejs引入Gom,直接引入gom.js文件时不需要此配置
     },
     shim:{
         'route': ['Gom']

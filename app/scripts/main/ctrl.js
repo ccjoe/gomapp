@@ -12,24 +12,24 @@ define(['UI'], function(UI, List, Sides) {
         },{
             title: '组件及插件(UI)',
             content: 'UI组件及插件文档【VIEW】',
-            hash: '?viewdoc&debug=1',
+            hash: '?viewdoc',
             badge: 5,
             img: 'images/v.png'
         },{
             title: '页面Page与Ctrl相关',
             content: '页面文档及相关【VIEW,CTRL】',
-            hash: 'http://localhost:9000/?pagedoc&debug=1',
+            hash: 'http://localhost:9000/?pagedoc&argment=test',
             img: 'images/c.png'
         },{
             title: '模型Model类',
             content: '与服务端交互相关封装【MODEL】',
-            hash: '?modeldoc',
+            hash: '?modeldoc&argment2=test2',
             img: 'images/m.png'
         },{
             isDivider: true,
             title: '公用页面',
             collapse: true
-        }, {
+        },{
             title: '404',
             content: '404页面',
             hash: '?404',
