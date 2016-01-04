@@ -53,8 +53,14 @@ define(['View'], function(View) {
          * @param {string} text 主标题
          */
         setTitle: function(text){
-            this.data.title = text;
-            this.update();
+            this.update({title: text});
+        },
+        /**
+         * @method Gom.UI.Header#setTitle
+         * @param {string} text 主标题
+         */
+        setSubTitle: function(text){
+            this.update({subtitle: text});
         },
         events: {
             'click .icon-left-nav': 'goBack'
