@@ -223,9 +223,10 @@ define(['Swipe', 'Fx'], function() {
             if(0>distance && distance>=-maxTransDis){
                 distance = moving ? distance : singleSwipeDis*this._getRatio(swipeTime)+swipeOffset;
             }
-            var absDis = Math.abs(distance);
-            distance = this.rangeCheck(distance, moving);
-            console.log(  moving,distance > maxOuter, absDis, absDis> maxRange, this._getRatio(swipeTime), this.getScrollSize(), this.getWrapperSize(), distance, maxTransDis, maxRange, '滑动内容大小, 容器大小, 滑动距离, 最小范围, 最大位移， 最大范围');
+            var absDis = Math.abs(distance), disBefChk = distance;
+                distance = this.rangeCheck(distance, moving);
+
+            console.log(swipeOffset, moving, distance, maxTransDis, maxRange,  this._getRatio(swipeTime), this.getScrollSize(), this.getWrapperSize());
 
             if(!this.outer){
                 return distance;
@@ -237,16 +238,15 @@ define(['Swipe', 'Fx'], function() {
             if(distance >= 0 && this.outerFront){
                 $usf.show();
                 //超过outer一半时箭头变化
-                if(absDis <= maxOuter/2){
+                if(disBefChk <= maxOuter/2){
                     $usf.removeClass('pull-up');
-                }else if(absDis > maxOuter/2){
+                }else if(disBefChk > maxOuter/2){
                     $usf.addClass('pull-up');
-                    if(!moving){
+                    if(!moving  && swipeOffset===0){
                         this.showFresh();
                         this.onFront();
                     }
                 }
-                console.log(distance, moving, 'test');
                 if(!moving){ //moveEnd时
                     $usf.removeClass('pull-up');
                     distance = 0;
@@ -259,8 +259,7 @@ define(['Swipe', 'Fx'], function() {
                 //超过outer一半时箭头变化
                 if(moveOutDis <= maxOuter/2){
                     $use.removeClass('pull-up');
-                    if(!moving){
-                        console.log(maxOuter, moving, 'maxOuter');
+                    if(!moving && swipeOffset===-maxTransDis){
                         this.showFresh('end');
                         this.onEnd();
                     }

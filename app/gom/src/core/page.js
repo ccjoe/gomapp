@@ -185,7 +185,7 @@ define(['View', 'UI'], function(View, UI){
          * @method Gom.Page#setHeader
          */
         setHeader: function () {
-            var header = $('#heaer').data('widget') || new Header();
+            var header = $('#heaer').data('widget') || new UI.Header({});
             header.update({title:this.title, subtitle: this.subtitle});
         },
         /**
