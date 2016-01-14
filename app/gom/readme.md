@@ -1,7 +1,11 @@
 # GomUI, Gom is Go Mobile!
 
+这个版本暂时不更新， 移至[ES6版](https://github.com/ccjoe/gom-es6), 使用ES6版本的库时，兼容ES5与ES6的开发模式。
+gulpfile.js打包实现ES6 to ES5;推荐使用ES6但也可以自由选择是否使用ES6
+
 [Gom的实践与实例]()
-一个H5的项目MVC框架,包含丰富灵活配置的UI,  History Html5 SPA路由, Model等的封装
+
+WebAPP MVC框架, 包含丰富灵活配置的UI,  History Html5 SPA路由, Model等的封装
 将实现WebApp HybridApp SPA MPA 多种方式的开发模式
 
 <iframe src="https://ghbtns.com/github-btn.html?user=ccjoe&repo=gom&type=watch&count=true" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>

@@ -198,14 +198,8 @@ gulp.task('serve', ['styles'], function () {
     //监听变化
     gulp.watch([
         'app/**/*',
-        //'app/gom/src/**/*',
         '!app/gom/build/**/*',
         '!app/gom/docs/**/*',
-        //'app/lib/**/*.*',
-        //'app/styles/*.*',
-        //'app/views/**/*',
-        //'app/images/**/*',
-        //'app/gom/src/**/*',
         '.tmp/fonts/**/*'
     ]).on('change', reload);
     //监听框架变化并作相应处理
@@ -225,6 +219,15 @@ gulp.task('build', ['scripts', 'html', 'images', 'fonts', 'extras'], function ()
     return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
+gulp.task('serve:dist', ['build'], function () {
+    browserSync({
+        port: 9000,
+        server: {
+            baseDir: ['dist']
+        },
+        browser: ['chrome']
+    });
+});
 /*------------------ DEFAULT ------------------*/
 gulp.task('default', ['clean'], function () {
     gulp.start('build');
