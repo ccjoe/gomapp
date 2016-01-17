@@ -97,6 +97,7 @@ define(['Store', 'UITmpl'], function(Store, UItmpl){
                     $frag = inheritAttrs(wrap, frag);
                     wrap.replaceWith($frag);
                     this.wrapper = $frag;   //会this.wrapper指向替代后的位置
+                    console.log(this.wrapper, 'this.wrapper');
                 }else if(frag){
                     wrap.html(frag)
                 }else{
@@ -215,21 +216,21 @@ define(['Store', 'UITmpl'], function(Store, UItmpl){
             var events = this.events;
             if(!events) return;
 
-            var onfn, $de = $(delegateElement);
+            var onfn=function(){}, $de = $(delegateElement);
             //绑定事件的方法,获取方法名称使用会导致this指向window
             if($de.length){
                 $de.off();
                 onfn = _.bind($de.on, $de);    //修复使this指向zepto on里的this指向的对象
-            }else{
+            }else if(this.wrapper.length){
                 onfn = _.bind(this.onview, this); //修复使this指向onview里的this指向的对象
                 this.offview();
             }
-
+            //var that = this;
             for(var eve in events){
                 (function(eve){
                     var eventSrc = getEventSrc(eve),
                         eventListener = events[eve];
-                    //console.log($(delegateElement), onfn, eventSrc.event, eventSrc.selector);
+                    //console.log($(delegateElement), that.wrapper,  eventSrc.event, eventSrc.selector, '绑定的事件');
                     onfn(eventSrc.event, eventSrc.selector, function (e){
                         if(typeof eventListener === 'function'){
                             eventListener(e, this, env);   //events对象值为函数直接量时，参列为(e, target, that)第三个参数为所在的执行环境env,即this

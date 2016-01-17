@@ -97,7 +97,7 @@ define(['View', 'UI'], function(View, UI){
 
             this.push(this.getHTMLFragment('view'), isback);
             //this._parseEvent();
-            if (this.title) {
+            if (this.title || this.subtitle) {
                 this.setHeader();
             }
             this.initWidgetUI();
@@ -167,25 +167,26 @@ define(['View', 'UI'], function(View, UI){
                     uititle = {};
                     uititle.title = $t.text();
                 }
-                try{
+                //try{
                     that.widgets[i] = new UI[uitype]({
                         wrapper: $t,
                         data: $.extend({},  uititle, uiopts)
                     });
-                }catch(e){
-                    console.warn(uitype + '组件定义错误，UI对象上不存在此组件！');
-                }
+                //}catch(e){
+                //    console.warn(uitype + '组件定义错误，UI对象上不存在此组件！');
+                //}
                 that.widgets[i].render();
                 $t.data('widget', that.widgets[i]);
                 $t.removeAttr('data-ui-widget');
             });
         },
         /**
-         * 设置Header
+         * 设置Header,这里仅设置主标题和副标题。 如果需要设置更多，可以获取使用header实例的update方法
          * @method Gom.Page#setHeader
          */
         setHeader: function () {
-            $('header.bar .title').text(this.title);
+            var header = $('#heaer').data('widget') || new UI.Header({});
+            header.update({title:this.title, subtitle: this.subtitle});
         },
         /**
          * 设置某页面的SEO信息

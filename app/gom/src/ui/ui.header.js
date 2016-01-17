@@ -43,7 +43,7 @@ define(['View'], function(View) {
         init: function (opts) {
             opts.data = _.extend({}, defaults, opts.data);
             opts.tmplname = 'ui.header';
-            opts.wrapper = opts.wrapper || opts.config.CLASSES.HEADER;
+            opts.wrapper = opts.wrapper || config.CLASSES.HEADER;
             $.extend(opts, this);   //将List实例混合到opts上， 去父对象上执行
             this._super(opts);
             this.title = opts.title;
@@ -53,8 +53,14 @@ define(['View'], function(View) {
          * @param {string} text 主标题
          */
         setTitle: function(text){
-            this.data.title = text;
-            this.update();
+            this.update({title: text});
+        },
+        /**
+         * @method Gom.UI.Header#setTitle
+         * @param {string} text 主标题
+         */
+        setSubTitle: function(text){
+            this.update({subtitle: text});
         },
         events: {
             'click .icon-left-nav': 'goBack'

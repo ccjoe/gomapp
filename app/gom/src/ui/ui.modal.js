@@ -15,7 +15,7 @@ define(['View','Fx'], function(View) {
      * 弹层底层抽象类，如果需要自定义弹出层才需要用到, 自定义一般于Modal.layout，不满足才需要用到此类
      * 弹层层的家庭比较大，有Loading，confirm， alert, center, popover, tips, popup, top , bottom, toast
      * 所有弹出层不可共存，但modal与toast可一起显示.
-     *  @todo loading应该处理为可与其它弹出层共存
+     *  @todo 模态类型分拆及共存问题？
      *  @class Gom.UI.Modal
      *  @alias Modal
      *  @extends {Gom.View}
@@ -24,7 +24,7 @@ define(['View','Fx'], function(View) {
      *  @param {string} [opts.title] 弹层标题
      *  @param {html|string} [opts.content] 弹层的html内部
      *  @param {string} [opts.class] 弹层自定义class
-     *  @param {boolean} [opts.mask] 弹层是否显示遮罩
+     *  @param {boolean} [opts.mask=false] 弹层是否显示遮罩
      *  @param {boolean} [opts.close] 当且仅当为true时会在右上角显示关闭小图标
      *  @param {object} [opts.btns]  弹出层组件时按钮
      *  @param {string} [opts.btns.yes] 确定按钮名称
@@ -46,9 +46,8 @@ define(['View','Fx'], function(View) {
     var Modal = View.extend({
         init: function (opts) {
             opts.data = $.extend({}, data, opts.data);
-            $.extend(opts, this);   //将List实例混合到opts上， 去父对象上执行
+            $.extend(opts, this);   //将List实例混合到opts上， 去父对象上执行(_super())
             opts.tmplname = 'ui.modal';
-            opts.wrapper = opts.wrapper || '.modal-layout';
             this._super(opts);
             this.onYes = opts.data.onYes || noop;
             this.onNo = opts.data.onNo || noop;
@@ -57,8 +56,13 @@ define(['View','Fx'], function(View) {
         render: function(){
             var wrap = $('body');
             var frag = this.getHTMLFragment();
+            if(this.wrapper.length){
+                this.wrapper.html(frag);
+                this.show();
+                return this;
+            }
             var modal = this.getModal();
-            if(!this.getModal().length){
+            if(!modal.length){
                 wrap.append(frag);
             }else{
                 modal.replaceWith(frag);
@@ -74,7 +78,7 @@ define(['View','Fx'], function(View) {
             this.reloc();
             this.toggleModal();
 
-            if(this.isToast()){
+            if(this.is('toast')){
                 this.autoHide(3000);
             }
             this.initEvents();
@@ -100,8 +104,8 @@ define(['View','Fx'], function(View) {
         getType: function(){
             return this.data.type;
         },
-        isToast: function(){
-            return this.getType().indexOf('toast')!==-1;
+        is: function(type){
+            return this.getType().indexOf(type)!==-1;
         },
         isTopBot: function(){
             var type =  this.getType();
@@ -114,7 +118,11 @@ define(['View','Fx'], function(View) {
          * @returns {*|jQuery|HTMLElement}
          */
         getModal: function(){
-            return $(this.isToast() ? '.modal-toast' : '.modal-layout');
+            var $el = this.wrapper.length ? this.wrapper : $('body');
+            var ist = this.is('toast'); isl = this.is('loading');
+            if(ist) return $el.find('> .modal-toast');
+            if(isl) return $el.find('> .modal-loading');
+            return $el.find('> .modal-layout');
         },
         /**
          * 获取遮罩层
@@ -129,7 +137,7 @@ define(['View','Fx'], function(View) {
          * @method Gom.UI.Modal#toggleModal
          * @param {string} [inOrOut=In] in|显+out|隐
          * @desc 上下弹出层会采用slide+fade动画，其它采用scale+fade
-         **/
+         */
         toggleModal: function(inout){
             inout = inout || 'In';
             var pos = this.isTopBot();
@@ -143,7 +151,9 @@ define(['View','Fx'], function(View) {
             }
         },
         scaleInModal: function(){
-            this.getModal().css({opacity: 0.8, transform: 'scale(1.2)'}).fx({opacity: 1, scale: 1, perspective:1000}, 500, 'easeOutCirc');
+            var size = 1; dsize = this.data.size;
+            if(dsize) size = dsize;
+            this.getModal().css({opacity: 0.8, transform: 'scale(1.2)'}).fx({opacity: 1, scale: size, perspective:1000}, 500, 'easeOutCirc');
         },
         scaleOutModal: function(){
             var $gm = this.getModal();
@@ -166,11 +176,9 @@ define(['View','Fx'], function(View) {
          * @private
          */
         reloc: function(){
-            var ml = this.getModal(), isTB = this.isTopBot(), isToast = this.isToast(),
-                h = ml.height(), w = ml.width(), centerProps={};
-            if(isToast){
-                centerProps['margin-left'] = -w/2;
-            }else if(!isTB){
+            var ml = this.getModal(), isTB = this.isTopBot(),
+                h = ml.height(), centerProps={};
+            if(!isTB){
                 centerProps['margin-top'] = -h/2;
             }
             ml.css(centerProps);
@@ -256,14 +264,19 @@ define(['View','Fx'], function(View) {
         /**
          * 显示loading
          * @method Gom.UI.Modal.loading
+         * @param {boolean} mask 是否需要 mask
+         * @param {string} [preload=''] loading放入的位置,没有此值则为全局loading
+         * @param {number} size loading的大小， 最好是0-1之间的比例;
          */
-        loading:function(){
+        loading:function(mask, preload, size){
             return new Modal({
+                wrapper: preload,
                 data:{
                     type: 'loading',
                     btns: false,
                     title: false,
-                    mask: true
+                    mask: mask,
+                    size: size
                 }
             });
         },
@@ -350,7 +363,7 @@ define(['View','Fx'], function(View) {
                     pos = $bindElem.offset();
             }
             var popover = this.layout(popoverStatic, opts, 'popover').render();
-            var top, trisize = 20, tripos = 'tri-bottom',
+            var trisize = 20, tripos = 'tri-bottom',
                 $modal = popover.getModal(), mw = $modal.width(), mh = $modal.height(),
                 top = pos.top - mh/2 - trisize/2,
                 left = pos.left+(pos.width-mw)/2,
@@ -360,7 +373,6 @@ define(['View','Fx'], function(View) {
                 top = pos.top + mh/2 + trisize;
                 tripos = 'tri-top';
             }
-            console.log(left, fullWidth, mw, mh, top, left, 'size');
             if(left < gap){
                 left = gap;
                 tripos += ' tri-left';

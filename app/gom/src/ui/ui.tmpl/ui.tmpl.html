@@ -53,7 +53,7 @@
 
 <script id="ui.modal" type="text/template">
 {{ if(data.type.indexOf('toast') === -1 ){ }}
-<div class="modal-layout modal-{{=data.type}} {{=data.class}}">
+<div class="{{=data.type != 'loading' ? 'modal-layout' : ''}} modal-{{=data.type}} {{=data.class}}">
     {{ if(data.close===true){ }} <span class="icon icon-close"></span> {{ } }}
     <div class="modal-inner">
         {{ if(data.type === 'loading'){ }}

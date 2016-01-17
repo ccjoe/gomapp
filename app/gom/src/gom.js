@@ -49,6 +49,10 @@ $(function() {
         paths:{
             Gom:    GOM_PATH + 'gom',
             App:    GOM_PATH + 'core/app',
+            View:   GOM_PATH + 'core/view',
+            Page:   GOM_PATH + 'core/page',
+            Service:GOM_PATH + 'core/service',
+
             UI :    GOM_PATH + 'ui/ui',
             Forms : GOM_PATH + 'ui/ui.forms',
             Header: GOM_PATH + 'ui/ui.header',
@@ -58,9 +62,9 @@ $(function() {
             Scroll: GOM_PATH + 'ui/ui.scroll',
             Slide:  GOM_PATH + 'ui/ui.slide',
             Select: GOM_PATH + 'ui/ui.select',
-            View:   GOM_PATH + 'core/view',
-            Page:   GOM_PATH + 'core/page',
-            Service:GOM_PATH + 'core/service',
+
+            District:GOM_PATH+ 'ui/business/ui.select-district',
+
             Store:  GOM_PATH + 'utils/store',
             Url:    GOM_PATH + 'utils/url',
             Fx:     GOM_PATH + 'utils/fx',

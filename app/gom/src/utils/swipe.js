@@ -79,7 +79,7 @@ define(function(){
         //callbacks
         var cbs = {
             startCallback: function (e) {
-                e.preventDefault();
+                //e.preventDefault();
                 $.extend(point, doPoint.setNull); //重置初始值
                 var cp = e.touches[0],
                     startPoint = {
@@ -89,10 +89,9 @@ define(function(){
                         //identifier: e.identifier
                     };
                 point.set(startPoint);
-                opts.startCallback ? opts.startCallback(point) : null;
+                opts.startCallback ? opts.startCallback(point, e) : null;
             },
             moveCallback: function (e) {
-                e.preventDefault();
                 var cp = e.touches[0],
                     movePoint = {
                         moveX: cp.pageX,
@@ -104,15 +103,17 @@ define(function(){
                 //console.log(doPoint.checkRange(point), 'checkRange');
                 if (!doPoint.checkRange(point)) {
                     return;
+                }else{
+                    e.preventDefault();
                 }
-                opts.moveCallback ? opts.moveCallback(point) : null;
+                opts.moveCallback ? opts.moveCallback(point, e) : null;
             },
             endCallback: function (e) {
-                e.preventDefault();
+                //e.preventDefault();
                 if (!doPoint.checkRange(point)) {
                     return;
                 }
-                opts.endCallback ? opts.endCallback(point) : null;
+                opts.endCallback ? opts.endCallback(point, e) : null;
             }
         };
 

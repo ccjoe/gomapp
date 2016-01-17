@@ -59,11 +59,10 @@ new App(config, route).run();
             if(!isHistoryApi){
                 return;
             }
-            //Modal.loading();
-            History.Adapter.bind(window, 'statechange', function(e){
+            History.Adapter.bind(window, 'statechange', function(){
                 var state = History.getState();
                 state.data.hash = state.data.hash || Url.getHTML5Hash(state.hash) || '/'; //首次进来默认取state.hash
-                that._routeByHash(state.data.hash);
+                that.goto(state.data.hash);
             });
             History.Adapter.trigger(window, 'statechange');
             callback ? callback() : null;
@@ -71,19 +70,16 @@ new App(config, route).run();
         },
         _initHref: function(){
             //对所有链接进行html5处理
-            //@todo 需要处理为智能判断Url与绝对、相应地址
             //? 站内链接跳转
             //# 站内组件或hash跳转
             //http:// 站间跳转
             //''为空时当作非链接处理
-            var that = this;
             $("body").off().on("click", 'a', function(){
                 var $t = $(this),
                     href = $t.attr('href');
 
                 if(!href || !!~href.indexOf('#') || !href.indexOf('javascript:')) return; //无链接或不存在hash或存在javascript:跳转不处理
-                var hash =  href.substring(1);
-                History.pushState({hash: hash, prevHash: that.getPrevHash()}, $t.attr('title'), '?'+hash);
+                History.pushState({hash: href, prevHash: location.search}, $t.attr('title'), href);
                 return false;
             }).on('click', '.icon-left-nav', function(){
                 History.go(-1);
@@ -102,14 +98,12 @@ new App(config, route).run();
             }
             $.ajax({url:'views/'+tmplname+'.html', dataType:'html', success: function (tmpl){
                 if(expires>0){
-                    Store.set(tmplname, tmpl,expires*60*60*1000+(+new Date()));
+                    Store.set(tmplname, tmpl, expires);
                 }
                 callback?callback(tmpl):null;
             }});
         },
-        getPrevHash: function(){
-            return location.search.substring(1);
-        },
+
         setPage: function(opts){
             if(!opts){
                 return;
@@ -126,13 +120,13 @@ new App(config, route).run();
          * @param {string} hashPath hashPath是形如 module/list  module/123的值
          * @return {object} CRO (Current Router Object)返回具体路由指向的路由表对象
          */
-        getCRO: function (hashPath) {
-            var hashRoute = Url.getHashPath(hashPath, true),
-                router = this.route;
-            if (hashPath === '/') {
-                return router[hashPath];
-            }
+        getCRO: function (hashPath){
+            var router = this.route;
 
+            if(typeof hashPath !== 'string') return {};
+            if(hashPath === '/') return router['/'];
+
+            var hashRoute = hashPath.split('/');
             var CRO = router, hashLen = hashRoute.length, index=0, hashIndex=0;
             for(;index<hashLen; index++){
                 hashIndex = hashRoute[index];
@@ -176,22 +170,18 @@ new App(config, route).run();
          * * ? 站内链接跳转
          * # 站内组件或hash跳转(仅页面内)
          * http(s)://或// 站间跳转 判断是否本域,本域的话跳转到search部分
-         * @todo 页面间数据传递
          */
         goto: function(where){
             var isstr = typeof where === 'string';
             if(isstr){
-                var urls = Url.get(where);
-                var isThisHost = urls.host+urls.port === location.host;
-                if(/^(https:)?\/\//.test(where)){
-                    if(!isThisHost){
-                        location.href = where;
-                        return;
-                    }else{
-                        where = Url.getHashPath(urls.search);   //获取serach里的path部分
-                    }
+                var isThisHost = !!~where.indexOf(location.host);
+                if(/^((https?):)\/\//.test(where) && !isThisHost){
+                    location.href = where;
+                    return;
                 }
+                where = !!~where.indexOf('?')?Url.getHTML5Hash(where):where; //过滤url仅获取search里的path部分
             }
+            console.log(where, 'where parse by goto');
             this[isstr ? '_routeByHash' : '_routeByCRO'](where);
         },
 
@@ -204,7 +194,6 @@ new App(config, route).run();
         _routeByHash: function (hashPath) {
             this._manageHistory(hashPath);
             var CRO = this.getCRO(hashPath);
-            console.log(CRO, 'CRO');
             this._routeByCRO(CRO);
         },
         /**
@@ -272,14 +261,14 @@ new App(config, route).run();
          * @return {boolean|null} true:后退, false:前进, null:首次进入;
          */
         isBack: function(){
-            var lastest = this.getLastHashByLastIndex(1),
-                laster  = this.getLastHashByLastIndex(2);
+            var last = this.getLastHashByLastIndex(1),
+                later  = this.getLastHashByLastIndex(2);
 
-            var oldHashArr = Url.getHashPath(laster, true),
-                newHashArr = Url.getHashPath(lastest, true),
+            var oldHashArr = Url.getHashPath(later, true),
+                newHashArr = Url.getHashPath(last, true),
                 isExistOld = _.compact(oldHashArr).length;
 
-            return laster ? _.compact(newHashArr).length < isExistOld : null;
+            return later ? _.compact(newHashArr).length < isExistOld : null;
         },
         //判断是否存在CRO而404
         isRouteNotFound: function(CRO){

@@ -3,6 +3,7 @@
  * Url处理
  * @author Joe Liu
  * @email icareu.joe@gmail.com
+ * @todo 解决在gom里完整url解析问题，主要是因为search部分是path而不是参数
  */
 define(function () {
     var re = {
@@ -20,7 +21,7 @@ define(function () {
      */
     var getHTML5Hash = function(url){
         var execRes = re.history.exec(url);
-        return execRes ? re.history.exec(url)[1] : '';
+        return execRes ? execRes[1] : '';
     };
     /**
      * 处理键值对字符串为对象,获取url里所有键值对返回

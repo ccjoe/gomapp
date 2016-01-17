@@ -5,7 +5,7 @@ define(['Service'], function(Service) {
     new Service({
         req:function(e, xhr, options){
             //console.log(e, xhr, options, 'def request inject');
-            //if(!!~options.url.indexOf('http://xproduct.ctrip.me:3003')) return false;
+            //if(!!~options.url.indexOf('http://www.test.me:3003')) return false;
         },
         res: function(e, xhr, options){
             //console.log(e, xhr, options, 'def response inject');
@@ -13,7 +13,7 @@ define(['Service'], function(Service) {
     });
 
     var listModel = new Service({
-       url: 'http://xproduct.ctrip.me:3003/api/mall/receipts'
+       url: 'http://www.test.me:3003/api/mall/receipts'
     });
     //listModel.fetch({userId:123}).done(function(data){
     //    console.log(data, 'data');

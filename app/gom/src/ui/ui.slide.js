@@ -125,14 +125,12 @@ define(['View', 'Store','Fx'], function(View, Store) {
                 moveCallback: function(point){
                   var distance = point[swipeXY] + $root.width()*-index;
                   $switchs.css(that.swipeCount(distance));
-
                 },
                 endCallback: function(point){
                   if(Math.abs(point[swipeXY]) < that.data[swipeXY]){
                       that.rollback(index);
                       return;
                   }
-
                   if(point.direction === swipeDR[0]){
                       index++;
                       if(index === len){
@@ -154,8 +152,7 @@ define(['View', 'Store','Fx'], function(View, Store) {
 
                   }
                   that.rollback(index);
-                  console.log(index, len);
-                    return;
+                  return;
                 }
             });
         },

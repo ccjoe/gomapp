@@ -14,10 +14,11 @@ utils/swipe.js
 ui/ui.scroll.js
 ui/ui.slide.js
 ui/ui.select.js
+ui/business/ui.select-district.js
+utils/url.js
 ui/ui.forms.js
 ui/ui.js
 core/page.js
 utils/utils.js
-utils/url.js
 core/app.js
 gom.js

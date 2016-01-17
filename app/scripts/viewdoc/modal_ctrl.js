@@ -9,6 +9,7 @@
         },
         events: {
             'click .loading': 'createLoading',
+            'click .preload': 'preload',
             'click .confirm': 'createConfirm',
             'click .alert': 'createAlert',
             'click .toast': 'createToast',
@@ -20,7 +21,7 @@
             'click .popover, .popover-top, .popover-bottom': 'popIt'
         },
         createAlert: function(){
-            var alert = Modal.alert({content: '这是一个测试对话框，这里可以是html',
+            Modal.alert({content: '这是一个测试对话框，这里可以是html',
                 onYes: function(){
                     Modal.toast('点击了确定');
                 }});
@@ -28,14 +29,19 @@
         createLoading: function(){
             Modal.loading().render();
         },
+        preload: function(){
+            $('.preload-wrapper').show();
+            var preload = Modal.loading(false, '.preload-wrapper', 0.8).render();
+            //preload.remove();
+        },
         createConfirm: function(){
             Modal.confirm({content: '这是一个测试对话框，这里可以是html',
-                    onYes: function(){
-                        Modal.toast('点击了确定');
-                    },
-                    onNo: function(){
-                        Modal.toast('点击了取消');
-                    }}
+                onYes: function(){
+                    Modal.toast('点击了确定');
+                },
+                onNo: function(){
+                    Modal.toast('点击了取消');
+                }}
             );
         },
         createToast: function(){

@@ -15,6 +15,7 @@ define(['View', 'Modal', 'Scroll', 'List'], function(View, Modal, Scroll, List) 
             className 自定义的class
             yardNo {number} 准绳处于第几行,默认第三行(则可见总共五行)
             list = {'1': [], '2': []};
+            onSelect(index, step)   //在滑动选择时（滑动的level为index,滑动到的步数step）
             onYes(select val);
             onNo();
      * @example 实例一个时间选择器
@@ -25,6 +26,7 @@ define(['View', 'Modal', 'Scroll', 'List'], function(View, Modal, Scroll, List) 
             cascade: false,
             level: 3,
             data: {'1':['上午','下午'],'2': _.range(1,13), '3': _.range(1,61)},
+            onSelect: function(index, step){},
             onYes: function(val){
                 console.log('选择的值为：' + val);
             }
@@ -33,7 +35,7 @@ define(['View', 'Modal', 'Scroll', 'List'], function(View, Modal, Scroll, List) 
     var defaults = {
         title: '请选择',
         yardNo: 3,
-        modal: true,
+        modal: true
     };
     var Select = View.extend({
         init: function(opts){
@@ -46,9 +48,10 @@ define(['View', 'Modal', 'Scroll', 'List'], function(View, Modal, Scroll, List) 
         },
         show: function(){
             var that = this; data = this.data;
-            console.log(this.modal, 'thismodal');
             if(data.modal){
-                Modal.bottom({title: data.title, content: this.makeScrollCtn(),
+                Modal.bottom({
+                    title: data.title,
+                    content: this.makeScrollCtn(),
                     onYes: function(){
                         var val = that.getSelect();
                         data.onYes ? data.onYes(val) : null;
@@ -67,10 +70,15 @@ define(['View', 'Modal', 'Scroll', 'List'], function(View, Modal, Scroll, List) 
             this.initSelect();
         },
         getScrollRoot: function(){
-            return this.data.className ? $('.'+this.data.className) : $('.ui-scroll-select');
+            var $el = this.wrapper, $classEl = $('.'+this.data.className);
+            return $el.length ? $el : ($classEl.length ? $classEl : $('.modal-layout .ui-scroll-select'));
         },
-        initSelect: function(){
+        initSelect: function(level){
             var $wrapper = this.getScrollRoot();
+            if(level){
+                $wrapper.find('.ss-cell-'+level).find('li.table-view-cell').eq(0).addClass('active');
+                return;
+            }
             for(var l=1; l<=this.data.level; l++) {
                 $wrapper.find('.ss-cell-'+l).find('li.table-view-cell').eq(0).addClass('active');
             }
@@ -87,41 +95,58 @@ define(['View', 'Modal', 'Scroll', 'List'], function(View, Modal, Scroll, List) 
             return selectYard + '<div class="ui-scroll-select ' + this.data.className + '">'+scrollCtn+'</div>';
         },
 
-        //根据level生成列表 htmlFragment
-        setListCont: function(level){
-            var levelData = this.data.list[level], levelDataExt = [];
-            for(var i=0; i<levelData.length; i++){
-                levelDataExt[i] = {};
-                levelDataExt[i].title = levelData[i];
-            }
-            //console.log(levelDataExt, 'levelDataExt');
+        //根据level生成列表 htmlFragment, 根据level来查找数据，直接传入数据表示更新
+        setListCont: function(level, data){
+                var levelData = data ? data : this.data.list[level];
+                var levelDataExt = [];
+
+                for(var i=0; i<levelData.length; i++){
+                    levelDataExt[i] = {};
+                    levelDataExt[i].title = levelData[i];
+                }
             var selectItem = {
                 media: false,
                 card: false,
                 list: levelDataExt
             };
-
-            return new List({
+            var dataObj = {
                 data: selectItem
-                //wrapper: '.ss-cell-'+level  //无wrapper时返回HTMLfragment
-            }).render();
+            };
+            if(data){
+                dataObj.wrapper = '.ss-cell-'+level;
+            }
+            return new List(dataObj).render(); //无wrapper时返回HTMLfragment,有时直接插入;
         },
-
+        /**
+         * 更新 select项数据
+         * @method Gom.UI.Select#update
+         * @param {number} index 需要更新的level为index
+         * @param {object} data  更新到的数据
+         */
+        update: function(level, data){
+            this.setListCont(level, data);
+        },
         setScroll: function(){
+            var that = this, indexScroll=[];
             for(var l=1; l<=this.data.level; l++){
-                new Scroll({
-                    step: 33,
-                    speed: 0.5,
-                    outerFront: false,
-                    outerEnd: false,
-                    wrapper    : '.ui-scroll-select-'+l,    //滚动对象所在的容器
-                    className  : '.ss-cell-'+l,      //滚动对象的className
-                    endScroll: function(point){
-                        console.log(point, 'point');
-                        var step = this.getSteps();
-                        this.$scroll.find('li.table-view-cell').removeClass('active').eq(step).addClass('active');
-                    }
-                });
+                (function(index){
+                    indexScroll[index] = new Scroll({
+                        step: 33,
+                        speed: 0.5,
+                        outer: 66,
+                        outerFront: false,
+                        outerEnd: false,
+                        wrapper    : that.getScrollRoot().find('.ui-scroll-select-'+index),    //滚动对象所在的容器
+                        className  : '.ss-cell-'+index,      //滚动对象的className
+                        endScroll: function(){
+                            var step = this.getSteps();
+                            this.$scroll.find('li.table-view-cell').removeClass('active').eq(step).addClass('active');
+                            var onSelect = that.data.onSelect;
+                            onSelect = onSelect ? _.bind(that.data.onSelect, that) : function(){};
+                            onSelect(index, step, indexScroll);
+                        }
+                    });
+                })(l);
             }
         },
         /**
